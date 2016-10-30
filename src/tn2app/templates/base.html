@@ -9,17 +9,21 @@
     </head>
     <body>
         <div class="header">
-            <ul>
-                <li><a href="{% url 'homepage' %}">Accueil<a></li>
-                <li>La galerie</li>
-                <li>Le blog</li>
-                <li>Les groupes</li>
-                <li class="right">Inscription</li>
-                <li class="right">Connexion</li>
-            </ul>
+            <div class="fullwidth">
+                <ul>
+                    <li><a href="{% url 'homepage' %}">Accueil</a></li>
+                    <li><a>La galerie</a></li>
+                    <li><a>Le blog</a></li>
+                    <li><a>Les groupes</a></li>
+                    <li class="right"><a>Inscription</a></li>
+                    <li class="right"><a>Connexion</a></li>
+                </ul>
+            </div>
         </div>
+        <div class="main_contents fullwidth">
         {% block main_contents %}
         {% endblock %}
+        </div>
     </body>
 </html>
 

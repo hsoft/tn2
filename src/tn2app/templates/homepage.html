@@ -4,12 +4,12 @@
 {% block main_contents %}
     <h1>Thread and needles</h1>
     <h2>Articles</h2>
-    <ol>
+    <ol class="threeitems">
         {% for article in articles %}
         <li>
             <a href="{{ article.get_absolute_url }}">
                 <img src="{{ article.main_image|thumbnail_url:'preview' }}"/>
-                {{ article.title }}
+                <p>{{ article.title }}</p>
             </a>
         </li>
         {% endfor %}
