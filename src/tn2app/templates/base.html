@@ -1,0 +1,25 @@
+{% load pipeline %}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        {% stylesheet 'main' %}
+    </head>
+    <body>
+        <div class="header">
+            <ul>
+                <li><a href="{% url 'homepage' %}">Accueil<a></li>
+                <li>La galerie</li>
+                <li>Le blog</li>
+                <li>Les groupes</li>
+                <li class="right">Inscription</li>
+                <li class="right">Connexion</li>
+            </ul>
+        </div>
+        {% block main_contents %}
+        {% endblock %}
+    </body>
+</html>
+

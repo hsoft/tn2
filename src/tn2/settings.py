@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     'ckeditor',
     'easy_thumbnails',
+    'pipeline',
     'tn2app',
 ]
 
@@ -121,6 +122,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
+STATICFILES_STORAGE = 'pipeline.storage.PipelineStorage'
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'pipeline.finders.PipelineFinder',
+)
+
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 
@@ -133,4 +142,23 @@ THUMBNAIL_ALIASES = {
     '': {
         'preview': {'size': (300, 200), 'crop': 'smart'},
     }
+}
+
+PIPELINE = {
+    'CSS_COMPRESSOR': 'pipeline.compressors.NoopCompressor',
+    'JS_COMPRESSOR': 'pipeline.compressors.NoopCompressor',
+    'COMPILERS': [
+        'pipeline.compilers.sass.SASSCompiler',
+    ],
+    'SASS_BINARY': '/usr/bin/env sassc',
+    'STYLESHEETS': {
+        'main': {
+            'source_filenames': [
+                'sass/main.scss',
+            ],
+            'output_filename': 'css/main.css',
+        },
+    },
+    'JAVASCRIPT': {
+    },
 }
