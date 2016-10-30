@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'ckeditor',
+    'easy_thumbnails',
     'tn2app',
 ]
 
@@ -123,5 +124,13 @@ USE_TZ = True
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
 CKEDITOR_JQUERY_URL = 'https://code.jquery.com/jquery-2.2.4.min.js'
 
+THUMBNAIL_ALIASES = {
+    '': {
+        'preview': {'size': (300, 200), 'crop': 'smart'},
+    }
+}

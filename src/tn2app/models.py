@@ -10,6 +10,7 @@ class Article(models.Model):
     slug = models.CharField(max_length=255, unique=True)
     title = models.CharField(max_length=255)
     content = RichTextField()
+    main_image = models.ImageField()
 
     def clean(self):
         self.content = bleach.clean(self.content, tags=ALLOWED_TAGS)
