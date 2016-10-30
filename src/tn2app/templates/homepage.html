@@ -1,0 +1,11 @@
+<html>
+    <body>
+        <h1>Thread and needles</h1>
+        <h2>Articles</h2>
+        <ol>
+            {% for article in articles %}
+            <li><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></li>
+            {% endfor %}
+        </ol>
+    </body>
+</html>

@@ -1,0 +1,4 @@
+__pycache__
+/env
+/src/static
+/src/db.sqlite3
