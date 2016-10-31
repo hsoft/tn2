@@ -137,6 +137,19 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 CKEDITOR_JQUERY_URL = 'https://code.jquery.com/jquery-2.2.4.min.js'
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'Custom',
+        'toolbar_Custom': [
+            ['Format'],
+            ['Bold', 'Italic', 'Underline', 'Strike', '-', 'Undo', 'Redo'],
+            ['Link', 'Unlink', 'Anchor'],
+            ['Image', 'Smiley', 'SpecialChar'],
+            ['Source'],
+        ],
+        'format_tags': 'p;h2;h3;h4;h5;h6;pre',
+    }
+}
 
 THUMBNAIL_ALIASES = {
     '': {
