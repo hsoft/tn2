@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block main_contents %}
+<h1>Groupes de discussion</h1>
+<ol>
+{% for group in groups %}
+    <li><a href="{{ group.get_absolute_url }}">{{ group.title }}</a></li>
+{% endfor %}
+<ol>
+{% endblock %}

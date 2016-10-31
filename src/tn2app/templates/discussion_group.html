@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block main_contents %}
+<p>
+    <a href="{% url 'homepage' %}">Accueil</a>&nbsp;&gt;&nbsp;
+    <a href="{% url 'discussion_groups' %}">Groupes</a>&nbsp;&gt;&nbsp;
+</p>
+<h1>{{ group.title }}</h1>
+<ol>
+{% for discussion in group.discussions.all %}
+    <li><a href="{{ discussion.get_absolute_url }}">{{ discussion.title }}</a></li>
+{% endfor %}
+<ol>
+{% endblock %}
+
