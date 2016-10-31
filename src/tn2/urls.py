@@ -5,6 +5,7 @@ import django.views.static
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^comments/', include('django_comments.urls')),
     url(r'^', include('tn2app.urls')),
 ]
 

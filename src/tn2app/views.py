@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.core.exceptions import PermissionDenied
 
 from .models import Article, DiscussionGroup, Discussion
 
@@ -22,10 +23,17 @@ def discussion_groups(request):
 
 def discussion_group(request, group_slug):
     group = DiscussionGroup.objects.get(slug=group_slug)
+    if group.private and not request.user.is_staff:
+        raise PermissionDenied()
     context = {'group': group}
     return render(request, 'discussion_group.html', context)
 
 def discussion(request, group_slug, discussion_slug):
     discussion = Discussion.objects.get(group__slug=group_slug, slug=discussion_slug)
-    context = {'discussion': discussion}
+    if discussion.group.private and not request.user.is_staff:
+        raise PermissionDenied()
+    context = {
+        'discussion': discussion,
+        'user': request.user,
+    }
     return render(request, 'discussion.html', context)

@@ -12,6 +12,12 @@ body {
     width: 960px;
 }
 
+// This is a field that is automatically added by django-contrib-comments.
+// It has to be invisible.
+#id_honeypot {
+    display: none;
+}
+
 div.header {
     background-color: $bg_dark;
 

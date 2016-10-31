@@ -5,3 +5,4 @@ Pillow>=3.1,<3.4.9999
 easy-thumbnails>=2.3,<2.3.9999
 libsass>=0.11,<0.11.9999
 django-pipeline>=1.6,<1.6.9999
+django-contrib-comments>=1.7,<1.7.9999

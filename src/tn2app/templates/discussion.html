@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load comments %}
 
 {% block main_contents %}
 <p>
@@ -8,6 +9,24 @@
 </p>
 <h1>{{ discussion.title }}</h1>
 {{ discussion.content|safe }}
+
+{% render_comment_list for discussion %}
+
+{% if user.is_authenticated %}
+    <h2>Répondre</h2>
+    {% get_comment_form for discussion as form %}
+    <form action="{% comment_form_target %}" method="POST">
+    {% csrf_token %}
+    {{ form.comment }}
+    {{ form.honeypot }}
+    {{ form.content_type }}
+    {{ form.object_pk }}
+    {{ form.timestamp }}
+    {{ form.security_hash }}
+    <input type="hidden" name="next" value="{{ discussion.get_absolute_url }}" />
+    <input type="submit" value="Envoyer" />
+    </form>
+{% endif %}
 {% endblock %}
 
 
