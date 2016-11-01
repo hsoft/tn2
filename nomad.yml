@@ -1,0 +1,8 @@
+name: tn2
+image: debian/jessie
+privileged: true
+hostnames:
+  - tn2.local
+provisioning:
+  - type: ansible
+    playbook: ansible/site.yml

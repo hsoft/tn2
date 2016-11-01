@@ -1,0 +1,13 @@
+[submodule "ansible/roles/postgres-install"]
+	path = ansible/roles/postgres-install
+	url = https://github.com/savoirfairelinux/ansible-postgres-install.git
+[submodule "ansible/roles/django"]
+	path = ansible/roles/django
+	url = https://github.com/savoirfairelinux/ansible-django.git
+	url = git@github.com:savoirfairelinux/ansible-django.git
+[submodule "ansible/roles/common"]
+	path = ansible/roles/common
+	url = https://github.com/hsoft/ansible-common.git
+[submodule "ansible/roles/nginx"]
+	path = ansible/roles/nginx
+	url = https://github.com/savoirfairelinux/ansible-nginx.git

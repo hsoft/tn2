@@ -1,0 +1,14 @@
+- hosts: all
+  vars_files:
+    - vars/tn2.yml
+
+  vars:
+    django_deployment_type: rsync
+    django_project_local_path: "{{ playbook_dir }}/.."
+    django_domain_name: tn2.local
+
+  roles:
+    - common
+    - postgres-install
+    - nginx
+    - django
