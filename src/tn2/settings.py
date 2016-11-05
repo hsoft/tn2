@@ -14,6 +14,7 @@ SECRET_KEY = local_settings.SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = local_settings.DEBUG
+DEBUG = True
 
 ALLOWED_HOSTS = local_settings.ALLOWED_HOSTS
 
@@ -63,8 +64,6 @@ TEMPLATES = [
         },
     },
 ]
-
-WSGI_APPLICATION = 'tn2.wsgi.application'
 
 
 # Database

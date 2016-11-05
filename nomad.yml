@@ -3,6 +3,9 @@ image: debian/jessie
 privileged: true
 hostnames:
   - tn2.local
+shares:
+  - source: .
+    dest: /nomadshare
 provisioning:
   - type: ansible
     playbook: ansible/site.yml

@@ -3,9 +3,10 @@
     - vars/tn2.yml
 
   vars:
-    django_deployment_type: rsync
-    django_project_local_path: "{{ playbook_dir }}/.."
+    django_deployment_type: symlink
+    django_project_symlink_dest: "/nomadshare"
     django_domain_name: tn2.local
+    django_debug: yes
 
   roles:
     - common
