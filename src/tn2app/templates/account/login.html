@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block main_contents %}
+<h1>Connexion</h1>
+<form method="POST" class="loginform" action="{% url "account_login" %}" autocapitalize="off">
+    {% csrf_token %}
+    {{ form.as_p }}
+    {% if redirect_field_value %}
+        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+    {% endif %}
+    <button type="submit" class="btn btn-primary">Se connecter</button>
+    <a href="{% url "account_password_reset" %}" class="btn btn-link">Mot de passe oublié?</a>
+</form>
+{% endblock %}

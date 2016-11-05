@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
 
+    'account',
     'ckeditor',
     'easy_thumbnails',
     'pipeline',
@@ -60,6 +61,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'account.context_processors.account',
             ],
         },
     },
@@ -94,18 +96,16 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
-
+LANGUAGE_CODE = 'fr-FR'
 TIME_ZONE = 'UTC'
-
-USE_I18N = False
-
-USE_L10N = False
+USE_I18N = True
+USE_L10N = True
 
 USE_TZ = False
 
 SITE_ID = 1
 
+LOGOUT_REDIRECT_URL = 'homepage'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/

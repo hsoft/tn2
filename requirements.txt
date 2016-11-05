@@ -7,3 +7,4 @@ libsass>=0.11,<0.11.9999
 django-pipeline>=1.6,<1.6.9999
 django-contrib-comments>=1.7,<1.7.9999
 psycopg2>=2.6,<2.6.9999
+django-user-accounts>=2.0,<2.0.9999
