@@ -6,6 +6,8 @@ except ImportError:
     print("no local_settings! Using defaults.")
     from . import default_settings as local_settings
 
+ADMINS = [("Virgil Dupras", 'hsoft@hardcoded.net')]
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
@@ -14,10 +16,11 @@ SECRET_KEY = local_settings.SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = local_settings.DEBUG
-DEBUG = True
 
 ALLOWED_HOSTS = local_settings.ALLOWED_HOSTS
 
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Application definition
 
@@ -106,6 +109,8 @@ USE_TZ = False
 SITE_ID = 1
 
 LOGOUT_REDIRECT_URL = 'homepage'
+ACCOUNT_EMAIL_CONFIRMATION_REQUIRED = True
+DEFAULT_FROM_EMAIL = 'hsoft@hardcoded.net'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/

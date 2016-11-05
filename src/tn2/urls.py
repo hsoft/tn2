@@ -8,6 +8,8 @@ from account import views as account_views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^account/signup/$', account_views.SignupView.as_view(), name='account_signup'),
+    url(r'^account/confirm_email/(?P<key>\w+)/$', account_views.ConfirmEmailView.as_view(), name='account_confirm_email'),
     url(r'^account/login/$', account_views.LoginView.as_view(), name='account_login'),
     url(r'^account/logout/$', auth_views.logout, name='account_logout'),
     url(r'^account/password/reset/$', account_views.PasswordResetView.as_view(), name='account_password_reset'),

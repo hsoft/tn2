@@ -38,7 +38,7 @@ div.header {
                 text-decoration: none;
                 padding: 14px 16px;
             }
-            a:visited {
+            a:visited, a:link {
                 color: $text_light;
             }
         }
@@ -80,5 +80,12 @@ form.loginform {
     p label {
         display: inline-block;
         width: 150px;
+    }
+}
+
+form.signupform {
+    p label {
+        display: inline-block;
+        width: 200px;
     }
 }

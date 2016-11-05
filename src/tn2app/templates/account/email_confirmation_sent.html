@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+
+{% block main_contents %}
+<h1>Confirmation de courriel</h1>
+<p>Un courriel de confirmation a été envoyé à <b>{{ email }}</b>. Cliquez sur le lien dans ce courriel pour activer votre compte.</p>
+<p><a href="{{ success_url }}">Retour au site</a></p>
+{% endblock %}
