@@ -110,7 +110,7 @@ SITE_ID = 1
 
 LOGOUT_REDIRECT_URL = 'homepage'
 ACCOUNT_EMAIL_CONFIRMATION_REQUIRED = True
-DEFAULT_FROM_EMAIL = 'hsoft@hardcoded.net'
+DEFAULT_FROM_EMAIL = 'no-reply@{}'.format(local_settings.PROJECT_DOMAIN)
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
