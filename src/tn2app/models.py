@@ -16,9 +16,6 @@ class Article(models.Model):
     def __str__(self):
         return "{} - {}".format(self.slug, self.title)
 
-    def clean(self):
-        self.content = bleach.clean(self.content, tags=ALLOWED_TAGS_PERMISSIVE)
-
     def get_absolute_url(self):
         return reverse('article', args=[self.slug])
 
