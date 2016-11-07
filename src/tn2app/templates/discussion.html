@@ -8,7 +8,7 @@
     <a href="{{ discussion.group.get_absolute_url }}">{{ discussion.group.title }}</a>
 </p>
 <h1>{{ discussion.title }}</h1>
-<p><em>Par {{ discussion.author }}</em></p>
+<p><em>Par {{ discussion.author }} le {{ discussion.creation_time }}</em></p>
 {{ discussion.content|safe }}
 
 {% render_comment_list for discussion %}
