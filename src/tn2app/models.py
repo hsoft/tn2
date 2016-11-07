@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 from django.urls import reverse
 
@@ -35,6 +36,7 @@ class DiscussionGroup(models.Model):
 
 class Discussion(models.Model):
     group = models.ForeignKey(DiscussionGroup, related_name='discussions')
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, null=True)
     slug = models.CharField(max_length=255)
     title = models.CharField(max_length=255)
     content = RichTextField(config_name='restricted')
