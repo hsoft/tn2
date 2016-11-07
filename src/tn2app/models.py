@@ -9,7 +9,7 @@ ALLOWED_TAGS_RESTRICTED = ['b', 'i', 'u', 's', 'p', 'img', 'a', 'em', 'strong', 
 ALLOWED_TAGS_PERMISSIVE = ALLOWED_TAGS_RESTRICTED + ['h2', 'h3', 'h4', 'h5', 'h6']
 
 class Article(models.Model):
-    slug = models.CharField(max_length=255, unique=True)
+    slug = models.SlugField(max_length=255, unique=True)
     title = models.CharField(max_length=255)
     content = RichTextField()
     main_image = models.ImageField()
@@ -22,7 +22,7 @@ class Article(models.Model):
 
 
 class DiscussionGroup(models.Model):
-    slug = models.CharField(max_length=255, unique=True)
+    slug = models.SlugField(max_length=255, unique=True)
     title = models.CharField(max_length=255)
     description = models.CharField(max_length=255)
     private = models.BooleanField(default=False)
@@ -37,7 +37,7 @@ class DiscussionGroup(models.Model):
 class Discussion(models.Model):
     group = models.ForeignKey(DiscussionGroup, related_name='discussions')
     author = models.ForeignKey(settings.AUTH_USER_MODEL, null=True)
-    slug = models.CharField(max_length=255)
+    slug = models.SlugField(max_length=255)
     title = models.CharField(max_length=255)
     content = RichTextField(config_name='restricted')
     creation_time = models.DateTimeField(auto_now_add=True)

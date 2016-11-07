@@ -11,5 +11,10 @@
     <li><a href="{{ discussion.get_absolute_url }}">{{ discussion.title }}</a></li>
 {% endfor %}
 <ol>
+{% if user.is_authenticated %}
+<p>
+<a href="{% url 'discussion_add' group_slug=group.slug %}">Créer une nouvelle discussion</a>
+</p>
+{% endif %}
 {% endblock %}
 
