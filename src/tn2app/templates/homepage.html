@@ -3,6 +3,11 @@
 
 {% block main_contents %}
     <h1>Thread and needles</h1>
+    <h2>Site en construction</h2>
+    <p>
+        Ce site est en construction. Vous pouvez joindre la discussion sur cette construction
+        dans <a href="{% url 'discussion_groups' %}">les groupes</a>.
+    </p>
     <h2>Articles</h2>
     <ol class="threeitems">
         {% for article in articles %}
