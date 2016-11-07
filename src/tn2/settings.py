@@ -136,6 +136,7 @@ CKEDITOR_CONFIGS = {
         'toolbar_Custom': [
             ['Format'],
             ['Bold', 'Italic', 'Underline', 'Strike', '-', 'Undo', 'Redo'],
+            ['NumberedList', 'BulletedList'],
             ['Link', 'Unlink', 'Anchor'],
             ['Image', 'Smiley', 'SpecialChar'],
             ['Source'],
@@ -143,7 +144,14 @@ CKEDITOR_CONFIGS = {
         'format_tags': 'p;h2;h3;h4;h5;h6;pre',
     },
     'restricted': {
-        'toolbar': 'Basic',
+        'toolbar': 'Custom',
+        'toolbar_Custom': [
+            ['Bold', 'Italic', 'Underline', 'Strike', '-', 'Undo', 'Redo'],
+            ['NumberedList', 'BulletedList'],
+            ['Link', 'Unlink'],
+            ['Smiley', 'SpecialChar'],
+            ['Source'],
+        ],
     },
 }
 

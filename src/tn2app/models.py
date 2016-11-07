@@ -5,7 +5,7 @@ from django.urls import reverse
 import bleach
 from ckeditor.fields import RichTextField
 
-ALLOWED_TAGS_RESTRICTED = ['b', 'i', 'u', 's', 'p', 'img', 'a', 'em', 'strong']
+ALLOWED_TAGS_RESTRICTED = ['b', 'i', 'u', 's', 'p', 'img', 'a', 'em', 'strong', 'ul', 'ol', 'li']
 ALLOWED_TAGS_PERMISSIVE = ALLOWED_TAGS_RESTRICTED + ['h2', 'h3', 'h4', 'h5', 'h6']
 
 class Article(models.Model):
