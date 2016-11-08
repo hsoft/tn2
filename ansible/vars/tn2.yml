@@ -1,1 +1,3 @@
 django_name: tn2
+django_fixtures_to_load:
+  - tn2app/fixtures/emails.json

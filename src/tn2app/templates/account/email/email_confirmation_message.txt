@@ -1,5 +1,0 @@
-{% load i18n account_tags %}On a récemment créé un compte sur {{ current_site.name }} en spécifiant votre adresse courriel.
-
-Si c'est vous, veuillez le confirmer en ouvrant {{ activate_url }}.
-
-Sinon, veuillez ignorer ce courriel.

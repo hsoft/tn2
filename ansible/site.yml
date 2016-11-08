@@ -13,3 +13,4 @@
     - postgres-install
     - nginx
     - django
+    - tn2
