@@ -1,3 +1,14 @@
 django_name: tn2
+
 django_fixtures_to_load:
   - tn2app/fixtures/emails.json
+
+django_env_settings_extra: |
+  {% if tn2_smtp is defined %}
+  EMAIL_HOST = '{{ tn2_smtp.host }}'
+  EMAIL_PORT = {{ tn2_smtp.port }}
+  EMAIL_HOST_USER = '{{ tn2_smtp.email }}'
+  EMAIL_HOST_PASSWORD = '{{ tn2_smtp.password }}'
+  EMAIL_USE_TLS = True
+  {% endif %}
+  

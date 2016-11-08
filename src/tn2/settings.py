@@ -72,6 +72,12 @@ if DEBUG:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 else:
     EMAIL_BACKEND = 'post_office.EmailBackend'
+    if getattr(local_settings, 'EMAIL_HOST'):
+        EMAIL_HOST = local_settings.EMAIL_HOST
+        EMAIL_PORT = local_settings.EMAIL_PORT
+        EMAIL_HOST_USER = local_settings.EMAIL_HOST_USER
+        EMAIL_HOST_PASSWORD = local_settings.EMAIL_HOST_PASSWORD
+        EMAIL_USE_TLS = local_settings.EMAIL_USE_TLS
 
 
 # Database
