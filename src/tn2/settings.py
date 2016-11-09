@@ -36,8 +36,11 @@ INSTALLED_APPS = [
     'easy_thumbnails',
     'pipeline',
     'django_comments',
-    'tn2app',
+    'tn2comments',
+    'tn2app.apps.Tn2AppConfig',
 ]
+
+COMMENTS_APP = 'tn2comments'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

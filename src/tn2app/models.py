@@ -2,11 +2,9 @@ from django.conf import settings
 from django.db import models
 from django.urls import reverse
 
-import bleach
 from ckeditor.fields import RichTextField
 
-ALLOWED_TAGS_RESTRICTED = ['b', 'i', 'u', 's', 'p', 'img', 'a', 'em', 'strong', 'ul', 'ol', 'li']
-ALLOWED_TAGS_PERMISSIVE = ALLOWED_TAGS_RESTRICTED + ['h2', 'h3', 'h4', 'h5', 'h6']
+from .util import sanitize_comment
 
 class Article(models.Model):
     slug = models.SlugField(max_length=255, unique=True)
@@ -49,7 +47,7 @@ class Discussion(models.Model):
         return "{} - {}".format(self.slug, self.title)
 
     def clean(self):
-        self.content = bleach.clean(self.content, tags=ALLOWED_TAGS_RESTRICTED)
+        self.content = sanitize_comment(self.content)
 
     def get_absolute_url(self):
         return reverse('discussion', args=[self.group.slug, self.slug])

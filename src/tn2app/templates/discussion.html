@@ -25,9 +25,13 @@
     {{ form.timestamp }}
     {{ form.security_hash }}
     <input type="hidden" name="next" value="{{ discussion.get_absolute_url }}" />
-    <input type="submit" value="Envoyer" />
+    <p>
+        <input class="button" type="submit" value="Commenter" />
+    </p>
     </form>
 {% endif %}
 {% endblock %}
 
-
+{% block bottom_js %}
+{% include 'include/ckjs.html' %}
+{% endblock %}
