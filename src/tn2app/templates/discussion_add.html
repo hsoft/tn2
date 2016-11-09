@@ -11,7 +11,7 @@
 <form action="{% url 'discussion_add' group_slug=group.slug %}" method="POST">
     {% csrf_token %}
     {{ form.as_p }}
-    <input type="submit" value="Ouvrir la discussion" />
+    <input class="button" type="submit" value="Ouvrir la discussion" />
 </form>
 {% endblock %}
 
