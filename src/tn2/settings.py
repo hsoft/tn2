@@ -66,6 +66,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'account.context_processors.account',
+                'tn2app.context_processors.tn2_processor',
             ],
         },
     },
@@ -120,6 +121,7 @@ USE_TZ = False
 
 SITE_ID = 1
 
+LOGIN_URL = 'account_login'
 LOGOUT_REDIRECT_URL = 'homepage'
 ACCOUNT_EMAIL_CONFIRMATION_REQUIRED = True
 ACCOUNT_HOOKSET = 'tn2app.account_hookset.AccountHookset'

@@ -1,13 +1,13 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import render
 from django.views.generic.edit import CreateView
 
 from .models import Article, DiscussionGroup, Discussion
-from .forms import NewDiscussionForm
+from .forms import NewDiscussionForm, NewArticleForm
 
 def homepage(request):
-    articles = Article.objects.all()
+    articles = Article.objects.all().order_by('-creation_time')
     context = {'articles': articles}
     return render(request, 'homepage.html', context)
 
@@ -40,7 +40,7 @@ def discussion(request, group_slug, discussion_slug):
     }
     return render(request, 'discussion.html', context)
 
-class DiscussionAdd(CreateView, LoginRequiredMixin):
+class DiscussionAdd(LoginRequiredMixin, CreateView):
     template_name = 'discussion_add.html'
     form_class = NewDiscussionForm
 
@@ -57,3 +57,14 @@ class DiscussionAdd(CreateView, LoginRequiredMixin):
         result['author'] = self.request.user
         return result
 
+class ArticleAdd(UserPassesTestMixin, CreateView):
+    template_name = 'article_add.html'
+    form_class = NewArticleForm
+
+    def test_func(self):
+        return self.request.user.has_perm('tn2app.add_article')
+
+    def get_form_kwargs(self):
+        result = super().get_form_kwargs()
+        result['author'] = self.request.user
+        return result

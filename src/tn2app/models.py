@@ -7,10 +7,12 @@ from ckeditor.fields import RichTextField
 from .util import sanitize_comment
 
 class Article(models.Model):
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, null=True)
     slug = models.SlugField(max_length=255, unique=True)
     title = models.CharField(max_length=255)
     content = RichTextField()
     main_image = models.ImageField()
+    creation_time = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return "{} - {}".format(self.slug, self.title)

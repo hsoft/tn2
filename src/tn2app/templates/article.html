@@ -1,6 +1,11 @@
 {% extends 'base.html' %}
 
 {% block main_contents %}
-    <h1>{{ article.title }}</h1>
-    {{ article.content|safe }}
+<p>
+    <a href="{% url 'homepage' %}">Accueil</a>&nbsp;&gt;&nbsp;
+    <a href="{% url 'homepage' %}">Blog</a>&nbsp;&gt;&nbsp;
+    {{ article.title }}
+</p>
+<h1>{{ article.title }}</h1>
+{{ article.content|safe }}
 {% endblock %}
