@@ -16,7 +16,12 @@
                     <li><a>Le blog</a></li>
                     <li><a href="{% url 'discussion_groups' %}">Les groupes</a></li>
                     {% if user.is_authenticated %}
-                    <li class="right"><a href="{% url 'account_logout' %}">Déconnexion</a></li>
+                    <li class="right dropdown">
+                        <a href="#" class="dropbtn">{{ user }}</a>
+                        <div class="dropdown-content">
+                            <a href="{% url 'account_logout' %}">Déconnexion</a>
+                        </div>
+                    </li>
                     {% else %}
                     <li class="right"><a href="{% url 'account_signup' %}">Inscription</a></li>
                     <li class="right"><a href="{% url 'account_login' %}">Connexion</a></li>
