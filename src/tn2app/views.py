@@ -18,7 +18,6 @@ def article(request, slug):
 
 def discussion_groups(request):
     groups = DiscussionGroup.objects
-    print(repr(request.user.is_staff))
     if not request.user.is_staff:
         groups = groups.filter(private=False)
     context = {'groups': groups.all()}
