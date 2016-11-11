@@ -3,6 +3,7 @@ from django.db import models
 from django.urls import reverse
 
 from ckeditor.fields import RichTextField
+from ckeditor_uploader.fields import RichTextUploadingField
 
 from .util import sanitize_comment
 
@@ -10,7 +11,7 @@ class Article(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, null=True)
     slug = models.SlugField(max_length=255, unique=True)
     title = models.CharField(max_length=255)
-    content = RichTextField()
+    content = RichTextUploadingField()
     main_image = models.ImageField()
     creation_time = models.DateTimeField(auto_now_add=True)
 

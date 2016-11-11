@@ -3,8 +3,12 @@ from django.conf import settings
 from django.contrib import admin
 import django.views.static
 from django.contrib.auth import views as auth_views
+from django.contrib.auth.decorators import user_passes_test
 
 from account import views as account_views
+from ckeditor_uploader import views as ckeditor_views
+
+ckperms = user_passes_test(lambda user: user.has_perm('tn2app.add_article'))
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -14,6 +18,8 @@ urlpatterns = [
     url(r'^account/logout/$', auth_views.logout, name='account_logout'),
     url(r'^account/password/reset/$', account_views.PasswordResetView.as_view(), name='account_password_reset'),
     url(r'^comments/', include('django_comments.urls')),
+    url(r'^ckeditor/upload/', ckperms(ckeditor_views.upload), name='ckeditor_upload'),
+    url(r'^ckeditor/browse/', ckperms(ckeditor_views.browse), name='ckeditor_browse'),
     url(r'^', include('tn2app.urls')),
 ]
 

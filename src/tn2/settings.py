@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'post_office',
     'account',
     'ckeditor',
+    'ckeditor_uploader',
     'easy_thumbnails',
     'pipeline',
     'django_comments',
@@ -145,6 +146,8 @@ MEDIA_ROOT = os.path.join(local_settings.PROJECT_ROOT, 'media')
 MEDIA_URL = '/media/'
 
 CKEDITOR_JQUERY_URL = 'https://code.jquery.com/jquery-2.2.4.min.js'
+CKEDITOR_UPLOAD_PATH = 'uploads/'
+CKEDITOR_IMAGE_BACKEND = 'pillow'
 CKEDITOR_CONFIGS = {
     'default': {
         'toolbar': 'Custom',
