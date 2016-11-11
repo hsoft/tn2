@@ -5,6 +5,9 @@
     <a href="{% url 'homepage' %}">Accueil</a>&nbsp;&gt;&nbsp;
     <a href="{% url 'homepage' %}">Blog</a>&nbsp;&gt;&nbsp;
     {{ article.title }}
+    {% if can_write_article %}
+    <a class="button" href="{% url 'article_edit' article.slug %}">Modifier</a>
+    {% endif %}
 </p>
 <h1>{{ article.title }}</h1>
 {{ article.content|safe }}

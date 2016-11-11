@@ -4,10 +4,10 @@
 <p>
     <a href="{% url 'homepage' %}">Accueil</a>&nbsp;&gt;&nbsp;
     <a href="{% url 'homepage' %}">Blog</a>&nbsp;&gt;&nbsp;
-    Nouvel article
+    {{ article.title }}
 </p>
-<h1>Nouvel article</h1>
-<form action="{% url 'article_add' %}" method="POST" enctype="multipart/form-data">
+<h1>Modifier l'article</h1>
+<form action="{% url 'article_edit' article.slug %}" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
     <input class="button" type="submit" value="Publier l'article" />
@@ -17,4 +17,5 @@
 {% block bottom_js %}
 {% include 'include/ckjs.html' %}
 {% endblock %}
+
 

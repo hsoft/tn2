@@ -48,3 +48,8 @@ class NewArticleForm(forms.ModelForm):
 
         return instance
 
+class EditArticleForm(forms.ModelForm):
+    class Meta:
+        model = Article
+        fields = ['title', 'content', 'main_image']
+
