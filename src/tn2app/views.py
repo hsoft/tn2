@@ -1,6 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import render
+from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView
 
 from .models import Article, DiscussionGroup, Discussion
@@ -60,6 +61,11 @@ class DiscussionAdd(LoginRequiredMixin, CreateView):
 class UserInRedactionMixin(UserPassesTestMixin):
     def test_func(self):
         return self.request.user.has_perm('tn2app.add_article')
+
+class ArticleList(ListView):
+    template_name = 'article_list.html'
+    model = Article
+    ordering = '-creation_time'
 
 class ArticleAdd(UserInRedactionMixin, CreateView):
     template_name = 'article_add.html'
