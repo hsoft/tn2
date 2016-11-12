@@ -1,7 +1,10 @@
 <dl id="comments">
   {% for comment in comment_list %}
     <dt id="c{{ comment.id }}">
-      {{ comment.submit_date }} - {{ comment.name }}
+      Par {{ comment.name }} le {{ comment.submit_date }}
+      {% if comment.user == user %}
+      <a class="button" href="{% url 'comment_edit' comment.id %}">Modifier</a>
+      {% endif %}
     </dt>
     <dd>
       <p>{{ comment.comment|safe }}</p>

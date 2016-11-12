@@ -4,8 +4,11 @@ from django.shortcuts import render
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView
 
+from django_comments.models import Comment
+
 from .models import Article, DiscussionGroup, Discussion
-from .forms import NewDiscussionForm, NewArticleForm, EditArticleForm
+from .forms import NewDiscussionForm, NewArticleForm, EditArticleForm, EditCommentForm
+
 
 def homepage(request):
     articles = Article.objects.order_by('-creation_time')[:3]
@@ -58,14 +61,19 @@ class DiscussionAdd(LoginRequiredMixin, CreateView):
         result['author'] = self.request.user
         return result
 
+
 class UserInRedactionMixin(UserPassesTestMixin):
+    raise_exception = True
+
     def test_func(self):
         return self.request.user.has_perm('tn2app.add_article')
+
 
 class ArticleList(ListView):
     template_name = 'article_list.html'
     model = Article
     ordering = '-creation_time'
+
 
 class ArticleAdd(UserInRedactionMixin, CreateView):
     template_name = 'article_add.html'
@@ -76,8 +84,23 @@ class ArticleAdd(UserInRedactionMixin, CreateView):
         result['author'] = self.request.user
         return result
 
+
 class ArticleEdit(UserInRedactionMixin, UpdateView):
     template_name = 'article_edit.html'
     model = Article
     form_class = EditArticleForm
     context_object_name = 'article'
+
+
+class CommentEdit(UserPassesTestMixin, UpdateView):
+    template_name = 'comment_edit.html'
+    model = Comment
+    form_class = EditCommentForm
+    context_object_name = 'comment'
+
+    # for UserPassesTestMixin
+    raise_exception = True
+
+    def test_func(self):
+        return self.request.user == self.get_object().user
+

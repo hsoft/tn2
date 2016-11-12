@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block main_contents %}
+<h1>Modifier un commentaire</h1>
+<form action="{% url 'comment_edit' comment.id %}" method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="hidden" name="next" value="{{ comment.content_object.get_absolute_url }}" />
+    <input class="button" type="submit" value="Enregistrer" />
+    <a class="button" href="{{ comment.content_object.get_absolute_url }}">Retour</a>
+</form>
+{% endblock %}
+
+{% block bottom_js %}
+{% include 'include/ckjs.html' %}
+{% endblock %}
+
+
+

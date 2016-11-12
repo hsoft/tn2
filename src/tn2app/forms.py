@@ -1,8 +1,13 @@
 from django import forms
 from django.utils.text import slugify
 
+from django_comments.models import Comment
+from django_comments.forms import COMMENT_MAX_LENGTH
+from ckeditor.widgets import CKEditorWidget
+
 from .models import Discussion, Article
 from .util import dedupe_slug
+
 
 class NewDiscussionForm(forms.ModelForm):
     class Meta:
@@ -27,6 +32,7 @@ class NewDiscussionForm(forms.ModelForm):
 
         return instance
 
+
 class NewArticleForm(forms.ModelForm):
     class Meta:
         model = Article
@@ -48,8 +54,20 @@ class NewArticleForm(forms.ModelForm):
 
         return instance
 
+
 class EditArticleForm(forms.ModelForm):
     class Meta:
         model = Article
         fields = ['title', 'content', 'main_image']
 
+
+class EditCommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['comment']
+
+    comment = forms.CharField(
+        label="Commentaire",
+        widget=CKEditorWidget(config_name='restricted'),
+        max_length=COMMENT_MAX_LENGTH
+    )
