@@ -116,3 +116,14 @@ form.signupform {
         color: $text_button;
     }
 }
+
+#comments {
+    dt {
+        font-style: italic;
+    }
+
+    dd {
+        // Remove default 40px margin of dd elements.
+        margin-left: 0;
+    }
+}
