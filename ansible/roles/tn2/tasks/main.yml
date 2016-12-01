@@ -1,3 +1,6 @@
+---
+- include: tools.yml
+
 - name: Configure cron job for django-post-office
   cron:
     name: tn2 post-office

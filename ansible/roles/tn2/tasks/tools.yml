@@ -1,0 +1,12 @@
+---
+- name: "Generate tool script"
+  template:
+    src: "{{ item }}"
+    dest: "{{ django_path }}"
+    mode: u=rwx,g=,o=
+    owner: "{{ django_user }}"
+  with_items:
+    - "manage.sh"
+    - "develop.sh"
+    - "updatedeps.sh"
+

@@ -1,8 +1,12 @@
 name: tn2
 image: debian/jessie
+mode: pull
 privileged: true
 hostnames:
   - tn2.local
+shell:
+  user: tn2
+  home: /opt/tn2
 shares:
   - source: .
     dest: /nomadshare
