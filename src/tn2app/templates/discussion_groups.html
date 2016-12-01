@@ -4,7 +4,12 @@
 <h1>Groupes de discussion</h1>
 <ol>
 {% for group in groups %}
-    <li><a href="{{ group.get_absolute_url }}">{{ group.title }}</a></li>
+    <li>
+        <a href="{{ group.get_absolute_url }}">{{ group.title }}</a>
+        {% if group.private %}
+        <span class="fa fa-lock"></span>
+        {% endif %}
+    </li>
 {% endfor %}
 <ol>
 {% endblock %}
