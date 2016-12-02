@@ -47,6 +47,7 @@ class Discussion(models.Model):
     title = models.CharField(max_length=255)
     content = RichTextField(config_name='restricted')
     creation_time = models.DateTimeField(auto_now_add=True)
+    last_activity = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         unique_together = ('group', 'slug')

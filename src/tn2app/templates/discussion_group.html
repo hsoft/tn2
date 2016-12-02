@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load humanize %}
 
 {% block main_contents %}
 <p>
@@ -6,11 +7,19 @@
     <a href="{% url 'discussion_groups' %}">Groupes</a>&nbsp;&gt;&nbsp;
 </p>
 <h1>{{ group.title }}</h1>
-<ol>
-{% for discussion in group.discussions.all %}
-    <li><a href="{{ discussion.get_absolute_url }}">{{ discussion.title }}</a></li>
+<table>
+<thead>
+    <tr><td>Sujet</td><td>Dernier message</td></tr>
+</thead>
+<tbody>
+{% for discussion in discussions %}
+    <tr>
+        <td><a href="{{ discussion.get_absolute_url }}">{{ discussion.title }}</a></td>
+        <td>{{ discussion.last_activity|naturaltime }}</td>
+    </tr>
 {% endfor %}
-</ol>
+</tbody>
+</table>
 {% if user.is_authenticated %}
 <p>
 <a class="button" href="{% url 'discussion_add' group_slug=group.slug %}">Créer une nouvelle discussion</a>

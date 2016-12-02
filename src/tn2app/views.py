@@ -33,7 +33,11 @@ def discussion_group(request, group_slug):
     group = DiscussionGroup.objects.get(slug=group_slug)
     if group.private and not request.user.has_perm('tn2app.access_private_groups'):
         raise PermissionDenied()
-    context = {'group': group}
+    discussions = group.discussions.order_by('-last_activity')
+    context = {
+        'group': group,
+        'discussions': discussions,
+    }
     return render(request, 'discussion_group.html', context)
 
 def discussion(request, group_slug, discussion_slug):
