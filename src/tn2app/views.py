@@ -7,7 +7,9 @@ from django.views.generic.edit import CreateView, UpdateView
 from django_comments.models import Comment
 
 from .models import Article, DiscussionGroup, Discussion
-from .forms import NewDiscussionForm, NewArticleForm, EditArticleForm, EditCommentForm
+from .forms import (
+    NewDiscussionForm, EditDiscussionForm, NewArticleForm, EditArticleForm, EditCommentForm
+)
 
 
 def homepage(request):
@@ -59,6 +61,23 @@ class DiscussionAdd(LoginRequiredMixin, CreateView):
         group = DiscussionGroup.objects.get(slug=group_slug)
         result['group'] = group
         result['author'] = self.request.user
+        return result
+
+
+class DiscussionEdit(LoginRequiredMixin, UpdateView):
+    template_name = 'discussion_edit.html'
+    model = Discussion
+    form_class = EditDiscussionForm
+    context_object_name = 'discussion'
+    slug_url_kwarg = 'discussion_slug'
+
+    def get_object(self, queryset=None):
+        if queryset is None:
+            queryset = self.get_queryset()
+        queryset = queryset.filter(group__slug=self.kwargs['group_slug'])
+        result = super().get_object(queryset=queryset)
+        if result.author != self.request.user:
+            raise PermissionDenied()
         return result
 
 

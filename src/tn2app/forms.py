@@ -33,6 +33,12 @@ class NewDiscussionForm(forms.ModelForm):
         return instance
 
 
+class EditDiscussionForm(forms.ModelForm):
+    class Meta:
+        model = Discussion
+        fields = ['title', 'content']
+
+
 class NewArticleForm(forms.ModelForm):
     class Meta:
         model = Article
