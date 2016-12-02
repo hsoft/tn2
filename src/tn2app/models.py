@@ -28,6 +28,11 @@ class DiscussionGroup(models.Model):
     description = models.CharField(max_length=255)
     private = models.BooleanField(default=False)
 
+    class Meta:
+        permissions = (
+            ('access_private_groups', "Accéder aux groupes privés"),
+        )
+
     def __str__(self):
         return "{} - {}".format(self.slug, self.title)
 

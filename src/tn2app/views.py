@@ -22,14 +22,14 @@ def article(request, slug):
 
 def discussion_groups(request):
     groups = DiscussionGroup.objects
-    if not request.user.is_staff:
+    if not request.user.has_perm('tn2app.access_private_groups'):
         groups = groups.filter(private=False)
     context = {'groups': groups.all()}
     return render(request, 'discussion_groups.html', context)
 
 def discussion_group(request, group_slug):
     group = DiscussionGroup.objects.get(slug=group_slug)
-    if group.private and not request.user.is_staff:
+    if group.private and not request.user.has_perm('tn2app.access_private_groups'):
         raise PermissionDenied()
     context = {'group': group}
     return render(request, 'discussion_group.html', context)
