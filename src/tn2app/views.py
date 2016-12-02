@@ -38,7 +38,7 @@ def discussion_group(request, group_slug):
 
 def discussion(request, group_slug, discussion_slug):
     discussion = Discussion.objects.get(group__slug=group_slug, slug=discussion_slug)
-    if discussion.group.private and not request.user.is_staff:
+    if discussion.group.private and not request.user.has_perm('tn2app.access_private_groups'):
         raise PermissionDenied()
     context = {
         'discussion': discussion,
