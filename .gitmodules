@@ -11,3 +11,6 @@
 [submodule "ansible/roles/nginx"]
 	path = ansible/roles/nginx
 	url = https://github.com/savoirfairelinux/ansible-nginx.git
+[submodule "ansible/roles/mariadb-install"]
+	path = ansible/roles/mariadb-install
+	url = https://github.com/hsoft/ansible-mariadb-install.git

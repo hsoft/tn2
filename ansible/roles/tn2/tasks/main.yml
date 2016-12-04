@@ -1,4 +1,6 @@
 ---
+- include: wpdb.yml
+
 - include: tools.yml
 
 - name: Configure cron job for django-post-office

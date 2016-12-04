@@ -1,0 +1,40 @@
+---
+
+- name: Ensure that we have a DB
+  mysql_db: "name={{ tn2_wp_dbname }}"
+
+- name: Ensure that we have a DB user
+  mysql_user:
+    name: "{{ django_dbuser }}"
+    priv: "{{ tn2_wp_dbname }}.*:ALL,GRANT"
+    password: "{{ django_dbpass }}"
+
+- name: Is our databate empty?
+  shell: "mysql -e \"select if(count(*)>0,'populated','empty') as status from information_schema.tables where TABLE_SCHEMA = '{{ tn2_wp_dbname }}'\""
+  register: tn2_wp_db_empty_check
+  changed_when: "'empty' in tn2_wp_db_empty_check.stdout"
+
+- block:
+    - name: Copying WP dump
+      copy:
+        src: "{{ tn2_wp_dump_name }}"
+        dest: "/tmp/{{ tn2_wp_dump_name }}"
+    
+    - name: Importing WP dump
+      mysql_db:
+        name: "{{ tn2_wp_dbname }}"
+        state: import
+        target: "/tmp/{{ tn2_wp_dump_name }}"
+
+  when: "{{ tn2_wp_db_empty_check|changed }}"
+
+- name: Generate WP DB django settings
+  template:
+    src: wpdb_settings.py
+    dest: "{{ django_path }}/wpdb_settings.py"
+
+- name: Symlink local_settings.py into our venv's site-packages
+  file:
+    path: "{{ django_sitepackages_path }}/wpdb_settings.py"
+    state: link
+    src: "{{ django_path }}/wpdb_settings.py"

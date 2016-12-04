@@ -7,10 +7,14 @@
     django_project_symlink_dest: "/nomadshare"
     django_domain_name: tn2.local
     django_debug: yes
+    tn2_wp_dbname: tnwp
+    tn2_wp_dump_name: wpdump.sql.gz
+    mariadb_root_password: whatever
 
   roles:
     - common
     - postgres-install
+    - mariadb-install # for the WP db
     - nginx
     - django
     - tn2

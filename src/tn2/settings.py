@@ -1,10 +1,7 @@
 import os
 
-try:
-    import local_settings
-except ImportError:
-    print("no local_settings! Using defaults.")
-    from . import default_settings as local_settings
+import local_settings
+import wpdb_settings
 
 ADMINS = [("Virgil Dupras", 'hsoft@hardcoded.net')]
 
@@ -38,6 +35,8 @@ INSTALLED_APPS = [
     'easy_thumbnails',
     'pipeline',
     'django_comments',
+
+    'wordpress',
     'tn2comments',
     'tn2app.apps.Tn2AppConfig',
 ]
@@ -90,7 +89,9 @@ else:
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
 DATABASES = local_settings.DATABASES
+DATABASES.update(wpdb_settings.DATABASES)
 
+DATABASE_ROUTERS = ('wordpress.routers.WordPressRouter',)
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
