@@ -434,8 +434,8 @@ class WpV2BpTnSponsors(models.Model):
 
 class WpV2BpXprofileData(models.Model):
     id = models.BigAutoField(primary_key=True)
-    field_id = models.BigIntegerField()
-    user_id = models.BigIntegerField()
+    field_id = models.ForeignKey('WpV2BpXprofileFields', db_column='field_id')
+    user_id = models.ForeignKey('WpV2Users', db_column='user_id', related_name='bp_profile_fields')
     value = models.TextField()
     last_updated = models.DateTimeField()
 
@@ -461,6 +461,9 @@ class WpV2BpXprofileFields(models.Model):
     class Meta:
         managed = False
         db_table = 'wp_v2_bp_xprofile_fields'
+
+    def __str__(self):
+        return self.name
 
 
 class WpV2BpXprofileGroups(models.Model):

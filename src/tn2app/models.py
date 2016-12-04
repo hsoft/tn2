@@ -7,6 +7,21 @@ from ckeditor_uploader.fields import RichTextUploadingField
 
 from .util import sanitize_comment
 
+class UserProfile(models.Model):
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        primary_key=True,
+    )
+    wpdb_id = models.IntegerField(null=True)
+    display_name = models.CharField(max_length=60, blank=True, verbose_name="Pseudo")
+    description = models.TextField(blank=True, verbose_name="Qui suis-je?")
+    city = models.CharField(max_length=60, blank=True, verbose_name="Ville")
+    website = models.URLField(blank=True, verbose_name="Site web")
+    skill_level = models.CharField(max_length=20, blank=True, verbose_name="Niveau")
+    sewing_machine = models.CharField(max_length=60, blank=True, verbose_name="MAC")
+
+
 class Article(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, null=True)
     slug = models.SlugField(max_length=255, unique=True)
