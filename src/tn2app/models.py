@@ -12,6 +12,7 @@ class UserProfile(models.Model):
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         primary_key=True,
+        related_name='profile',
     )
     wpdb_id = models.IntegerField(null=True)
     display_name = models.CharField(max_length=60, blank=True, verbose_name="Pseudo")
@@ -20,6 +21,9 @@ class UserProfile(models.Model):
     website = models.URLField(blank=True, verbose_name="Site web")
     skill_level = models.CharField(max_length=20, blank=True, verbose_name="Niveau")
     sewing_machine = models.CharField(max_length=60, blank=True, verbose_name="MAC")
+
+    def get_absolute_url(self):
+        return reverse('user_profile', args=[self.user.username])
 
 
 class Article(models.Model):

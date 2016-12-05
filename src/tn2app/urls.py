@@ -22,5 +22,6 @@ urlpatterns = [
     url(r'^redaction/new-article/$', views.ArticleAdd.as_view(), name='article_add'),
     url(r'^redaction/edit-article/(?P<slug>[-\w]+)/$', views.ArticleEdit.as_view(), name='article_edit'),
     url(r'^comments/(?P<pk>\d+)/edit/$', views.CommentEdit.as_view(), name='comment_edit'),
+    url(r'^members/(?P<username>[-\w]+)/profil/$', views.UserProfile.as_view(), name='user_profile'),
 ]
 
