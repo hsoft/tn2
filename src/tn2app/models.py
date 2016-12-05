@@ -1,11 +1,12 @@
 from django.conf import settings
 from django.db import models
+from django.db.models import Max
 from django.urls import reverse
 
 from ckeditor.fields import RichTextField
 from ckeditor_uploader.fields import RichTextUploadingField
 
-from .util import sanitize_comment
+from .util import sanitize_comment, nonone
 
 class UserProfile(models.Model):
     user = models.OneToOneField(
@@ -57,6 +58,9 @@ class DiscussionGroup(models.Model):
 
     def get_absolute_url(self):
         return reverse('discussion_group', args=[self.slug])
+
+    def last_activity(self):
+        return nonone(self.discussions.aggregate(Max('last_activity'))['last_activity__max'], '-')
 
 
 class Discussion(models.Model):

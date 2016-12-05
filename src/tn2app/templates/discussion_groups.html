@@ -1,15 +1,24 @@
 {% extends 'base.html' %}
+{% load humanize %}
 
 {% block main_contents %}
 <h1>Groupes de discussion</h1>
-<ol>
+<table>
+<thead>
+    <tr><td>Nom</td><td>Dernier message</td></tr>
+</thead>
+<tbody>
 {% for group in groups %}
-    <li>
-        <a href="{{ group.get_absolute_url }}">{{ group.title }}</a>
-        {% if group.private %}
-        <span class="fa fa-lock"></span>
-        {% endif %}
-    </li>
+    <tr>
+        <td>
+            <a href="{{ group.get_absolute_url }}">{{ group.title }}</a>
+            {% if group.private %}
+            <span class="fa fa-lock"></span>
+            {% endif %}
+        </td>
+        <td>{{ group.last_activity|naturaltime }}</td>
+    </tr>
 {% endfor %}
-<ol>
+</tbody>
+</table>
 {% endblock %}

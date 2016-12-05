@@ -19,3 +19,11 @@ def dedupe_slug(slug, queryset, slug_field_name='slug'):
             slug = "{}-{}".format(slug_orig, i)
         else:
             return slug
+
+def nonone(value, replace_value):
+    """Returns ``value`` if ``value`` is not ``None``. Returns ``replace_value`` otherwise.
+    """
+    if value is None:
+        return replace_value
+    else:
+        return value
