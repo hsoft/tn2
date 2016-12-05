@@ -1,7 +1,10 @@
 import os
 
 import local_settings
-import wpdb_settings
+try:
+    import wpdb_settings
+except ImportError:
+    wpdb_settings = None
 
 ADMINS = [("Virgil Dupras", 'hsoft@hardcoded.net')]
 
@@ -89,7 +92,8 @@ else:
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
 DATABASES = local_settings.DATABASES
-DATABASES.update(wpdb_settings.DATABASES)
+if wpdb_settings:
+    DATABASES.update(wpdb_settings.DATABASES)
 
 DATABASE_ROUTERS = ('wordpress.routers.WordPressRouter',)
 
