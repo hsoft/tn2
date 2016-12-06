@@ -17,6 +17,11 @@ urlpatterns = [
     url(r'^account/login/$', account_views.LoginView.as_view(), name='account_login'),
     url(r'^account/logout/$', auth_views.logout, name='account_logout'),
     url(r'^account/password/reset/$', account_views.PasswordResetView.as_view(), name='account_password_reset'),
+    url(
+        r'^password/reset/(?P<uidb36>[0-9A-Za-z]+)-(?P<token>.+)/$',
+        account_views.PasswordResetTokenView.as_view(),
+        name='account_password_reset_token'
+    ),
     url(r'^comments/', include('django_comments.urls')),
     url(r'^ckeditor/upload/', ckperms(ckeditor_views.upload), name='ckeditor_upload'),
     url(r'^ckeditor/browse/', ckperms(ckeditor_views.browse), name='ckeditor_browse'),

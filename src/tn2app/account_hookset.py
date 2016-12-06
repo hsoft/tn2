@@ -10,3 +10,19 @@ class AccountHookset(AccountDefaultHookSet):
             template='confirmation_email',
             context=ctx,
         )
+
+    def send_password_reset_email(self, to, ctx):
+        mail.send(
+            to,
+            settings.DEFAULT_FROM_EMAIL,
+            template='password_reset_email',
+            context=ctx,
+        )
+
+    def send_password_change_email(self, to, ctx):
+        mail.send(
+            to,
+            settings.DEFAULT_FROM_EMAIL,
+            template='password_change',
+            context=ctx,
+        )
