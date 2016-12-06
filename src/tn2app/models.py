@@ -1,3 +1,5 @@
+import os.path
+
 from django.conf import settings
 from django.db import models
 from django.db.models import Max
@@ -8,6 +10,10 @@ from ckeditor_uploader.fields import RichTextUploadingField
 
 from .util import sanitize_comment, nonone
 
+def get_user_avatar_path(instance, filename):
+    root, ext = os.path.splitext(filename)
+    return 'avatars/{}{}'.format(instance.user.username, ext)
+
 class UserProfile(models.Model):
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
@@ -16,6 +22,7 @@ class UserProfile(models.Model):
         related_name='profile',
     )
     wpdb_id = models.IntegerField(null=True)
+    avatar = models.ImageField(upload_to=get_user_avatar_path, blank=True)
     display_name = models.CharField(max_length=60, blank=True, verbose_name="Pseudo")
     description = models.TextField(blank=True, verbose_name="Qui suis-je?")
     city = models.CharField(max_length=60, blank=True, verbose_name="Ville")
