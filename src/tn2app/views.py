@@ -1,6 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth import get_user_model
 from django.core.exceptions import PermissionDenied
+from django.db.models import Max
 from django.http import Http404
 from django.shortcuts import render
 from django.views.generic import ListView, TemplateView
@@ -28,7 +29,8 @@ def discussion_groups(request):
     groups = DiscussionGroup.objects
     if not request.user.has_perm('tn2app.access_private_groups'):
         groups = groups.filter(private=False)
-    context = {'groups': groups.all()}
+    groups = groups.annotate(latest_activity=Max('discussions__last_activity')).order_by('-latest_activity')
+    context = {'groups': groups}
     return render(request, 'discussion_groups.html', context)
 
 def discussion_group(request, group_slug):
