@@ -25,10 +25,10 @@ class UserProfile(models.Model):
     avatar = models.ImageField(upload_to=get_user_avatar_path, blank=True)
     display_name = models.CharField(max_length=60, blank=True, verbose_name="Pseudo")
     description = models.TextField(blank=True, verbose_name="Qui suis-je?")
-    city = models.CharField(max_length=60, blank=True, verbose_name="Ville")
+    city = models.TextField(blank=True, verbose_name="Ville")
     website = models.URLField(blank=True, verbose_name="Site web")
     skill_level = models.CharField(max_length=20, blank=True, verbose_name="Niveau")
-    sewing_machine = models.CharField(max_length=60, blank=True, verbose_name="MAC")
+    sewing_machine = models.TextField(blank=True, verbose_name="MAC")
 
     def get_absolute_url(self):
         return reverse('user_profile', args=[self.user.username])

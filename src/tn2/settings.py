@@ -97,6 +97,10 @@ if wpdb_settings:
 
 DATABASE_ROUTERS = ('wordpress.routers.WordPressRouter',)
 
+PASSWORD_HASHERS = [
+    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+    'hashers_passlib.phpass',
+]
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
 

@@ -30,6 +30,12 @@ class Command(BaseCommand):
                     value = bp_fields.get(field_id=wpid).value
                 except WpV2BpXprofileData.DoesNotExist:
                     continue
+                except WpV2BpXprofileData.MultipleObjectsReturned:
+                    print("Multiple field objects (field_id={})? Now that's strange...".format(wpid))
+                    value = bp_fields.filter(field_id=wpid).first().value
                 value = html.unescape(value).replace('\\\'', '\'')
                 setattr(user.profile, fieldname, value)
+            if len(user.profile.website) > 200:
+                print("Something's wrong with this URL: {}".format(user.profile.website))
+                user.profile.website = ''
             user.profile.save()
