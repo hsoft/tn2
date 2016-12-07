@@ -1,9 +1,9 @@
-{% load thumbnail %}
+{% load tn2 %}
 
 <dl id="comments">
   {% for comment in comment_list %}
     <dt id="c{{ comment.id }}">
-      <img src="{{ comment.user.profile.avatar|thumbnail_url:'avatar' }}" />
+      <img src="{{ comment.user|avatar_url }}" />
       Par <a href="{{ comment.user.profile.get_absolute_url }}">{{ comment.name }}</a> le {{ comment.submit_date }}
       {% if comment.user == user %}
       <a class="button" href="{% url 'comment_edit' comment.id %}">Modifier</a>
