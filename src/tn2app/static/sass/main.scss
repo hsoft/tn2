@@ -1,3 +1,4 @@
+$text_color: black;
 $text_light: #e3e3e3;
 $bg_dark: #847676;
 $red_highlight: #d92e69;
@@ -128,4 +129,10 @@ form.signupform {
         // Remove default 40px margin of dd elements.
         margin-left: 0;
     }
+}
+
+// don't decorate links with font awesome glyphs, it's ugly
+a.fa {
+    text-decoration: none;
+    color: $text-color;
 }

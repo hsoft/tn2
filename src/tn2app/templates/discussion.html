@@ -12,7 +12,7 @@
     <img src="{{ discussion.author|avatar_url }}" />
     <em>Par <a href="{{ discussion.author.profile.get_absolute_url }}">{{ discussion.author }}</a> le {{ discussion.creation_time }}</em>
     {% if discussion.author == user %}
-    <a class="button" href="{% url 'discussion_edit' group_slug=discussion.group.slug discussion_slug=discussion.slug %}">Modifier</a>
+    <a class="fa fa-edit" href="{% url 'discussion_edit' group_slug=discussion.group.slug discussion_slug=discussion.slug %}"></a>
     {% endif %}
 </p>
 {{ discussion.content|safe }}
