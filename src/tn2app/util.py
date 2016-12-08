@@ -1,4 +1,5 @@
 import itertools
+import unicodedata
 
 import bleach
 
@@ -27,3 +28,7 @@ def nonone(value, replace_value):
         return replace_value
     else:
         return value
+
+def deaccent(s):
+    # http://stackoverflow.com/a/15261831
+    return ''.join((c for c in unicodedata.normalize('NFD', s) if unicodedata.category(c) != 'Mn'))

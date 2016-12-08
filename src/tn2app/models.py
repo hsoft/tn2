@@ -1,6 +1,8 @@
 import os.path
 
 from django.conf import settings
+from django.contrib.auth.models import User as UserBase, UserManager as UserManagerBase
+from django.contrib.auth.hashers import get_hasher
 from django.db import models
 from django.db.models import Max
 from django.urls import reverse
@@ -8,7 +10,33 @@ from django.urls import reverse
 from ckeditor.fields import RichTextField
 from ckeditor_uploader.fields import RichTextUploadingField
 
+from wordpress.models import WpV2Users
+
 from .util import sanitize_comment, nonone
+
+class UserManager(UserManagerBase):
+    def get_from_wpuser_id(self, wpuser_id):
+        try:
+            return self.get(profile__wpdb_id=wpuser_id)
+        except self.model.DoesNotExist:
+            pass
+        wpuser = WpV2Users.objects.get(id=wpuser_id)
+        hasher = get_hasher('phpass')
+        user = self.create(
+            username=wpuser.user_login,
+            email=wpuser.user_email,
+            password=hasher.from_orig(wpuser.user_pass),
+            is_active=True,
+        )
+        UserProfile.objects.create(user=user, wpdb_id=wpuser.id)
+        return user
+
+class User(UserBase):
+    objects = UserManager()
+
+    class Meta:
+        proxy = True
+
 
 def get_user_avatar_path(instance, filename):
     root, ext = os.path.splitext(filename)
@@ -52,7 +80,7 @@ class Article(models.Model):
 class DiscussionGroup(models.Model):
     slug = models.SlugField(max_length=255, unique=True)
     title = models.CharField(max_length=255)
-    description = models.CharField(max_length=255)
+    description = models.TextField()
     private = models.BooleanField(default=False)
 
     class Meta:
@@ -78,6 +106,8 @@ class Discussion(models.Model):
     content = RichTextField(config_name='restricted')
     creation_time = models.DateTimeField(auto_now_add=True)
     last_activity = models.DateTimeField(auto_now_add=True)
+    is_locked = models.BooleanField(default=False)
+    is_sticky = models.BooleanField(default=False)
 
     class Meta:
         unique_together = ('group', 'slug')
