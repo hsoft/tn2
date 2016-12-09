@@ -21,10 +21,12 @@ class Command(BaseCommand):
         print("Processing {} users".format(users.count()))
 
         for user in users.all():
-            print("{} ({})".format(user.username, user.profile.wpdb_id))
             user_path = os.path.join(avatars_path, str(user.profile.wpdb_id))
+            if not os.path.exists(user_path):
+                continue
             possible_matches = [fn for fn in os.listdir(user_path) if os.path.splitext(fn)[0].endswith('bpfull')]
             if possible_matches:
+                print("{} ({})".format(user.username, user.profile.wpdb_id))
                 # You think that's stupid? damn right! but that's the *actual* logic from buddypress.
                 to_import = possible_matches[-1]
                 print("Importing {}".format(to_import))
