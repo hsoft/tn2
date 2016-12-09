@@ -4,7 +4,7 @@ from django_comments.models import Comment
 
 from wordpress.models import WpV2BbForums, WpV2BbTopics, WpV2BbPosts, WpV2Users
 from ...models import User, DiscussionGroup, Discussion
-from ...util import deaccent
+from ...util import deaccent, sanitize_comment
 
 class Command(BaseCommand):
     help = 'Imports groups from our WP DB'
@@ -74,7 +74,7 @@ class Command(BaseCommand):
                 author=author,
                 slug=slug,
                 title=wptopic.topic_title,
-                content=first_post.post_text,
+                content=sanitize_comment(first_post.post_text),
                 is_locked=wptopic.topic_open!=1,
                 is_sticky=wptopic.topic_sticky==1,
             )
@@ -104,7 +104,7 @@ class Command(BaseCommand):
                     content_object=discussion,
                     site_id=1,
                     user=author,
-                    comment=wppost.post_text,
+                    comment=sanitize_comment(wppost.post_text),
                     submit_date=wppost.post_time,
                 )
 
