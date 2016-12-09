@@ -16,7 +16,7 @@ from .forms import (
 
 
 def homepage(request):
-    articles = Article.objects.order_by('-creation_time')[:3]
+    articles = Article.published.order_by('-creation_time')[:3]
     context = {'articles': articles}
     return render(request, 'homepage.html', context)
 
@@ -99,6 +99,7 @@ class UserInRedactionMixin(UserPassesTestMixin):
 class ArticleList(ListView):
     template_name = 'article_list.html'
     model = Article
+    queryset = Article.published
     ordering = '-creation_time'
 
 

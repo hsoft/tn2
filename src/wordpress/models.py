@@ -588,6 +588,11 @@ class WpV2Options(models.Model):
 
 class WpV2Postmeta(models.Model):
     meta_id = models.BigAutoField(primary_key=True)
+    post_id = models.ForeignKey(
+        'WpV2Posts',
+        db_column='post_id',
+        related_name='meta'
+    )
     post_id = models.BigIntegerField()
     meta_key = models.CharField(max_length=255, blank=True, null=True)
     meta_value = models.TextField(blank=True, null=True)

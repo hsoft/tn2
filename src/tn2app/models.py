@@ -62,13 +62,31 @@ class UserProfile(models.Model):
         return reverse('user_profile', args=[self.user.username])
 
 
+class PublishedArticleManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(status=Article.STATUS_PUBLISHED)
+
 class Article(models.Model):
+    STATUS_DRAFT = 0
+    STATUS_REVISION = 1
+    STATUS_PUBLISHED = 2
+    STATUS_CHOICES = [
+        (STATUS_DRAFT, "Brouillon"),
+        (STATUS_REVISION, "Révision"),
+        (STATUS_PUBLISHED, "Publié"),
+    ]
+
     author = models.ForeignKey(settings.AUTH_USER_MODEL, null=True)
     slug = models.SlugField(max_length=255, unique=True)
+    status = models.SmallIntegerField(choices=STATUS_CHOICES, default=STATUS_DRAFT)
     title = models.CharField(max_length=255)
     content = RichTextUploadingField()
-    main_image = models.ImageField()
+    main_image = models.ImageField(blank=True)
     creation_time = models.DateTimeField(auto_now_add=True)
+    publish_time = models.DateTimeField(blank=True, null=True)
+
+    objects = models.Manager()
+    published = PublishedArticleManager()
 
     def __str__(self):
         return "{} - {}".format(self.slug, self.title)
