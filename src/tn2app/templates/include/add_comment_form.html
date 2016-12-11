@@ -1,0 +1,17 @@
+{% load comments %}
+<h2>Répondre</h2>
+{% get_comment_form for ref_object as form %}
+<form action="{% comment_form_target %}" method="POST">
+{% csrf_token %}
+{{ form.comment }}
+{{ form.honeypot }}
+{{ form.content_type }}
+{{ form.object_pk }}
+{{ form.timestamp }}
+{{ form.security_hash }}
+<input type="hidden" name="next" value="{{ ref_object.get_absolute_url }}" />
+<p>
+    <input class="button" type="submit" value="Commenter" />
+</p>
+</form>
+

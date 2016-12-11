@@ -20,21 +20,7 @@
 {% render_comment_list for discussion %}
 
 {% if user.is_authenticated %}
-    <h2>Répondre</h2>
-    {% get_comment_form for discussion as form %}
-    <form action="{% comment_form_target %}" method="POST">
-    {% csrf_token %}
-    {{ form.comment }}
-    {{ form.honeypot }}
-    {{ form.content_type }}
-    {{ form.object_pk }}
-    {{ form.timestamp }}
-    {{ form.security_hash }}
-    <input type="hidden" name="next" value="{{ discussion.get_absolute_url }}" />
-    <p>
-        <input class="button" type="submit" value="Commenter" />
-    </p>
-    </form>
+    {% include 'include/add_comment_form.html' with ref_object=discussion %}
 {% endif %}
 {% endblock %}
 

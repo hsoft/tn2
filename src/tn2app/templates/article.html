@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load comments tn2 %}
 
 {% block main_contents %}
 <p>
@@ -11,4 +12,14 @@
 </p>
 <h1>{{ article.title }}</h1>
 {{ article.content|safe }}
+
+{% render_comment_list for article %}
+
+{% if user.is_authenticated %}
+    {% include 'include/add_comment_form.html' with ref_object=article %}
+{% endif %}
+{% endblock %}
+
+{% block bottom_js %}
+{% include 'include/ckjs.html' %}
 {% endblock %}
