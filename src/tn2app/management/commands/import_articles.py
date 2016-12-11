@@ -1,22 +1,53 @@
+import html
+import os
 import os.path
+import re
+import shutil
+from urllib.parse import unquote
 
+from django.conf import settings
 from django.core.files import File
 from django.core.management.base import BaseCommand
 
+from bs4 import BeautifulSoup
+
 from wordpress.models import WpV2Posts, WpV2Postmeta
 from ...models import User, Article
+
+def internalize_links(content, wpcontent_path):
+    soup = BeautifulSoup(content)
+    re_tnurl = re.compile(r'http://(www\.)?threadandneedles\.fr/wp-content/(.*)')
+    for img in soup.find_all('img'):
+        src = img['src']
+        m = re_tnurl.match(src)
+        if m:
+            internalized_url = unquote(m.groups()[1])
+            img['src'] = settings.MEDIA_URL + internalized_url
+            internalized_path = unquote(internalized_url)
+            dest_path = os.path.join(settings.MEDIA_ROOT, internalized_path)
+            if not os.path.exists(dest_path.encode('utf-8')):
+                src_path = os.path.join(wpcontent_path, internalized_path)
+                os.makedirs(os.path.dirname(dest_path), exist_ok=True)
+                try:
+                    shutil.copy(src_path.encode('utf-8'), dest_path.encode('utf-8'))
+                except FileNotFoundError:
+                    # There are a couple of broken links on some articles.
+                    print("Warning: couldn't find {}".format(src_path))
+    return str(soup)
+
 
 class Command(BaseCommand):
     help = 'Imports articles from our WP DB'
 
     def add_arguments(self, parser):
         parser.add_argument(
-            'uploads_path',
-            help="Path where WP uploads are"
+            'wpcontent_path',
+            help="Path where wp-content is"
         )
 
     def handle(self, *args, **options):
-        uploads_path = options['uploads_path']
+        wpcontent_path = options['wpcontent_path']
+        uploads_path = os.path.join(wpcontent_path, 'uploads')
         wpposts = WpV2Posts.objects\
             .filter(post_type='post', post_status__in={'draft', 'pending', 'publish'})
         for wppost in wpposts.all():
@@ -41,8 +72,8 @@ class Command(BaseCommand):
                 defaults={
                     'author': author,
                     'status': status,
-                    'title': wppost.post_title,
-                    'content': wppost.post_content,
+                    'title': html.unescape(wppost.post_title),
+                    'content': internalize_links(wppost.post_content, wpcontent_path),
                     'creation_time': wppost.post_modified,
                     'publish_time': wppost.post_date if status == Article.STATUS_PUBLISHED else None,
                 }
