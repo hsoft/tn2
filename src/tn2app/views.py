@@ -101,6 +101,7 @@ class ArticleList(ListView):
     model = Article
     queryset = Article.published
     ordering = '-creation_time'
+    paginate_by = 5
 
 
 class ArticleAdd(UserInRedactionMixin, CreateView):
