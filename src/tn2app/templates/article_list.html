@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load thumbnail %}
+{% load tn2 %}
 
 {% block main_contents %}
 <p>
@@ -11,7 +11,7 @@
 
 {% for article in article_list %}
     <a href="{{ article.get_absolute_url }}">
-        <img src="{{ article.main_image|thumbnail_url:'preview' }}"/>
+        <img src="{{ article|article_thumbnail }}"/>
         <p>{{ article.title }}</p>
     </a>
 {% endfor %}
