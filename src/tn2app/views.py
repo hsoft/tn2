@@ -11,7 +11,7 @@ from django_comments.models import Comment
 
 from .models import Article, DiscussionGroup, Discussion
 from .forms import (
-    NewDiscussionForm, EditDiscussionForm, NewArticleForm, EditArticleForm, EditCommentForm
+    NewDiscussionForm, EditDiscussionForm, EditCommentForm
 )
 
 
@@ -102,23 +102,6 @@ class ArticleList(ListView):
     queryset = Article.published
     ordering = '-creation_time'
     paginate_by = 5
-
-
-class ArticleAdd(UserInRedactionMixin, CreateView):
-    template_name = 'article_add.html'
-    form_class = NewArticleForm
-
-    def get_form_kwargs(self):
-        result = super().get_form_kwargs()
-        result['author'] = self.request.user
-        return result
-
-
-class ArticleEdit(UserInRedactionMixin, UpdateView):
-    template_name = 'article_edit.html'
-    model = Article
-    form_class = EditArticleForm
-    context_object_name = 'article'
 
 
 class CommentEdit(UserPassesTestMixin, UpdateView):

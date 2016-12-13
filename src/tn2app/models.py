@@ -4,7 +4,7 @@ from django.conf import settings
 from django.contrib.auth.models import User as UserBase, UserManager as UserManagerBase
 from django.contrib.auth.hashers import get_hasher
 from django.db import models
-from django.db.models import Max
+from django.db.models import Max, Q
 from django.urls import reverse
 
 from ckeditor.fields import RichTextField
@@ -76,7 +76,11 @@ class Article(models.Model):
         (STATUS_PUBLISHED, "Publié"),
     ]
 
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, null=True)
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        limit_choices_to=Q(groups__name='Rédacteurs'),
+    )
     slug = models.SlugField(max_length=255, unique=True)
     status = models.SmallIntegerField(choices=STATUS_CHOICES, default=STATUS_DRAFT)
     title = models.CharField(max_length=255)

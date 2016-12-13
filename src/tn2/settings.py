@@ -70,7 +70,6 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'account.context_processors.account',
-                'tn2app.context_processors.tn2_processor',
             ],
         },
     },

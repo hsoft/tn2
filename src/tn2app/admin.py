@@ -5,7 +5,12 @@ from django.contrib.auth.admin import UserAdmin
 from wordpress.models import WpV2Users, WpV2Usermeta, WpV2BpXprofileData
 from .models import Article, DiscussionGroup, Discussion, UserProfile
 
-admin.site.register(Article)
+class ArticleAdmin(admin.ModelAdmin):
+    list_display = ('slug', 'title', 'author', 'status', 'publish_time')
+    list_filter = ('status', 'author')
+
+
+admin.site.register(Article, ArticleAdmin)
 admin.site.register(DiscussionGroup)
 admin.site.register(Discussion)
 

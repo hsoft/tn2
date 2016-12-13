@@ -6,8 +6,8 @@
     <a href="{% url 'homepage' %}">Accueil</a>&nbsp;&gt;&nbsp;
     <a href="{% url 'article_list' %}">Blog</a>&nbsp;&gt;&nbsp;
     {{ article.title }}
-    {% if can_write_article %}
-    <a class="button" href="{% url 'article_edit' article.slug %}">Modifier</a>
+    {% if user.is_staff %}
+    <a class="button" href="{% url 'admin:tn2app_article_change' article.id %}">Modifier</a>
     {% endif %}
 </p>
 <h1>{{ article.title }}</h1>

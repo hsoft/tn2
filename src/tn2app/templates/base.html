@@ -20,8 +20,8 @@
                     <li class="right dropdown">
                         <a href="#" class="dropbtn">{{ user }}</a>
                         <div class="dropdown-content">
-                            {% if can_write_article %}
-                            <a href="{% url 'article_add' %}">Écrire un article</a>
+                            {% if user.is_staff %}
+                            <a href="{% url 'admin:index' %}">Administration</a>
                             {% endif %}
                             <a href="{% url 'account_logout' %}">Déconnexion</a>
                         </div>

@@ -5,7 +5,7 @@ from django_comments.models import Comment
 from django_comments.forms import COMMENT_MAX_LENGTH
 from ckeditor.widgets import CKEditorWidget
 
-from .models import Discussion, Article
+from .models import Discussion
 from .util import dedupe_slug
 
 
@@ -37,34 +37,6 @@ class EditDiscussionForm(forms.ModelForm):
     class Meta:
         model = Discussion
         fields = ['title', 'content']
-
-
-class NewArticleForm(forms.ModelForm):
-    class Meta:
-        model = Article
-        fields = ['title', 'content', 'main_image']
-
-    def __init__(self, author, **kwargs):
-        super().__init__(**kwargs)
-        self.author = author
-
-    def save(self, commit=True):
-        instance = super().save(commit=False)
-        instance.author = self.author
-
-        q = Article.objects
-        instance.slug = dedupe_slug(slugify(instance.title), q)
-
-        if commit:
-            instance.save()
-
-        return instance
-
-
-class EditArticleForm(forms.ModelForm):
-    class Meta:
-        model = Article
-        fields = ['title', 'content', 'main_image']
 
 
 class EditCommentForm(forms.ModelForm):
