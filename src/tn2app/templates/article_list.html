@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load tn2 %}
+{% load tn2 comments %}
 
 {% block main_contents %}
 <p>
@@ -10,10 +10,26 @@
 {% include "include/pagination.html" %}
 
 {% for article in article_list %}
+<div class="article-preview">
+    <h2><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></h2>
+    <p>Par {{ article.author|user_link }} le {{ article.publish_time|date }}</p>
     <a href="{{ article.get_absolute_url }}">
         <img src="{{ article|article_thumbnail }}"/>
-        <p>{{ article.title }}</p>
     </a>
+    <p class="excerpt">
+        {{ article.content|striptags|truncatewords:55 }}
+    </p>
+    <p class="readmore">
+        {% get_comment_count for article as comment_count %}
+        <a href="{{ article.get_absolute_url }}#comments">
+            {{ comment_count }} Commentaire{{ comment_count|pluralize }}
+        </a>
+        <a href="{{ article.get_absolute_url }}">
+            Lire l'article <span class="fa fa-chevron-circle-right"></span>
+        </a>
+    </p>
+    <div class="clear"></div>
+</div>
 {% endfor %}
 
 {% include "include/pagination.html" %}
