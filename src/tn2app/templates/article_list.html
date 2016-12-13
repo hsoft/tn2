@@ -12,7 +12,12 @@
 {% for article in article_list %}
 <div class="article-preview">
     <h2><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></h2>
-    <p>Par {{ article.author|user_link }} le {{ article.publish_time|date }}</p>
+    <p>
+        Par {{ article.author|user_link }} le {{ article.publish_time|date }} dans
+        {% for cat in article.categories.all %}
+        {{ cat.title }}{% if not forloop.last %}, {% endif %}
+        {% endfor %}
+    </p>
     <a href="{{ article.get_absolute_url }}">
         <img src="{{ article|article_thumbnail }}"/>
     </a>

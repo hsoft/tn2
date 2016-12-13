@@ -633,7 +633,10 @@ class WpV2Posts(models.Model):
 
 
 class WpV2TermRelationships(models.Model):
-    object_id = models.BigIntegerField()
+    # This primary_key thing below is a **hack**, it's not true at all that it's the primary key!
+    # **but** it's the only way I found to use the models without Django crashing on me, and, guess
+    # what? it works...
+    object_id = models.BigIntegerField(primary_key=True)
     term_taxonomy_id = models.BigIntegerField()
     term_order = models.IntegerField()
 

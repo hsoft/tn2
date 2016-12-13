@@ -86,6 +86,7 @@ class Article(models.Model):
     title = models.CharField(max_length=255)
     content = RichTextUploadingField()
     main_image = models.ImageField(blank=True)
+    categories = models.ManyToManyField('ArticleCategory')
     creation_time = models.DateTimeField(auto_now_add=True)
     publish_time = models.DateTimeField(blank=True, null=True)
 
@@ -97,6 +98,15 @@ class Article(models.Model):
 
     def get_absolute_url(self):
         return reverse('article', args=[self.slug])
+
+
+class ArticleCategory(models.Model):
+    slug = models.SlugField(max_length=255, unique=True)
+    title = models.CharField(max_length=255)
+    featured = models.BooleanField(default=False)
+
+    def __str__(self):
+        return "{} - {}".format(self.slug, self.title)
 
 
 class DiscussionGroup(models.Model):
