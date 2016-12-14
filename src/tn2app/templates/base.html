@@ -13,7 +13,7 @@
             <div class="fullwidth">
                 <ul>
                     <li><a href="{% url 'homepage' %}">Accueil</a></li>
-                    <li><a>La galerie</a></li>
+                    <li><a href="{% url 'project_list' %}">La galerie</a></li>
                     <li><a href="{% url 'article_list' %}">Le blog</a></li>
                     <li><a href="{% url 'discussion_groups' %}">Les groupes</a></li>
                     {% if user.is_authenticated %}

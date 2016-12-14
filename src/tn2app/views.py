@@ -9,7 +9,7 @@ from django.views.generic.edit import CreateView, UpdateView
 
 from django_comments.models import Comment
 
-from .models import Article, ArticleCategory, DiscussionGroup, Discussion
+from .models import Article, ArticleCategory, DiscussionGroup, Discussion, Project
 from .forms import (
     NewDiscussionForm, EditDiscussionForm, EditCommentForm
 )
@@ -132,3 +132,12 @@ class UserProfile(TemplateView):
             raise Http404()
         result['user'] = user
         return result
+
+
+class ProjectList(ListView):
+    template_name = 'project_list.html'
+    model = Project
+    ordering = '-creation_time'
+    paginate_by = 15
+
+

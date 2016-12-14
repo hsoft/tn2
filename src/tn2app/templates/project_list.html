@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load tn2 thumbnail %}
+
+{% block main_contents %}
+<p>
+    <a href="{% url 'homepage' %}">Accueil</a>&nbsp;&gt;&nbsp;
+    Galerie
+</p>
+
+{% include "include/pagination.html" %}
+
+{% for project in project_list %}
+<a href="{{ project.get_absolute_url }}">
+    <img src="{{ project.image1|thumbnail_url:'project-list' }}"/>
+</a>
+{% endfor %}
+
+{% include "include/pagination.html" %}
+
+{% endblock %}
+
+

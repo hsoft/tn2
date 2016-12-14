@@ -1,4 +1,5 @@
 import os.path
+from functools import partial
 
 from django.conf import settings
 from django.contrib.auth.models import User as UserBase, UserManager as UserManagerBase
@@ -155,3 +156,37 @@ class Discussion(models.Model):
 
     def get_absolute_url(self):
         return reverse('discussion', args=[self.group.slug, self.slug])
+
+
+class ProjectCategory(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+
+    def __str__(self):
+        return self.name
+
+
+def get_project_image_path(instance, filename, slot):
+    root, ext = os.path.splitext(filename)
+    return 'projects/{}/img{}{}'.format(instance.id, slot, ext)
+
+class Project(models.Model):
+    author = models.ForeignKey(settings.AUTH_USER_MODEL)
+    title = models.CharField(max_length=100)
+    description = models.TextField()
+    category = models.ForeignKey(ProjectCategory)
+    pattern_name = models.CharField(max_length=250, blank=True)
+    pattern_url = models.URLField(max_length=250, blank=True)
+    blog_post_url = models.URLField(max_length=250, blank=True)
+    store_url = models.URLField(max_length=250, blank=True)
+    creation_time = models.DateTimeField(auto_now_add=True)
+
+    # baaah, it's not worth the extra indirection to create a model for project images.
+    # Let's go low-tech and have 4 fields.
+    image1 = models.ImageField(upload_to=partial(get_project_image_path, slot=1))
+    image2 = models.ImageField(upload_to=partial(get_project_image_path, slot=2), blank=True)
+    image3 = models.ImageField(upload_to=partial(get_project_image_path, slot=3), blank=True)
+    image4 = models.ImageField(upload_to=partial(get_project_image_path, slot=4), blank=True)
+
+    def __str__(self):
+        return "{} - {} - {}".format(self.id, self.author, self.title)
