@@ -1,0 +1,7 @@
+{% load tn2 %}
+
+Par {{ article.author|user_link }} le {{ article.publish_time|date }} dans
+{% for cat in article.categories.all %}
+<a href="{{ cat.get_absolute_url }}">{{ cat.title }}</a>{% if not forloop.last %}, {% endif %}
+{% endfor %}
+

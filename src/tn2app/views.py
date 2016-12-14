@@ -9,7 +9,7 @@ from django.views.generic.edit import CreateView, UpdateView
 
 from django_comments.models import Comment
 
-from .models import Article, DiscussionGroup, Discussion
+from .models import Article, ArticleCategory, DiscussionGroup, Discussion
 from .forms import (
     NewDiscussionForm, EditDiscussionForm, EditCommentForm
 )
@@ -89,19 +89,22 @@ class DiscussionEdit(LoginRequiredMixin, UpdateView):
         return result
 
 
-class UserInRedactionMixin(UserPassesTestMixin):
-    raise_exception = True
-
-    def test_func(self):
-        return self.request.user.has_perm('tn2app.add_article')
-
-
 class ArticleList(ListView):
     template_name = 'article_list.html'
     model = Article
     queryset = Article.published
     ordering = '-creation_time'
     paginate_by = 5
+
+
+class ArticlesByCategoryList(ArticleList):
+    def get_queryset(self):
+        try:
+            cat = ArticleCategory.objects.get(slug=self.kwargs['slug'])
+        except ArticleCategory.DoesNotExist:
+            raise Http404()
+        queryset = super().get_queryset()
+        return queryset.filter(categories=cat)
 
 
 class CommentEdit(UserPassesTestMixin, UpdateView):

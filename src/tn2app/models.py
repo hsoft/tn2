@@ -108,6 +108,9 @@ class ArticleCategory(models.Model):
     def __str__(self):
         return "{} - {}".format(self.slug, self.title)
 
+    def get_absolute_url(self):
+        return reverse('category', args=[self.slug])
+
 
 class DiscussionGroup(models.Model):
     slug = models.SlugField(max_length=255, unique=True)
