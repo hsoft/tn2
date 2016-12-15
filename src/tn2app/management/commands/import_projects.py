@@ -35,7 +35,7 @@ class Command(BaseCommand):
             if created:
                 print("Create category {}".format(cat))
 
-        re_link = re.compile(r'<a href="(.*)">(.*)</a>')
+        re_link = re.compile(r'<a href="(.*?)".*>(.*)</a>')
         for wpproj in WpV2BpCoutureProjets.objects.order_by('-id'):
             try:
                 author = User.objects.get_from_wpuser_id(wpproj.user_id)
@@ -48,7 +48,7 @@ class Command(BaseCommand):
                 catid = 8
             m = re_link.match(wpproj.patron)
             if m:
-                pattern_name, pattern_url = m.groups()
+                pattern_url, pattern_name = m.groups()
             else:
                 pattern_name = wpproj.patron
                 pattern_url = ''

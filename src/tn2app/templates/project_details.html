@@ -7,25 +7,48 @@
     <a href="{% url 'project_list' %}">Projets couture</a>&nbsp;&gt;&nbsp;
     {{ project.title }}
 </p>
+<div class="inner-content">
 <h1>{{ project.title }}</h1>
 <p>
-    Par {{ project.author|user_link }} le {{ project.creation_time|date }} dans {{ project.category }}
 </p>
 <div>
     <img id="full-size-image" src="{{ project.image1.url }}"/>
 </div>
-<div>
-{% for image in project.get_images %}
-{% if image %}
-    <img
-        class="project-image-preview"
-        src="{{ image|thumbnail_url:'project-alternate-view' }}"
-        data-full-url="{{ image.url }}"
-    />
-{% endif %}
-{% endfor %}
-</div>
 {{ project.description|linebreaks }}
+</div>
+<div class="sidebar">
+    <div class="project-author">
+        <img src="{{ project.author|avatar_url }}"/>
+        Par {{ project.author|user_link }} le {{ project.creation_time|date:'SHORT_DATE_FORMAT' }}
+        <br>
+        dans {{ project.category }}
+    </div>
+    <h4>Autres vues</h4>
+    <div>
+    {% for image in project.get_images %}
+    {% if image %}
+        <img
+            class="project-image-preview"
+            src="{{ image|thumbnail_url:'project-alternate-view' }}"
+            data-full-url="{{ image.url }}"
+        />
+    {% endif %}
+    {% endfor %}
+    </div>
+    <h4>Détails du projet</h4>
+    <div class="project-info">
+        <strong>Patron:</strong>
+        {% if project.pattern_url %}
+        <a href="{{ project.pattern_url }}">{{ project.pattern_name }}</a>
+        {% else %}
+        {{ project.pattern_name }}
+        {% endif %}
+        <br>
+        {% if project.blog_post_url %}
+        <a href="{{ project.blog_post_url }}">Retrouvez ce projet sur mon blog</a>
+        {% endif %}
+    </div>
+</div>
 {% endblock %}
 
 {% block bottom_js %}
