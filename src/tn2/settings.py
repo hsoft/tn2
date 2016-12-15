@@ -184,9 +184,10 @@ CKEDITOR_CONFIGS = {
 
 THUMBNAIL_ALIASES = {
     '': {
-        'preview': {'size': (300, 200), 'crop': 'smart'},
-        'avatar': {'size': (34, 34), 'crop': 'smart'},
-        'project-list': {'size': (180, 180), 'crop': 'smart'},
+        'preview': {'size': (300, 200), 'crop': True},
+        'avatar': {'size': (34, 34), 'crop': True},
+        'project-list': {'size': (180, 180), 'crop': True},
+        'project-alternate-view': {'size': (50, 50), 'crop': True},
     }
 }
 

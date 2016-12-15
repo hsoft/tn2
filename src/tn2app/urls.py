@@ -12,6 +12,11 @@ urlpatterns = [
         name='category'
     ),
     url(r'^projets-couture/$', views.ProjectList.as_view(), name='project_list'),
+    url(
+        r'^projets-couture/(?P<pk>\d+)-(?P<slug>[-\w]+)$',
+        views.ProjectDetails.as_view(),
+        name='project_details'
+    ),
     url(r'^groupes/$', views.discussion_groups, name='discussion_groups'),
     # the "%" and "’" characters aren't part of django's slug, but it's part of our "legacy" slugs.
     url(r'^groupes/(?P<group_slug>[-%’\w]+)/home/$', views.discussion_group, name='discussion_group'),

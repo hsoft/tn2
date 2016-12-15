@@ -11,7 +11,7 @@
     <tr><td><strong>Pseudo</strong></td><td>{{ user.profile.display_name }}</td></tr>
     <tr><td><strong>Qui suis-je?</strong></td><td>{{ user.profile.description }}</td></tr>
     <tr><td><strong>Ville</strong></td><td>{{ user.profile.city }}</td></tr>
-    <tr><td><strong>Site web</strong></td><td><a href="{{ user.profile.website }}">{{ user.profile.website }}</a></td></tr>
+    <tr><td><strong>Site web</strong></td><td>{{ user.profile.website|urlize }}</td></tr>
     <tr><td><strong>Niveau</strong></td><td>{{ user.profile.skill_level }}</td></tr>
     <tr><td><strong>MAC</strong></td><td>{{ user.profile.sewing_machine }}</td></tr>
 </tbody>

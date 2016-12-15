@@ -4,7 +4,7 @@ from django.core.exceptions import PermissionDenied
 from django.db.models import Max
 from django.http import Http404
 from django.shortcuts import render
-from django.views.generic import ListView, TemplateView
+from django.views.generic import ListView, TemplateView, DetailView
 from django.views.generic.edit import CreateView, UpdateView
 
 from django_comments.models import Comment
@@ -141,3 +141,6 @@ class ProjectList(ListView):
     paginate_by = 15
 
 
+class ProjectDetails(DetailView):
+    template_name = 'project_details.html'
+    model = Project

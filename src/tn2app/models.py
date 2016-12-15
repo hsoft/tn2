@@ -7,6 +7,7 @@ from django.contrib.auth.hashers import get_hasher
 from django.db import models
 from django.db.models import Max, Q
 from django.urls import reverse
+from django.utils.text import slugify
 
 from ckeditor.fields import RichTextField
 from ckeditor_uploader.fields import RichTextUploadingField
@@ -107,7 +108,7 @@ class ArticleCategory(models.Model):
     featured = models.BooleanField(default=False)
 
     def __str__(self):
-        return "{} - {}".format(self.slug, self.title)
+        return self.title
 
     def get_absolute_url(self):
         return reverse('category', args=[self.slug])
@@ -190,3 +191,10 @@ class Project(models.Model):
 
     def __str__(self):
         return "{} - {} - {}".format(self.id, self.author, self.title)
+
+    def get_absolute_url(self):
+        slug = slugify(self.title)
+        return reverse('project_details', args=[self.id, slug])
+
+    def get_images(self):
+        return [self.image1, self.image2, self.image3, self.image4]
