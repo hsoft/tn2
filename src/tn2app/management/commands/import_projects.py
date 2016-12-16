@@ -1,5 +1,7 @@
 import html
+import os.path
 import re
+from unicodedata import normalize
 
 from django.core.management.base import BaseCommand
 from django.core.files import File
@@ -70,16 +72,23 @@ class Command(BaseCommand):
                 proj.creation_time = wpproj.date_created
                 proj.save()
                 wpimages = WpV2BpCoutureImages.objects.filter(project_id=proj.id).order_by('-is_main_picture')
-                for index, wpimage in enumerate(wpimages[:4], start=1):
+                counter = 1
+                for wpimage in wpimages[:4]:
                     # in the DB, our path start with /var/www/threadandneedles.fr/wp-content and we
                     # want to get rid of that.
                     src_relpath = '/'.join(wpimage.img_large_dir.split('/')[5:])
                     src_path = '/'.join([wpcontent_path, src_relpath])
-                    try:
-                        with open(src_path, 'rb') as fp:
-                            dfile = File(fp)
-                            image_field = getattr(proj, 'image{}'.format(index))
-                            image_field.save(src_relpath, dfile)
-                    except FileNotFoundError:
-                        print("Can't find file {}, skipping".format(repr(src_path)))
+                    if not os.path.exists(src_path):
+                        src_path = normalize('NFC', src_path)
+                        if not os.path.exists(src_path):
+                            print("Can't find file {}, skipping".format(repr(src_path)))
+                            continue
+                    with open(src_path, 'rb') as fp:
+                        dfile = File(fp)
+                        image_field = getattr(proj, 'image{}'.format(counter))
+                        image_field.save(src_relpath, dfile)
+                        counter += 1
+                if counter == 1:
+                    print("No image! deleting project")
+                    proj.delete()
 
