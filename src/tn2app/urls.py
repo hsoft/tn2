@@ -13,7 +13,7 @@ urlpatterns = [
     ),
     url(r'^projets-couture/$', views.ProjectList.as_view(), name='project_list'),
     url(
-        r'^projets-couture/(?P<pk>\d+)-(?P<slug>[-\w]+)$',
+        r'^projets-couture/(?P<pk>\d+)-?(?P<slug>[-\w]*)$',
         views.ProjectDetails.as_view(),
         name='project_details'
     ),
