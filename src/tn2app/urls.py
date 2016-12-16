@@ -32,6 +32,6 @@ urlpatterns = [
         name='discussion_edit'
     ),
     url(r'^comments/(?P<pk>\d+)/edit/$', views.CommentEdit.as_view(), name='comment_edit'),
-    url(r'^members/(?P<username>[-\w]+)/profil/$', views.UserProfile.as_view(), name='user_profile'),
+    url(r'^membres/(?P<username>[-\w]+)/profil/$', views.UserProfile.as_view(), name='user_profile'),
 ]
 

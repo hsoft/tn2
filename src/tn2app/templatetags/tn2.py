@@ -15,6 +15,13 @@ def avatar_url(user):
     return static('images/mystery-man-34px.jpg')
 
 @register.filter(is_safe=True)
+def avatar_big_url(user):
+    if user.profile:
+        if user.profile.avatar:
+            return get_thumbnailer(user.profile.avatar)['avatar-big'].url
+    return static('images/mystery-man-128px.jpg')
+
+@register.filter(is_safe=True)
 def article_thumbnail(article):
     if article.main_image:
         return get_thumbnailer(article.main_image)['preview'].url

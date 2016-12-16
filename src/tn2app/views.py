@@ -130,7 +130,7 @@ class UserProfile(TemplateView):
             user = User.objects.get(username=self.kwargs['username'])
         except User.DoesNotExist:
             raise Http404()
-        result['user'] = user
+        result['shown_user'] = user
         return result
 
 

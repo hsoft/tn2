@@ -186,6 +186,7 @@ THUMBNAIL_ALIASES = {
     '': {
         'preview': {'size': (300, 200), 'crop': True},
         'avatar': {'size': (34, 34), 'crop': True},
+        'avatar-big': {'size': (60, 60), 'crop': True},
         'project-list': {'size': (180, 180), 'crop': True},
         'project-alternate-view': {'size': (50, 50), 'crop': True},
     }

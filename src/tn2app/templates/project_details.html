@@ -21,12 +21,12 @@
 </div>
 <div class="sidebar">
     <div class="project-author">
-        <img src="{{ project.author|avatar_url }}"/>
+        <img class="img-avatar-big" src="{{ project.author|avatar_big_url }}"/>
         Par {{ project.author|user_link }} le {{ project.creation_time|date:'SHORT_DATE_FORMAT' }}
         <br>
         dans {{ project.category }}
     </div>
-    <h4>Autres vues</h4>
+    <h4 class="clear">Autres vues</h4>
     <div>
     {% for image in project.get_images %}
     {% if image %}

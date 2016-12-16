@@ -1,20 +1,29 @@
 {% extends 'base.html' %}
+{% load tn2 thumbnail %}
 
 {% block main_contents %}
 <p>
     <a href="{% url 'homepage' %}">Accueil</a>&nbsp;&gt;&nbsp;
-    {{ user }}
+    {{ shown_user }}
 </p>
-<h1>Profil de {{ user }}</h1>
+<h1>Profil de {{ shown_user }}</h1>
+<img class="img-avatar-big" src="{{ shown_user|avatar_big_url }}"/>
 <table>
 <tbody>
-    <tr><td><strong>Pseudo</strong></td><td>{{ user.profile.display_name }}</td></tr>
-    <tr><td><strong>Qui suis-je?</strong></td><td>{{ user.profile.description }}</td></tr>
-    <tr><td><strong>Ville</strong></td><td>{{ user.profile.city }}</td></tr>
-    <tr><td><strong>Site web</strong></td><td>{{ user.profile.website|urlize }}</td></tr>
-    <tr><td><strong>Niveau</strong></td><td>{{ user.profile.skill_level }}</td></tr>
-    <tr><td><strong>MAC</strong></td><td>{{ user.profile.sewing_machine }}</td></tr>
+    <tr><td><strong>Pseudo</strong></td><td>{{ shown_user.profile.display_name }}</td></tr>
+    <tr><td><strong>Qui suis-je?</strong></td><td>{{ shown_user.profile.description }}</td></tr>
+    <tr><td><strong>Ville</strong></td><td>{{ shown_user.profile.city }}</td></tr>
+    <tr><td><strong>Site web</strong></td><td>{{ shown_user.profile.website|urlize }}</td></tr>
+    <tr><td><strong>Niveau</strong></td><td>{{ shown_user.profile.skill_level }}</td></tr>
+    <tr><td><strong>MAC</strong></td><td>{{ shown_user.profile.sewing_machine }}</td></tr>
 </tbody>
 </table>
+
+<h2>Projets</h2>
+{% for project in shown_user.projects.all %}
+<a href="{{ project.get_absolute_url }}">
+    <img src="{{ project.image1|thumbnail_url:'project-list' }}"/>
+</a>
+{% endfor %}
 {% endblock %}
 

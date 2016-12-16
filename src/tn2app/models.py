@@ -172,7 +172,7 @@ def get_project_image_path(instance, filename, slot):
     return 'projects/{}/img{}{}'.format(instance.id, slot, ext)
 
 class Project(models.Model):
-    author = models.ForeignKey(settings.AUTH_USER_MODEL)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='projects')
     title = models.CharField(max_length=100)
     description = models.TextField()
     category = models.ForeignKey(ProjectCategory)
@@ -188,6 +188,9 @@ class Project(models.Model):
     image2 = models.ImageField(upload_to=partial(get_project_image_path, slot=2), blank=True)
     image3 = models.ImageField(upload_to=partial(get_project_image_path, slot=3), blank=True)
     image4 = models.ImageField(upload_to=partial(get_project_image_path, slot=4), blank=True)
+
+    class Meta:
+        ordering = ['-creation_time']
 
     def __str__(self):
         return "{} - {} - {}".format(self.id, self.author, self.title)
