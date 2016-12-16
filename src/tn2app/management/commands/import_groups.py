@@ -1,4 +1,5 @@
 from django.core.management.base import BaseCommand
+from django.utils.html import linebreaks
 
 from django_comments.models import Comment
 
@@ -74,7 +75,7 @@ class Command(BaseCommand):
                 author=author,
                 slug=slug,
                 title=wptopic.topic_title,
-                content=sanitize_comment(first_post.post_text),
+                content=linebreaks(sanitize_comment(first_post.post_text)),
                 is_locked=wptopic.topic_open!=1,
                 is_sticky=wptopic.topic_sticky==1,
             )
@@ -104,7 +105,7 @@ class Command(BaseCommand):
                     content_object=discussion,
                     site_id=1,
                     user=author,
-                    comment=sanitize_comment(wppost.post_text),
+                    comment=linebreaks(sanitize_comment(wppost.post_text)),
                     submit_date=wppost.post_time,
                 )
 

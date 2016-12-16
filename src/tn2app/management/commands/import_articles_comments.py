@@ -1,4 +1,5 @@
 from django.core.management.base import BaseCommand
+from django.utils.html import linebreaks
 
 from django_comments.models import Comment
 
@@ -36,7 +37,7 @@ class Command(BaseCommand):
                     content_object=article,
                     site_id=1,
                     user=author,
-                    comment=sanitize_comment(wpcomment.comment_content),
+                    comment=linebreaks(sanitize_comment(wpcomment.comment_content)),
                     submit_date=wpcomment.comment_date,
                 )
 
