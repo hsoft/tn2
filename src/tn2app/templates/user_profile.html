@@ -5,13 +5,16 @@
 <p>
     <a href="{% url 'homepage' %}">Accueil</a>&nbsp;&gt;&nbsp;
     {{ shown_user }}
+    {% if shown_user == user %}
+        <a class="button" href="{% url 'user_profile_edit' username=user.username %}">Modifier</a>
+    {% endif %}
 </p>
 <h1>Profil de {{ shown_user }}</h1>
 <img class="img-avatar-big" src="{{ shown_user|avatar_big_url }}"/>
 <table>
 <tbody>
     <tr><td><strong>Pseudo</strong></td><td>{{ shown_user.profile.display_name }}</td></tr>
-    <tr><td><strong>Qui suis-je?</strong></td><td>{{ shown_user.profile.description }}</td></tr>
+    <tr><td><strong>Qui suis-je?</strong></td><td>{{ shown_user.profile.description|safe }}</td></tr>
     <tr><td><strong>Ville</strong></td><td>{{ shown_user.profile.city }}</td></tr>
     <tr><td><strong>Site web</strong></td><td>{{ shown_user.profile.website|urlize }}</td></tr>
     <tr><td><strong>Niveau</strong></td><td>{{ shown_user.profile.skill_level }}</td></tr>

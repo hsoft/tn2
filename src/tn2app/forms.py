@@ -5,11 +5,30 @@ from django_comments.models import Comment
 from django_comments.forms import COMMENT_MAX_LENGTH
 from ckeditor.widgets import CKEditorWidget
 
-from .models import Discussion
+from .models import UserProfile, Discussion
 from .util import dedupe_slug
 
 
-class NewDiscussionForm(forms.ModelForm):
+class BaseModelForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault('label_suffix', '')
+        super().__init__(*args, **kwargs)
+
+
+class UserProfileForm(BaseModelForm):
+    class Meta:
+        model = UserProfile
+        fields = [
+            'display_name', 'description', 'city', 'website', 'skill_level', 'sewing_machine',
+            'avatar',
+        ]
+        widgets = {
+            'city': forms.TextInput(),
+            'sewing_machine': forms.TextInput(),
+        }
+
+
+class NewDiscussionForm(BaseModelForm):
     class Meta:
         model = Discussion
         fields = ['title', 'content']
@@ -33,13 +52,13 @@ class NewDiscussionForm(forms.ModelForm):
         return instance
 
 
-class EditDiscussionForm(forms.ModelForm):
+class EditDiscussionForm(BaseModelForm):
     class Meta:
         model = Discussion
         fields = ['title', 'content']
 
 
-class EditCommentForm(forms.ModelForm):
+class EditCommentForm(BaseModelForm):
     class Meta:
         model = Comment
         fields = ['comment']

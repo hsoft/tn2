@@ -93,6 +93,19 @@ ol.threeitems {
     }
 }
 
+form p {
+    label {
+        display: block;
+        font-weight: bold;
+    }
+}
+
+form.userprofile {
+    input[name="display_name"], input[name="city"], input[name="website"], input[name="sewing_machine"] {
+        width: 300px;
+    }
+}
+
 form.loginform {
     p label {
         display: inline-block;

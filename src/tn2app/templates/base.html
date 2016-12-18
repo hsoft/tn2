@@ -20,6 +20,7 @@
                     <li class="right dropdown">
                         <a href="#" class="dropbtn">{{ user }}</a>
                         <div class="dropdown-content">
+                            <a href="{% url 'user_profile' username=user.username %}">Mon profil</a>
                             {% if user.is_staff %}
                             <a href="{% url 'admin:index' %}">Administration</a>
                             {% endif %}

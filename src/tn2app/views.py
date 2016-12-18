@@ -9,9 +9,9 @@ from django.views.generic.edit import CreateView, UpdateView
 
 from django_comments.models import Comment
 
-from .models import Article, ArticleCategory, DiscussionGroup, Discussion, Project
+from .models import UserProfile, Article, ArticleCategory, DiscussionGroup, Discussion, Project
 from .forms import (
-    NewDiscussionForm, EditDiscussionForm, EditCommentForm
+    UserProfileForm, NewDiscussionForm, EditDiscussionForm, EditCommentForm
 )
 
 
@@ -120,7 +120,7 @@ class CommentEdit(UserPassesTestMixin, UpdateView):
         return self.request.user == self.get_object().user
 
 
-class UserProfile(TemplateView):
+class UserProfileView(TemplateView):
     template_name = 'user_profile.html'
 
     def get_context_data(self, **kwargs):
@@ -132,6 +132,32 @@ class UserProfile(TemplateView):
             raise Http404()
         result['shown_user'] = user
         return result
+
+
+class UserProfileEdit(UserPassesTestMixin, UpdateView):
+    template_name = 'user_profile_edit.html'
+    model = UserProfile
+    form_class = UserProfileForm
+    context_object_name = 'profile'
+
+    # for UserPassesTestMixin
+    raise_exception = True
+
+    def test_func(self):
+        return self.request.user == self.get_object().user
+
+    def get_object(self, queryset=None):
+        if queryset is None:
+            queryset = self.get_queryset()
+        User = get_user_model()
+        try:
+            user = User.objects.get(username=self.kwargs['username'])
+        except User.DoesNotExist:
+            raise Http404()
+        if user.profile:
+            return user.profile
+        else:
+            return UserProfile(user=user, display_name=user.username)
 
 
 class ProjectList(ListView):

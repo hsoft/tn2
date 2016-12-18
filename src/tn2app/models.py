@@ -45,6 +45,15 @@ def get_user_avatar_path(instance, filename):
     return 'avatars/{}{}'.format(instance.user.username, ext)
 
 class UserProfile(models.Model):
+    SKILL_LEVELS = (
+        "Grand débutant",
+        "Débutant",
+        "Intermédiaire",
+        "Avancé",
+        "Professionnel",
+    )
+    SKILL_LEVEL_CHOICES = [(sl, sl) for sl in SKILL_LEVELS]
+
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
@@ -52,12 +61,21 @@ class UserProfile(models.Model):
         related_name='profile',
     )
     wpdb_id = models.IntegerField(null=True)
-    avatar = models.ImageField(upload_to=get_user_avatar_path, blank=True)
+    avatar = models.ImageField(
+        upload_to=get_user_avatar_path,
+        blank=True,
+        verbose_name="Avatar"
+    )
     display_name = models.CharField(max_length=60, blank=True, verbose_name="Pseudo")
-    description = models.TextField(blank=True, verbose_name="Qui suis-je?")
+    description = RichTextField(config_name='restricted', blank=True, verbose_name="Qui suis-je?")
     city = models.TextField(blank=True, verbose_name="Ville")
     website = models.URLField(blank=True, verbose_name="Site web")
-    skill_level = models.CharField(max_length=20, blank=True, verbose_name="Niveau")
+    skill_level = models.CharField(
+        max_length=20,
+        blank=True,
+        choices=SKILL_LEVEL_CHOICES,
+        verbose_name="Niveau",
+    )
     sewing_machine = models.TextField(blank=True, verbose_name="MAC")
 
     def get_absolute_url(self):
