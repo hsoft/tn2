@@ -14,16 +14,14 @@ def avatar_url(user):
     if user.profile:
         if user.profile.avatar:
             return get_thumbnailer(user.profile.avatar)['avatar'].url
-    default_url = static('images/mystery-man-34px.jpg')
-    return gravatar_url(user.email, size=34, default_image=default_url)
+    return gravatar_url(user.email, size=34, default_image='mm')
 
 @register.filter(is_safe=True)
 def avatar_big_url(user):
     if user.profile:
         if user.profile.avatar:
             return get_thumbnailer(user.profile.avatar)['avatar-big'].url
-    default_url = static('images/mystery-man-128px.jpg')
-    return gravatar_url(user.email, size=60, default_image=default_url)
+    return gravatar_url(user.email, size=60, default_image='mm')
 
 @register.filter(is_safe=True)
 def article_thumbnail(article):
