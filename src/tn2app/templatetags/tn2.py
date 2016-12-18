@@ -5,6 +5,8 @@ from django.utils.safestring import mark_safe
 
 from easy_thumbnails.files import get_thumbnailer
 
+from ..util import gravatar_url
+
 register = template.Library()
 
 @register.filter(is_safe=True)
@@ -12,14 +14,16 @@ def avatar_url(user):
     if user.profile:
         if user.profile.avatar:
             return get_thumbnailer(user.profile.avatar)['avatar'].url
-    return static('images/mystery-man-34px.jpg')
+    default_url = static('images/mystery-man-34px.jpg')
+    return gravatar_url(user.email, size=34, default_image=default_url)
 
 @register.filter(is_safe=True)
 def avatar_big_url(user):
     if user.profile:
         if user.profile.avatar:
             return get_thumbnailer(user.profile.avatar)['avatar-big'].url
-    return static('images/mystery-man-128px.jpg')
+    default_url = static('images/mystery-man-128px.jpg')
+    return gravatar_url(user.email, size=60, default_image=default_url)
 
 @register.filter(is_safe=True)
 def article_thumbnail(article):

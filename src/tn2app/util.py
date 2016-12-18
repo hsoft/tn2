@@ -1,3 +1,4 @@
+import hashlib
 import itertools
 import unicodedata
 
@@ -33,3 +34,17 @@ def nonone(value, replace_value):
 def deaccent(s):
     # http://stackoverflow.com/a/15261831
     return ''.join((c for c in unicodedata.normalize('NFD', s) if unicodedata.category(c) != 'Mn'))
+
+def gravatar_url(email, size=None, default_image=None):
+    normalized = email.strip().lower()
+    email_hash = hashlib.md5(normalized.encode('utf-8')).hexdigest()
+    url = 'https://www.gravatar.com/avatar/{}.jpg'.format(email_hash)
+    params = {}
+    if size:
+        params['s'] = str(size)
+    if default_image:
+        params['d'] = default_image
+    if params:
+        url += '?' + '&'.join('{}={}'.format(k, v) for k, v in params.items())
+    return url
+
