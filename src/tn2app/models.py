@@ -209,6 +209,14 @@ class Project(models.Model):
 
     likes = models.ManyToManyField(settings.AUTH_USER_MODEL, through='ProjectVote')
 
+    # The old system had a lot of spam users and we chose to aggressively weed them out during the
+    # migration. Any user having likes and favorites for its only interactions with the system
+    # would not be migrated. To ensure that "like count" would stay the same project-wise, we add
+    # this field which corresponds to the number of like the project had from users who haven't
+    # been migrated.
+    # This field's value never changes and stays to zero for all post-migration projects.
+    legacy_like_count = models.PositiveSmallIntegerField(default=0)
+
     class Meta:
         ordering = ['-creation_time']
 
@@ -223,6 +231,9 @@ class Project(models.Model):
 
     def get_images(self):
         return [self.image1, self.image2, self.image3, self.image4]
+
+    def get_like_count(self):
+        return self.likes.count() + self.legacy_like_count
 
 
 class ProjectVote(models.Model):
