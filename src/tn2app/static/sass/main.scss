@@ -1,11 +1,10 @@
-$text_color: black;
-$text_light: #e3e3e3;
-$bg_dark: #847676;
-$red_highlight: #d92e69;
-$text_button: #eeeeee;
+@import 'normalize';
+@import 'variables';
+@import 'legacy';
 
 body {
     font-family: Arial, Helvetica, sans-serif;
+    background-color: white;
 }
 
 .fullwidth {
@@ -22,6 +21,11 @@ body {
 // It has to be invisible.
 #id_honeypot {
     display: none;
+}
+
+h1 {
+    font-size: 32px;
+    line-height: 38px;
 }
 
 div.header {
@@ -131,7 +135,7 @@ form.signupform {
     border: none;
 
     &, &:link, &:visited {
-        color: $text_button;
+        color: $pink_button_text_color;
     }
 }
 

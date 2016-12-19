@@ -207,6 +207,8 @@ class Project(models.Model):
     image3 = models.ImageField(upload_to=partial(get_project_image_path, slot=3), blank=True)
     image4 = models.ImageField(upload_to=partial(get_project_image_path, slot=4), blank=True)
 
+    likes = models.ManyToManyField(settings.AUTH_USER_MODEL, through='ProjectVote')
+
     class Meta:
         ordering = ['-creation_time']
 
@@ -214,8 +216,20 @@ class Project(models.Model):
         return "{} - {} - {}".format(self.id, self.author, self.title)
 
     def get_absolute_url(self):
-        slug = slugify(self.title)
-        return reverse('project_details', args=[self.id, slug])
+        return reverse('project_details', args=[self.id, self.get_slug()])
+
+    def get_slug(self):
+        return slugify(self.title)
 
     def get_images(self):
         return [self.image1, self.image2, self.image3, self.image4]
+
+
+class ProjectVote(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    project = models.ForeignKey(Project)
+    date_liked = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'project')
+

@@ -8,7 +8,10 @@
     {{ project.title }}
 </p>
 <div class="inner-content">
-<h1>{{ project.title }}</h1>
+<div class="overline project_overtitle">
+    <span>{{ project.likes.count }} ♥</span>
+    <h1>{{ project.title }}</h1>
+</div>
 <p>
 </p>
 <div>
@@ -20,13 +23,22 @@
 {% render_comment_list for project %}
 </div>
 <div class="sidebar">
+    <div class="project_actions">
+        <div class="bouton vote">
+            {% if is_liked %}
+            <a class="active">J'aime</a>
+            {% else %}
+            <a href="{% url 'project_like' pk=project.pk slug=project.get_slug %}">J'aime</a>
+            {% endif %}
+        </div>
+    </div>
     <div class="project-author">
         <img class="img-avatar-big" src="{{ project.author|avatar_big_url }}"/>
         Par {{ project.author|user_link }} le {{ project.creation_time|date:'SHORT_DATE_FORMAT' }}
         <br>
         dans {{ project.category }}
     </div>
-    <h4 class="clear">Autres vues</h4>
+    <h4 class="clear">Vues</h4>
     <div>
     {% for image in project.get_images %}
     {% if image %}

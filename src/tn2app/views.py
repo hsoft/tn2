@@ -1,15 +1,18 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth import get_user_model
 from django.core.exceptions import PermissionDenied
+from django.db import IntegrityError
 from django.db.models import Max
 from django.http import Http404
 from django.shortcuts import render
-from django.views.generic import ListView, TemplateView, DetailView
+from django.views.generic import ListView, TemplateView, DetailView, RedirectView
 from django.views.generic.edit import CreateView, UpdateView
 
 from django_comments.models import Comment
 
-from .models import UserProfile, Article, ArticleCategory, DiscussionGroup, Discussion, Project
+from .models import (
+    UserProfile, Article, ArticleCategory, DiscussionGroup, Discussion, Project, ProjectVote
+)
 from .forms import (
     UserProfileForm, NewDiscussionForm, EditDiscussionForm, EditCommentForm
 )
@@ -170,3 +173,25 @@ class ProjectList(ListView):
 class ProjectDetails(DetailView):
     template_name = 'project_details.html'
     model = Project
+
+    def get_context_data(self, **kwargs):
+        result = super().get_context_data(**kwargs)
+        result['is_liked'] = result['project'].likes.filter(pk=self.request.user.id).exists()
+        return result
+
+
+class ProjectLike(RedirectView):
+    pattern_name = 'project_details'
+
+    def get(self, request, *args, **kwargs):
+        result = super().get(request, *args, **kwargs)
+        try:
+            project = Project.objects.get(pk=kwargs['pk'])
+        except Project.DoesNotExist:
+            raise Http404()
+        try:
+            ProjectVote.objects.create(user=self.request.user, project=project)
+        except IntegrityError:
+            # double like, ignore
+            pass
+        return result
