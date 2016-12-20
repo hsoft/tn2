@@ -5,7 +5,7 @@ from unicodedata import normalize
 
 from django.core.management.base import BaseCommand
 from django.core.files import File
-from django.utils.html import strip_tags
+from django.utils.html import strip_tags, linebreaks
 
 from wordpress.models import (
     WpV2BpCoutureProjets, WpV2BpCoutureImages, WpV2BpCoutureCategories, WpV2Users
@@ -59,7 +59,7 @@ class Command(BaseCommand):
                 defaults={
                     'author': author,
                     'title': s(wpproj.title),
-                    'description': s(wpproj.description),
+                    'description': linebreaks(s(wpproj.description)),
                     'category_id': catid,
                     'pattern_name': s(pattern_name),
                     'pattern_url': s(pattern_url),

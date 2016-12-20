@@ -47,5 +47,10 @@ urlpatterns = [
         views.UserProfileEdit.as_view(),
         name='user_profile_edit'
     ),
+    url(
+        r'^membres/(?P<username>[-\w]+)/projets-couture/nouveau-projet/$',
+        views.ProjectCreate.as_view(),
+        name='project_create'
+    ),
 ]
 

@@ -17,7 +17,7 @@
 <div>
     <img id="full-size-image" src="{{ project.image1.url }}"/>
 </div>
-{{ project.description|linebreaks }}
+{{ project.description|safe }}
 
 <h2 id="comments">Commentaires</h2>
 {% render_comment_list for project %}

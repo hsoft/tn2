@@ -42,7 +42,7 @@ div.header {
 
         li {
             float: left;
-            
+
             a {
                 display: block;
                 text-decoration: none;
@@ -107,6 +107,12 @@ form p {
 form.userprofile {
     input[name="display_name"], input[name="city"], input[name="website"], input[name="sewing_machine"] {
         width: 300px;
+    }
+}
+
+form.newproject {
+    input[type="text"], input[type="url"] {
+        width: 80%;
     }
 }
 

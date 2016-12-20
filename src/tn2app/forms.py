@@ -5,7 +5,7 @@ from django_comments.models import Comment
 from django_comments.forms import COMMENT_MAX_LENGTH
 from ckeditor.widgets import CKEditorWidget
 
-from .models import UserProfile, Discussion
+from .models import UserProfile, Discussion, Project
 from .util import dedupe_slug
 
 
@@ -68,3 +68,26 @@ class EditCommentForm(BaseModelForm):
         widget=CKEditorWidget(config_name='restricted'),
         max_length=COMMENT_MAX_LENGTH
     )
+
+class NewProjectForm(BaseModelForm):
+    class Meta:
+        model = Project
+        fields = [
+            'title', 'category', 'description', 'pattern_name', 'pattern_url', 'blog_post_url',
+            'image1', 'image2', 'image3', 'image4', 'store_url'
+        ]
+
+    def __init__(self, author, **kwargs):
+        super().__init__(**kwargs)
+        self.author = author
+
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        instance.author = self.author
+
+        if commit:
+            instance.save()
+
+        return instance
+
+

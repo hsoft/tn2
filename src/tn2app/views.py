@@ -14,7 +14,7 @@ from .models import (
     UserProfile, Article, ArticleCategory, DiscussionGroup, Discussion, Project, ProjectVote
 )
 from .forms import (
-    UserProfileForm, NewDiscussionForm, EditDiscussionForm, EditCommentForm
+    UserProfileForm, NewDiscussionForm, EditDiscussionForm, EditCommentForm, NewProjectForm
 )
 
 
@@ -180,7 +180,17 @@ class ProjectDetails(DetailView):
         return result
 
 
-class ProjectLike(RedirectView):
+class ProjectCreate(LoginRequiredMixin, CreateView):
+    template_name = 'project_create.html'
+    form_class = NewProjectForm
+
+    def get_form_kwargs(self):
+        result = super().get_form_kwargs()
+        result['author'] = self.request.user
+        return result
+
+
+class ProjectLike(LoginRequiredMixin, RedirectView):
     pattern_name = 'project_details'
 
     def get(self, request, *args, **kwargs):

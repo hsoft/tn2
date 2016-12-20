@@ -9,6 +9,7 @@ from django.db.models import Max, Q
 from django.urls import reverse
 from django.utils.text import slugify
 
+from PIL import Image
 from ckeditor.fields import RichTextField
 from ckeditor_uploader.fields import RichTextUploadingField
 
@@ -192,7 +193,7 @@ def get_project_image_path(instance, filename, slot):
 class Project(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='projects')
     title = models.CharField(max_length=100)
-    description = models.TextField()
+    description = RichTextField(config_name='restricted')
     category = models.ForeignKey(ProjectCategory)
     pattern_name = models.CharField(max_length=250, blank=True)
     pattern_url = models.URLField(max_length=250, blank=True)
@@ -222,6 +223,16 @@ class Project(models.Model):
 
     def __str__(self):
         return "{} - {} - {}".format(self.id, self.author, self.title)
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
+        for image_field in self.get_images():
+            if not image_field:
+                continue
+            image = Image.open(image_field)
+            image.thumbnail((630, 630))
+            image.save(image_field.path)
 
     def get_absolute_url(self):
         return reverse('project_details', args=[self.id, self.get_slug()])
