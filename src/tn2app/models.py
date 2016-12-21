@@ -234,8 +234,10 @@ class Project(models.Model):
             if not image_field:
                 continue
             image = Image.open(image_field)
-            image.thumbnail((630, 630))
-            image.save(image_field.path)
+            w, h = image.size
+            if w > 630 or h > 630:
+                image.thumbnail((630, 630))
+                image.save(image_field.path)
 
     def get_absolute_url(self):
         return reverse('project_details', args=[self.id, self.get_slug()])
