@@ -16,12 +16,18 @@ def s(val):
     return strip_tags(html.unescape(val))
 
 class Command(BaseCommand):
-    help = 'Imports article categories from our WP DB'
+    help = 'Imports projects from our WP DB'
 
     def add_arguments(self, parser):
         parser.add_argument(
             'wpcontent_path',
             help="Path where wp-content is"
+        )
+        parser.add_argument(
+            '--project-id',
+            default=0,
+            type=int,
+            help="Specify a single project ID to import"
         )
 
     def handle(self, *args, **options):
@@ -38,7 +44,11 @@ class Command(BaseCommand):
                 print("Create category {}".format(cat))
 
         re_link = re.compile(r'<a href="(.*?)".*>(.*)</a>')
-        for wpproj in WpV2BpCoutureProjets.objects.order_by('-id'):
+        if options['project_id']:
+            wpprojs = [WpV2BpCoutureProjets.objects.get(id=options['project_id'])]
+        else:
+            wpprojs = WpV2BpCoutureProjets.objects.order_by('-id')
+        for wpproj in wpprojs:
             try:
                 author = User.objects.get_from_wpuser_id(wpproj.user_id)
             except WpV2Users.DoesNotExist:
@@ -67,7 +77,8 @@ class Command(BaseCommand):
                     'store_url': s(wpproj.market_id),
                 }
             )
-            if created:
+            # If targeting a single project, we always re-import photos
+            if created or options['project_id']:
                 print("Created project {}".format(proj))
                 proj.creation_time = wpproj.date_created
                 proj.save()
