@@ -233,11 +233,24 @@ class Project(models.Model):
         for image_field in self.get_images():
             if not image_field:
                 continue
-            image = Image.open(image_field)
+            try:
+                image = Image.open(image_field)
+            except (FileNotFoundError, OSError):
+                # Can't read the image, unset it
+                image_field.delete()
             w, h = image.size
             if w > 630 or h > 630:
                 image.thumbnail((630, 630))
-                image.save(image_field.path)
+                try:
+                    image.save(image_field.path)
+                except OSError:
+                    # could be a "cannot write mode P as JPEG" situation.
+                    # let's try http://stackoverflow.com/a/21669827
+                    try:
+                        image.convert('RGB').save(image_field.path)
+                    except OSError:
+                        # Oh, screw that.
+                        image_field.delete()
 
     def get_absolute_url(self):
         return reverse('project_details', args=[self.id, self.get_slug()])
