@@ -188,6 +188,9 @@ class ProjectCategory(models.Model):
 
 def get_project_image_path(instance, filename, slot):
     root, ext = os.path.splitext(filename)
+    ext = ext.lower()
+    if ext not in ('.jpg', '.jpeg', '.png'):
+        ext = '.jpg'
     return 'projects/{}/img{}{}'.format(instance.id, slot, ext)
 
 class Project(models.Model):
