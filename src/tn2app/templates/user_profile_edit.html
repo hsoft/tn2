@@ -7,7 +7,12 @@
     Modification
 </p>
 <h1>Modifier mon profil</h1>
-<form class="userprofile" action="{% url 'user_profile_edit' username=profile.user.username %}" method="POST">
+<form
+    class="userprofile"
+    action="{% url 'user_profile_edit' username=profile.user.username %}"
+    method="POST"
+    enctype="multipart/form-data"
+>
     {% csrf_token %}
     {{ form.as_p }}
     <input class="button" type="submit" value="Modifier" />
