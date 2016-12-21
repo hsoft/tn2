@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'easy_thumbnails',
     'pipeline',
     'django_comments',
+    'captcha',
 
     'wordpress',
     'tn2comments',

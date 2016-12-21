@@ -7,12 +7,13 @@ from django.contrib.auth.decorators import user_passes_test
 
 from account import views as account_views
 from ckeditor_uploader import views as ckeditor_views
+from tn2app import views as tn2_views
 
 ckperms = user_passes_test(lambda user: user.has_perm('tn2app.add_article'))
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^account/signup/$', account_views.SignupView.as_view(), name='account_signup'),
+    url(r'^account/signup/$', tn2_views.SignupView.as_view(), name='account_signup'),
     url(r'^account/confirm_email/(?P<key>\w+)/$', account_views.ConfirmEmailView.as_view(), name='account_confirm_email'),
     url(r'^account/login/$', account_views.LoginView.as_view(), name='account_login'),
     url(r'^account/logout/$', auth_views.logout, name='account_logout'),
@@ -25,6 +26,7 @@ urlpatterns = [
     url(r'^comments/', include('django_comments.urls')),
     url(r'^ckeditor/upload/', ckperms(ckeditor_views.upload), name='ckeditor_upload'),
     url(r'^ckeditor/browse/', ckperms(ckeditor_views.browse), name='ckeditor_browse'),
+    url(r'^captcha/', include('captcha.urls')),
     url(r'^', include('tn2app.urls')),
 ]
 

@@ -4,9 +4,15 @@ from django.utils.text import slugify
 from django_comments.models import Comment
 from django_comments.forms import COMMENT_MAX_LENGTH
 from ckeditor.widgets import CKEditorWidget
+from captcha.fields import CaptchaField
+import account.forms
 
 from .models import UserProfile, Discussion, Project
 from .util import dedupe_slug
+
+
+class SignupForm(account.forms.SignupForm):
+    captcha = CaptchaField()
 
 
 class BaseModelForm(forms.ModelForm):

@@ -9,13 +9,18 @@ from django.views.generic import ListView, TemplateView, DetailView, RedirectVie
 from django.views.generic.edit import CreateView, UpdateView
 
 from django_comments.models import Comment
+import account.views
 
 from .models import (
     UserProfile, Article, ArticleCategory, DiscussionGroup, Discussion, Project, ProjectVote
 )
 from .forms import (
-    UserProfileForm, NewDiscussionForm, EditDiscussionForm, EditCommentForm, NewProjectForm
+    UserProfileForm, NewDiscussionForm, EditDiscussionForm, EditCommentForm, NewProjectForm,
+    SignupForm
 )
+
+class SignupView(account.views.SignupView):
+    form_class = SignupForm
 
 
 def homepage(request):
