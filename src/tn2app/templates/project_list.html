@@ -9,11 +9,13 @@
 
 {% include "include/pagination.html" %}
 
+<div class="project-list">
 {% for project in project_list %}
 <a href="{{ project.get_absolute_url }}">
     <img src="{{ project.image1|thumbnail_url:'project-list' }}"/>
 </a>
 {% endfor %}
+</div>
 
 {% include "include/pagination.html" %}
 

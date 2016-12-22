@@ -2,13 +2,14 @@
 {% load thumbnail %}
 
 {% block main_contents %}
-    <h1>Thread and needles</h1>
     <h2>Site en construction</h2>
     <p>
         Ce site est en construction. Vous pouvez joindre la discussion sur cette construction
         dans <a href="{% url 'discussion_groups' %}">les groupes</a>.
     </p>
-    <h2>Articles</h2>
+    <div class="overline">
+        <h4>Les articles</h4>
+    </div>
     <ol class="threeitems">
         {% for article in articles %}
         <li>
@@ -19,4 +20,16 @@
         </li>
         {% endfor %}
     </ol>
+    <hr>
+
+    <div class="col_left project-list">
+        <div class="overline">
+            <h4>Les projets à la Une</h4>
+        </div>
+        {% for project in featured_projects %}
+        <a href="{{ project.get_absolute_url }}">
+            <img src="{{ project.image1|thumbnail_url:'project-list' }}"/>
+        </a>
+        {% endfor %}
+    </div>
 {% endblock %}

@@ -74,4 +74,17 @@ better styling.
     margin-left: 0px;
     width: 100%;
     clear: both;
+
+    h4 {
+        display: inline;
+        background-color: white;
+        padding-right: 5px;
+    }
+}
+
+hr {
+    background: url("#{$images_path}/bg-stripes-light.gif") 0 0 repeat-x;
+    clear: both;
+    height: 10px;
+    border: none;
 }

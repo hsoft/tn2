@@ -25,7 +25,11 @@ class SignupView(account.views.SignupView):
 
 def homepage(request):
     articles = Article.published.order_by('-creation_time')[:3]
-    context = {'articles': articles}
+    featured_projects = Project.objects.all()[:5]
+    context = {
+        'articles': articles,
+        'featured_projects': featured_projects,
+    }
     return render(request, 'homepage.html', context)
 
 def article(request, slug):
