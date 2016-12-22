@@ -156,12 +156,13 @@ class DiscussionGroup(models.Model):
 
 class Discussion(models.Model):
     group = models.ForeignKey(DiscussionGroup, related_name='discussions')
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, null=True)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, related_name='+')
     slug = models.SlugField(max_length=255)
     title = models.CharField(max_length=255)
     content = RichTextField(config_name='restricted')
     creation_time = models.DateTimeField(auto_now_add=True)
     last_activity = models.DateTimeField(auto_now_add=True)
+    last_poster = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, related_name='+')
     is_locked = models.BooleanField(default=False)
     is_sticky = models.BooleanField(default=False)
 
@@ -173,6 +174,8 @@ class Discussion(models.Model):
 
     def clean(self):
         self.content = sanitize_comment(self.content)
+        if not self.last_poster and self.author:
+            self.last_poster = self.author
 
     def get_absolute_url(self):
         return reverse('discussion', args=[self.group.slug, self.slug])
