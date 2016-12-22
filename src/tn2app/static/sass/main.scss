@@ -101,6 +101,16 @@ form p {
     label {
         display: block;
         font-weight: bold;
+        margin-bottom: 8px;
+    }
+
+    input, select {
+        display: block;
+    }
+
+    .helptext {
+        display: block;
+        margin-top: 8px;
     }
 }
 

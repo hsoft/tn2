@@ -195,21 +195,58 @@ def get_project_image_path(instance, filename, slot):
 
 class Project(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='projects')
-    title = models.CharField(max_length=100)
+    title = models.CharField(
+        max_length=100,
+        verbose_name="Titre du projet",
+    )
     description = RichTextField(config_name='restricted')
-    category = models.ForeignKey(ProjectCategory)
-    pattern_name = models.CharField(max_length=250, blank=True)
-    pattern_url = models.URLField(max_length=250, blank=True)
-    blog_post_url = models.URLField(max_length=250, blank=True)
-    store_url = models.URLField(max_length=250, blank=True)
+    category = models.ForeignKey(
+        ProjectCategory,
+        verbose_name="Catégorie",
+    )
+    pattern_name = models.CharField(
+        max_length=250,
+        blank=True,
+        verbose_name="Patron ou tutoriel utilisé",
+    )
+    pattern_url = models.URLField(
+        max_length=250,
+        blank=True,
+        verbose_name="URL du patron ou tutoriel",
+    )
+    blog_post_url = models.URLField(
+        max_length=250,
+        blank=True,
+        verbose_name="Article sur mon blog",
+    )
+    store_url = models.URLField(
+        max_length=250,
+        blank=True,
+        verbose_name="URL du produit dans votre boutique",
+    )
     creation_time = models.DateTimeField(auto_now_add=True)
 
     # baaah, it's not worth the extra indirection to create a model for project images.
     # Let's go low-tech and have 4 fields.
-    image1 = models.ImageField(upload_to=partial(get_project_image_path, slot=1))
-    image2 = models.ImageField(upload_to=partial(get_project_image_path, slot=2), blank=True)
-    image3 = models.ImageField(upload_to=partial(get_project_image_path, slot=3), blank=True)
-    image4 = models.ImageField(upload_to=partial(get_project_image_path, slot=4), blank=True)
+    image1 = models.ImageField(
+        upload_to=partial(get_project_image_path, slot=1),
+        verbose_name="Photographie principale du projet",
+    )
+    image2 = models.ImageField(
+        upload_to=partial(get_project_image_path, slot=2),
+        blank=True,
+        verbose_name="Photographie alternative 1",
+    )
+    image3 = models.ImageField(
+        upload_to=partial(get_project_image_path, slot=3),
+        blank=True,
+        verbose_name="Photographie alternative 2",
+    )
+    image4 = models.ImageField(
+        upload_to=partial(get_project_image_path, slot=4),
+        blank=True,
+        verbose_name="Photographie alternative 3",
+    )
 
     likes = models.ManyToManyField(settings.AUTH_USER_MODEL, through='ProjectVote')
 
