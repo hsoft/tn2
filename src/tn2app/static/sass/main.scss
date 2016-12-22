@@ -1,6 +1,7 @@
 @import 'normalize';
 @import 'variables';
 @import 'legacy';
+@import 'header';
 
 body {
     font-family: Arial, Helvetica, sans-serif;
@@ -26,47 +27,6 @@ body {
 h1 {
     font-size: 32px;
     line-height: 38px;
-}
-
-div.header {
-    background-color: $bg_dark;
-
-    ul {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-        font-weight: bold;
-        text-transform: uppercase;
-        color: $text_light;
-
-        li {
-            float: left;
-
-            a {
-                display: block;
-                text-decoration: none;
-                padding: 14px 16px;
-            }
-            a:visited, a:link {
-                color: $text_light;
-            }
-        }
-        li.right {
-            float: right;
-        }
-    }
-
-    .dropdown-content {
-        display: none;
-        position: absolute;
-        background-color: $bg_dark;
-        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    }
-
-    .dropdown:hover .dropdown-content {
-        display: block;
-    }
 }
 
 ol.threeitems {

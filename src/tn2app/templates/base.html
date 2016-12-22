@@ -35,6 +35,12 @@
                 </ul>
             </div>
         </div>
+        <div class="subheader">
+            <div class="fullwidth">
+                <img src="{% static 'images/tn-logo.png' %}"/>
+                <a class="button publier-projet" href="{% url 'project_create' username=user.username %}">Publier un projet</a>
+            </div>
+        </div>
         <div class="main_contents fullwidth">
         {% block main_contents %}
         {% endblock %}
