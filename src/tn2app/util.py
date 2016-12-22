@@ -35,6 +35,9 @@ def deaccent(s):
     # http://stackoverflow.com/a/15261831
     return ''.join((c for c in unicodedata.normalize('NFD', s) if unicodedata.category(c) != 'Mn'))
 
+def unescape_mysql(s):
+    return s.replace('\\\'', '\'').replace('\\"', '"')
+
 def gravatar_url(email, size=None, default_image=None):
     normalized = email.strip().lower()
     email_hash = hashlib.md5(normalized.encode('utf-8')).hexdigest()

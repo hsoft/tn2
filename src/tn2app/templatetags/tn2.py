@@ -24,6 +24,18 @@ def avatar_big_url(user):
     return gravatar_url(user.email, size=60, default_image='mm')
 
 @register.filter(is_safe=True)
+def group_avatar_url(group):
+    if group.avatar:
+        return get_thumbnailer(group.avatar)['group-avatar'].url
+    return gravatar_url(group.slug, size=80, default_image='identicon')
+
+@register.filter(is_safe=True)
+def group_avatar_big_url(group):
+    if group.avatar:
+        return get_thumbnailer(group.avatar)['group-avatar-big'].url
+    return gravatar_url(group.slug, size=150, default_image='identicon')
+
+@register.filter(is_safe=True)
 def article_thumbnail(article):
     if article.main_image:
         return get_thumbnailer(article.main_image)['preview'].url

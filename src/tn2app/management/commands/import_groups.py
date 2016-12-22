@@ -1,47 +1,70 @@
+import os
+import html
+
+from django.core.files import File
 from django.core.management.base import BaseCommand
 from django.utils.html import linebreaks
 
 from django_comments.models import Comment
 
-from wordpress.models import WpV2BbForums, WpV2BbTopics, WpV2BbPosts, WpV2Users
+from wordpress.models import (
+    WpV2BpGroups, WpV2BpGroupsGroupmeta, WpV2BbTopics, WpV2BbPosts, WpV2Users,
+)
 from ...models import User, DiscussionGroup, Discussion
-from ...util import deaccent, sanitize_comment
+from ...util import deaccent, sanitize_comment, unescape_mysql
 
 class Command(BaseCommand):
     help = 'Imports groups from our WP DB'
 
+    def add_arguments(self, parser):
+        parser.add_argument(
+            'avatars_path',
+            help="Path where WP avatars are (uploads/group-avatars)"
+        )
+
     def handle(self, *args, **options):
-        wpforums = WpV2BbForums.objects
-        print("Processing {} groups".format(wpforums.count()))
+        avatars_path = options['avatars_path']
+        wpgroups = WpV2BpGroups.objects
+        print("Processing {} groups".format(wpgroups.count()))
 
         # These groups end up empty at the end of the process and it's easier to blacklist them
         # excplicitly than to complicate the algo.
         EMPTY_GROUPS = {
             'couture-orientale',
-            'magasins-de-tissus-a-letranger',
-            'bons-plans-couture-a-hong-kong',
-            'bon-plan-achat-liberty',
         }
 
         forumid2slug = {}
-        for wpforum in wpforums.all():
-            slug = deaccent(wpforum.forum_slug)
+        for wpgroup in wpgroups.all():
+            slug = deaccent(wpgroup.slug)
             if slug in EMPTY_GROUPS:
                 continue
-            forumid2slug[wpforum.forum_id] = slug
+            forum_id = int(WpV2BpGroupsGroupmeta.objects.get(group_id=wpgroup.id, meta_key='forum_id').meta_value)
+            forumid2slug[forum_id] = slug
             if DiscussionGroup.objects.filter(slug=slug).exists():
                 # already imported
                 continue
             print(slug)
-            if not WpV2BbTopics.objects.filter(forum_id=wpforum.forum_id).exists():
+            if not WpV2BbTopics.objects.filter(forum_id=forum_id).exists():
                 print("... no topic! skipping...")
                 continue
-            DiscussionGroup.objects.create(
+            group = DiscussionGroup.objects.create(
                 slug=slug,
-                title=wpforum.forum_name,
-                description=wpforum.forum_desc,
-                private=wpforum.forum_slug=='redaction',
+                title=unescape_mysql(html.unescape(wpgroup.name)),
+                description=linebreaks(unescape_mysql(sanitize_comment(wpgroup.description))),
+                private=wpgroup.status=='hidden',
             )
+
+            # Avatar
+            group_path = os.path.join(avatars_path, str(wpgroup.id))
+            if not os.path.exists(group_path):
+                continue
+            possible_matches = [fn for fn in os.listdir(group_path) if os.path.splitext(fn)[0].endswith('bpfull')]
+            if possible_matches:
+                to_import = possible_matches[-1]
+                print("Avatar at: {}".format(to_import))
+                with open(os.path.join(group_path, to_import), 'rb') as fp:
+                    dfile = File(fp)
+                    group.avatar.save(to_import, dfile)
 
         discussion2wptopic = {}
         wptopics = WpV2BbTopics.objects.filter(topic_status=0)

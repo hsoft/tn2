@@ -133,11 +133,20 @@ class ArticleCategory(models.Model):
         return reverse('category', args=[self.slug])
 
 
+def get_group_avatar_path(instance, filename):
+    root, ext = os.path.splitext(filename)
+    return 'avatars_group/{}{}'.format(instance.id, ext)
+
 class DiscussionGroup(models.Model):
     slug = models.SlugField(max_length=255, unique=True)
     title = models.CharField(max_length=255)
     description = models.TextField()
     private = models.BooleanField(default=False)
+    avatar = models.ImageField(
+        upload_to=get_group_avatar_path,
+        blank=True,
+        verbose_name="Avatar"
+    )
 
     class Meta:
         permissions = (
