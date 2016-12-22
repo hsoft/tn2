@@ -38,7 +38,9 @@
         <div class="subheader">
             <div class="fullwidth">
                 <img src="{% static 'images/tn-logo.png' %}"/>
+                {% if user.is_authenticated %}
                 <a class="button publier-projet" href="{% url 'project_create' username=user.username %}">Publier un projet</a>
+                {% endif %}
             </div>
         </div>
         <div class="main_contents fullwidth">
