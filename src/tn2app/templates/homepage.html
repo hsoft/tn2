@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load thumbnail %}
+{% load thumbnail humanize tn2 %}
 
 {% block main_contents %}
     <h2>Site en construction</h2>
@@ -31,5 +31,32 @@
             <img src="{{ project.image1|thumbnail_url:'project-list' }}"/>
         </a>
         {% endfor %}
+    </div>
+
+    <div class="col_left">
+        <div class="overline">
+            <h4>Récemment dans les groupes</h4>
+        </div>
+        <ul class="group-list">
+        {% for discussion in recent_discussions %}
+            <li>
+                <a href="{{ discussion.get_absolute_url }}">
+                    <img src="{{ discussion.group|group_avatar_url }}"/>
+                </a>
+                <div class="title">
+                    <a href="{{ discussion.get_absolute_url }}">
+                        {{ discussion.title }}
+                    </a>
+                </div>
+                <p>
+                    dans le groupe "{{ discussion.group.title }}"
+                    <br>
+                    dernier message par
+                    {{ discussion.last_poster|user_link }}
+                    {{ discussion.last_activity|naturaltime }}
+                </p>
+            </li>
+        {% endfor %}
+        </ul>
     </div>
 {% endblock %}

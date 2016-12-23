@@ -201,8 +201,11 @@ class Discussion(models.Model):
 
     def clean(self):
         self.content = sanitize_comment(self.content)
+
+    def save(self, *args, **kwargs):
         if not self.last_poster and self.author:
             self.last_poster = self.author
+        super().save(*args, **kwargs)
 
     def get_absolute_url(self):
         return reverse('discussion', args=[self.group.slug, self.slug])

@@ -26,9 +26,12 @@ class SignupView(account.views.SignupView):
 def homepage(request):
     articles = Article.published.order_by('-creation_time')[:3]
     featured_projects = Project.objects.all()[:5]
+    recent_discussions = Discussion.objects.filter(group__private=False)\
+        .order_by('-last_activity')[:4]
     context = {
         'articles': articles,
         'featured_projects': featured_projects,
+        'recent_discussions': recent_discussions,
     }
     return render(request, 'homepage.html', context)
 
