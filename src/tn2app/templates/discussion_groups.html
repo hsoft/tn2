@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load humanize tn2 %}
+{% load humanize tn2 staticfiles %}
 
 {% block main_contents %}
 <div class="inner-content">
@@ -43,4 +43,26 @@
     {% endfor %}
     </ul>
 </div>
+
+<div class="sidebar">
+    <div class="groupes_geo">
+        <div class="overline">
+            <h4>Groupes géographiques</h4>
+        </div>
+        <img src="{% static 'images/carte-france.jpg' %}"/>
+        <p>
+            Envie de rencontrer des needlenautes de votre région et de partager adresses et bons plans ?
+        </p>
+        <select class="open-url-on-select">
+            <option>Choisissez une région</option>
+            {% for group in geo_groups %}
+            <option value="{{ group.slug }}" data-url="{{ group.get_absolute_url }}">{{ group.title }}</option>
+            {% endfor %}
+        </select>
+    </div>
+</div>
+{% endblock %}
+
+{% block bottom_js %}
+<script type="text/javascript" src="{% static "js/groups.js" %}"></script>
 {% endblock %}
