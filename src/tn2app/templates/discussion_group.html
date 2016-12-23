@@ -5,6 +5,7 @@
 <p>
     <a href="{% url 'homepage' %}">Accueil</a>&nbsp;&gt;&nbsp;
     <a href="{% url 'discussion_groups' %}">Groupes</a>&nbsp;&gt;&nbsp;
+    {{ group.title }}
 </p>
 <h1>{{ group.title }}</h1>
 <table class="discussion-list">

@@ -18,7 +18,12 @@ class ArticleCategoryAdmin(admin.ModelAdmin):
 
 
 admin.site.register(ArticleCategory, ArticleCategoryAdmin)
-admin.site.register(DiscussionGroup)
+
+class DiscussionGroupAdmin(admin.ModelAdmin):
+    list_display = ('slug', 'title', 'group_type', 'private')
+    list_filter = ('group_type', 'private')
+
+admin.site.register(DiscussionGroup, DiscussionGroupAdmin)
 admin.site.register(Discussion)
 admin.site.register(Project)
 

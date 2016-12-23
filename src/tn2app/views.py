@@ -38,11 +38,15 @@ def article(request, slug):
     return render(request, 'article.html', context)
 
 def discussion_groups(request):
-    groups = DiscussionGroup.objects
+    groups = DiscussionGroup.objects.filter(group_type=DiscussionGroup.TYPE_NORMAL)
     if not request.user.has_perm('tn2app.access_private_groups'):
         groups = groups.filter(private=False)
     groups = groups.annotate(latest_activity=Max('discussions__last_activity')).order_by('-latest_activity')
-    context = {'groups': groups}
+    featured_groups = DiscussionGroup.objects.filter(group_type=DiscussionGroup.TYPE_FEATURED)
+    context = {
+        'groups': groups,
+        'featured_groups': featured_groups.all(),
+    }
     return render(request, 'discussion_groups.html', context)
 
 def discussion_group(request, group_slug):

@@ -1,14 +1,10 @@
 @import 'normalize';
 @import 'variables';
 @import 'legacy';
+@import 'global';
 @import 'header';
 @import 'project';
 @import 'group';
-
-body {
-    font-family: Arial, Helvetica, sans-serif;
-    background-color: white;
-}
 
 .fullwidth {
     margin-left: auto;
@@ -24,11 +20,6 @@ body {
 // It has to be invisible.
 #id_honeypot {
     display: none;
-}
-
-h1 {
-    font-size: 32px;
-    line-height: 38px;
 }
 
 ol.threeitems {
@@ -102,21 +93,6 @@ form.signupform {
     }
 }
 
-.button {
-    background: $red_highlight;
-    text-decoration: none;
-    font-size: 11pt;
-    font-weight: bold;
-    text-transform: uppercase;
-    padding: 4px 6px;
-    border-radius: 4px;
-    border: none;
-
-    &, &:link, &:visited {
-        color: $pink_button_text_color;
-    }
-}
-
 #comments {
     dt {
         font-style: italic;
@@ -128,12 +104,6 @@ form.signupform {
         // Remove default 40px margin of dd elements.
         margin-left: 0;
     }
-}
-
-// don't decorate links with font awesome glyphs, it's ugly
-a.fa {
-    text-decoration: none;
-    color: $text-color;
 }
 
 div.article-preview {

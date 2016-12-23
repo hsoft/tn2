@@ -142,9 +142,21 @@ def get_group_avatar_path(instance, filename):
     return 'avatars_group/{}{}'.format(instance.id, ext)
 
 class DiscussionGroup(models.Model):
+    TYPE_NORMAL = 0
+    TYPE_GEOGRAPHICAL = 1
+    TYPE_FEATURED = 2
+
+    TYPE_CHOICES = [
+        (TYPE_NORMAL, "Thématique"),
+        (TYPE_GEOGRAPHICAL, "Géographique"),
+        (TYPE_FEATURED, "Entraide"),
+    ]
+
     slug = models.SlugField(max_length=255, unique=True)
     title = models.CharField(max_length=255)
     description = models.TextField()
+    description_short = models.TextField(blank=True)
+    group_type = models.SmallIntegerField(choices=TYPE_CHOICES, default=TYPE_NORMAL)
     private = models.BooleanField(default=False)
     avatar = models.ImageField(
         upload_to=get_group_avatar_path,
