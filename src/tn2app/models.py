@@ -4,6 +4,7 @@ from functools import partial
 from django.conf import settings
 from django.contrib.auth.models import User as UserBase, UserManager as UserManagerBase
 from django.contrib.auth.hashers import get_hasher
+from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
 from django.db.models import Max, Q
 from django.urls import reverse
@@ -12,6 +13,7 @@ from django.utils.text import slugify
 from PIL import Image
 from ckeditor.fields import RichTextField
 from ckeditor_uploader.fields import RichTextUploadingField
+from django_comments.models import Comment
 
 from wordpress.models import WpV2Users
 
@@ -111,6 +113,8 @@ class Article(models.Model):
     creation_time = models.DateTimeField(auto_now_add=True)
     publish_time = models.DateTimeField(blank=True, null=True)
 
+    comments = GenericRelation(Comment, object_id_field='object_pk')
+
     objects = models.Manager()
     published = PublishedArticleManager()
 
@@ -174,6 +178,8 @@ class Discussion(models.Model):
     last_poster = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, related_name='+')
     is_locked = models.BooleanField(default=False)
     is_sticky = models.BooleanField(default=False)
+
+    comments = GenericRelation(Comment, object_id_field='object_pk')
 
     class Meta:
         unique_together = ('group', 'slug')
@@ -269,6 +275,8 @@ class Project(models.Model):
     # been migrated.
     # This field's value never changes and stays to zero for all post-migration projects.
     legacy_like_count = models.PositiveSmallIntegerField(default=0)
+
+    comments = GenericRelation(Comment, object_id_field='object_pk')
 
     class Meta:
         ordering = ['-creation_time']
