@@ -113,6 +113,22 @@ div.recent-discussions ul.group-list {
     }
 }
 
+body.group-detail {
+    .page-title {
+        img {
+            float: left;
+            width: 60px;
+            height: 60px;
+        }
+
+        div.overline {
+            margin-left: 70px;
+            clear: none;
+            width: auto;
+        }
+    }
+}
+
 .bouton {
     display: block;
     border-radius: 3px;
@@ -140,7 +156,7 @@ div.recent-discussions ul.group-list {
     width: 100%;
     clear: both;
 
-    h4 {
+    h4, h1 {
         display: inline;
         background-color: white;
         padding-right: 5px;
