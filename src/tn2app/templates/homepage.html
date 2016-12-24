@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% load thumbnail humanize tn2 %}
 
+{% block bodyclasses %}homepage{% endblock %}
+
 {% block main_contents %}
     <h2>Site en construction</h2>
     <p>
@@ -22,15 +24,21 @@
     </ol>
     <hr>
 
-    <div class="col_left project-list">
+    <div class="col_left featured-projects">
         <div class="overline">
             <h4>Les projets à la Une</h4>
         </div>
-        {% for project in featured_projects %}
+        {% for project in featured_projects.all|slice:":3" %}
         <a href="{{ project.get_absolute_url }}">
             <img src="{{ project.image1|thumbnail_url:'project-list' }}"/>
         </a>
         {% endfor %}
+    </div>
+
+    <div class="col_right">
+        <div class="overline">
+            <h4>En un clic...</h4>
+        </div>
     </div>
 
     <div class="col_left">
@@ -38,5 +46,25 @@
             <h4>Récemment dans les groupes</h4>
         </div>
         {% include 'include/discussion_ul.html' with discussions=recent_discussions only %}
+    </div>
+
+    <div class="col_right latest-projects">
+        <div class="overline">
+            <h4>Nouveaux projets</h4>
+        </div>
+        <div class="popular">
+        {% for project in popular_projects.all|slice:":3" %}
+        <a href="{{ project.get_absolute_url }}">
+            <img src="{{ project.image1|thumbnail_url:'project-list' }}"/>
+        </a>
+        {% endfor %}
+        </div>
+        <div class="new">
+        {% for project in latest_projects.all|slice:":20" %}
+        <a href="{{ project.get_absolute_url }}">
+            <img src="{{ project.image1|thumbnail_url:'project-list' }}"/>
+        </a>
+        {% endfor %}
+        </div>
     </div>
 {% endblock %}

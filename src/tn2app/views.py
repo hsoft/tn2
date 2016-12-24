@@ -2,7 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth import get_user_model
 from django.core.exceptions import PermissionDenied
 from django.db import IntegrityError
-from django.db.models import Max
+from django.db.models import Max, Count
 from django.http import Http404
 from django.shortcuts import render
 from django.views.generic import ListView, TemplateView, DetailView, RedirectView
@@ -25,12 +25,15 @@ class SignupView(account.views.SignupView):
 
 def homepage(request):
     articles = Article.published.order_by('-creation_time')[:3]
-    featured_projects = Project.objects.all()[:5]
+    popular_projects = Project.objects.annotate(num_likes=Count('likes')).order_by('-num_likes')
+    latest_projects = Project.objects
     recent_discussions = Discussion.objects.filter(group__private=False)\
         .order_by('-last_activity')[:4]
     context = {
         'articles': articles,
-        'featured_projects': featured_projects,
+        'featured_projects': popular_projects,
+        'popular_projects': popular_projects,
+        'latest_projects': latest_projects,
         'recent_discussions': recent_discussions,
     }
     return render(request, 'homepage.html', context)
