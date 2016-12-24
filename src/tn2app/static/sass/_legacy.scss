@@ -33,10 +33,14 @@ better styling.
     width: 100%;
     clear: both;
 
-    h4, h1 {
+    h1, h2, h3, h4, h5, h6 {
         display: inline;
         background-color: white;
         padding-right: 5px;
+
+        a {
+            color: black;
+        }
     }
 }
 
@@ -231,3 +235,12 @@ body.group-detail {
     }
 }
 
+body.article-list {
+    div.article-preview {
+        margin-bottom: 60px;
+    }
+
+    img.article-main-image {
+        margin-right: 20px;
+    }
+}

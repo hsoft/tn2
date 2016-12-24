@@ -1,40 +1,56 @@
 {% extends 'base.html' %}
 {% load tn2 comments %}
 
+{% block bodyclasses %}article-list{% endblock %}
+
 {% block main_contents %}
 <p>
     <a href="{% url 'homepage' %}">Accueil</a>&nbsp;&gt;&nbsp;
     Blog
 </p>
 
-{% include "include/pagination.html" %}
-
-{% for article in article_list %}
-<div class="article-preview">
-    <h2><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></h2>
-    <p>
-        {% include 'include/article_meta_line.html' %}
-    </p>
-    <a href="{{ article.get_absolute_url }}">
-        <img src="{{ article|article_thumbnail }}"/>
-    </a>
-    <p class="excerpt">
-        {{ article.content|striptags|truncatewords:55 }}
-    </p>
-    <p class="readmore">
-        {% get_comment_count for article as comment_count %}
-        <a href="{{ article.get_absolute_url }}#comments">
-            {{ comment_count }} Commentaire{{ comment_count|pluralize }}
-        </a>
+<div class="inner-content">
+    {% for article in article_list %}
+    <div class="article-preview">
+        <div class="overline">
+            <h2><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></h2>
+        </div>
+        <p>
+            {% include 'include/article_meta_line.html' %}
+        </p>
         <a href="{{ article.get_absolute_url }}">
-            Lire l'article <span class="fa fa-chevron-circle-right"></span>
+            <img class="article-main-image" src="{{ article|article_thumbnail }}"/>
         </a>
-    </p>
-    <div class="clear"></div>
+        <p class="excerpt">
+            {{ article.content|striptags|truncatewords:55 }}
+        </p>
+        <p class="readmore">
+            {% get_comment_count for article as comment_count %}
+            <a href="{{ article.get_absolute_url }}#comments">
+                {{ comment_count }} Commentaire{{ comment_count|pluralize }}
+            </a>
+            <a href="{{ article.get_absolute_url }}">
+                Lire l'article <span class="fa fa-chevron-circle-right"></span>
+            </a>
+        </p>
+        <div class="clear"></div>
+    </div>
+    {% endfor %}
+
+    {% include "include/pagination.html" %}
 </div>
-{% endfor %}
 
-{% include "include/pagination.html" %}
-
+<div class="sidebar">
+    <div class="categories">
+        <div class="overline">
+            <h4>Catégories</h4>
+        </div>
+        <ul>
+            {% for cat in featured_categories.all %}
+            <li><a href="{% url 'category' slug=cat.slug %}">{{ cat.title }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
 {% endblock %}
 

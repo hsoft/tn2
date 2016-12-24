@@ -123,6 +123,11 @@ class ArticleList(ListView):
     ordering = '-creation_time'
     paginate_by = 5
 
+    def get_context_data(self, *args, **kwargs):
+        result = super().get_context_data(*args, **kwargs)
+        result['featured_categories'] = ArticleCategory.objects.filter(featured=True).order_by('title')
+        return result
+
 
 class ArticlesByCategoryList(ArticleList):
     def get_queryset(self):
