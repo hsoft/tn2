@@ -37,26 +37,6 @@
         <div class="overline">
             <h4>Récemment dans les groupes</h4>
         </div>
-        <ul class="group-list">
-        {% for discussion in recent_discussions %}
-            <li>
-                <a href="{{ discussion.get_absolute_url }}">
-                    <img src="{{ discussion.group|group_avatar_url }}"/>
-                </a>
-                <div class="title">
-                    <a href="{{ discussion.get_absolute_url }}">
-                        {{ discussion.title }}
-                    </a>
-                </div>
-                <p>
-                    dans le groupe "{{ discussion.group.title }}"
-                    <br>
-                    dernier message par
-                    {{ discussion.last_poster|user_link }}
-                    {{ discussion.last_activity|naturaltime }}
-                </p>
-            </li>
-        {% endfor %}
-        </ul>
+        {% include 'include/discussion_ul.html' with discussions=recent_discussions only %}
     </div>
 {% endblock %}

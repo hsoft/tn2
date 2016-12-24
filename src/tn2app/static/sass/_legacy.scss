@@ -77,6 +77,35 @@ ul.group-list {
     }
 }
 
+/* homepage */
+div.col_left ul.group-list {
+    li {
+        margin-bottom: 0;
+        padding: 10px 0;
+        border-bottom: 1px solid #eeeeee;
+    }
+}
+
+/* sidebar in group list */
+div.recent-discussions ul.group-list {
+    li {
+        margin-bottom: 0;
+        padding: 10px 0;
+        font-size: 11px;
+        border-bottom: 1px solid #eeeeee;
+    }
+
+    img {
+        width: 30px;
+        height: 30px;
+        margin-right: 10px;
+    }
+
+    p {
+        margin: 0;
+    }
+}
+
 .groupes_geo {
     img {
         display: block;

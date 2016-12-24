@@ -1,0 +1,25 @@
+{% load humanize tn2 %}
+
+<ul class="group-list">
+{% for discussion in discussions %}
+    <li>
+        <a href="{{ discussion.get_absolute_url }}">
+            <img src="{{ discussion.group|group_avatar_url }}"/>
+        </a>
+        <div class="title">
+            <a href="{{ discussion.get_absolute_url }}">
+                {{ discussion.title }}
+            </a>
+        </div>
+        <p>
+            {% if not short_mode %}
+            dans le groupe "{{ discussion.group.title }}"
+            <br>
+            dernier message par
+            {{ discussion.last_poster|user_link }}
+            {% endif %}
+            {{ discussion.last_activity|naturaltime }}
+        </p>
+    </li>
+{% endfor %}
+</ul>

@@ -47,10 +47,13 @@ def discussion_groups(request):
     groups = groups.annotate(latest_activity=Max('discussions__last_activity')).order_by('-latest_activity')
     featured_groups = DiscussionGroup.objects.filter(group_type=DiscussionGroup.TYPE_FEATURED)
     geo_groups = DiscussionGroup.objects.filter(group_type=DiscussionGroup.TYPE_GEOGRAPHICAL)
+    recent_discussions = Discussion.objects.filter(group__private=False)\
+        .order_by('-last_activity')[:6]
     context = {
         'groups': groups,
         'featured_groups': featured_groups.all(),
         'geo_groups': geo_groups.all(),
+        'recent_discussions': recent_discussions.all(),
     }
     return render(request, 'discussion_groups.html', context)
 

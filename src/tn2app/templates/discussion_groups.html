@@ -60,6 +60,12 @@
             {% endfor %}
         </select>
     </div>
+    <div class="recent-discussions">
+        <div class="overline">
+            <h4>Dernières discussions</h4>
+        </div>
+        {% include 'include/discussion_ul.html' with discussions=recent_discussions short_mode=True only %}
+    </div>
 </div>
 {% endblock %}
 
