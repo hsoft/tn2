@@ -306,7 +306,7 @@ class Project(models.Model):
             if not image_field:
                 continue
             try:
-                with Image.open(image_field) as image:
+                with Image.open(image_field.path) as image:
                     w, h = image.size
                     if w > 630 or h > 630:
                         image.thumbnail((630, 630))
