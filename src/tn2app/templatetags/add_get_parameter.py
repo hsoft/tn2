@@ -41,7 +41,6 @@ class AddGetParameter(Node):
 
 @register.tag
 def add_get(parser, token):
-    print('hello')
     pairs = token.split_contents()[1:]
     values = {}
     for pair in pairs:
