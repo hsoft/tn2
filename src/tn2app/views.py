@@ -1,5 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth import get_user_model
+from django.contrib.postgres.search import SearchVector, SearchRank
 from django.core.exceptions import PermissionDenied
 from django.db import IntegrityError
 from django.db.models import Max, Count
@@ -234,3 +235,28 @@ class ProjectLike(LoginRequiredMixin, RedirectView):
             # double like, ignore
             pass
         return result
+
+
+# Full-Text search is a bit intensive, resource-wise. To minimize the risk of the server being
+# brought down to its knees simply because a bot decides that it searches a couple of things,
+# we're making the search available to logged users only. Later, we can work on making it more
+# efficient and remove that limitation.
+
+class ArticleSearchView(LoginRequiredMixin, ListView):
+    model = Article
+    template_name = 'search_article.html'
+    paginate_by = 10
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        q = self.request.GET.get('q')
+        if not q:
+            return queryset.none()
+        # Postgres full-text index for this search added in migration 0031
+        sv = SearchVector('title', 'content', config='french')
+        result = queryset.annotate(search=sv)\
+            .annotate(rank=SearchRank(sv, q))\
+            .filter(search=q)\
+            .order_by('-rank')
+        return result
+

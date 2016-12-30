@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block bodyclasses %}search-articles{% endblock %}
+
+{% block main_contents %}
+<p>
+    <a href="{% url 'homepage' %}">Accueil</a>&nbsp;&gt;&nbsp;
+    Recherche d'articles
+</p>
+
+{% include "include/pagination.html" %}
+
+{% for article in article_list %}
+<div class="article-preview">
+    <h2><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></h2>
+    <p>
+        {% include 'include/article_meta_line.html' %}
+    </p>
+    <p class="excerpt">
+        {{ article.content|striptags|truncatewords:55 }}
+    </p>
+</div>
+{% endfor %}
+
+{% include "include/pagination.html" %}
+{% endblock %}
+
+
