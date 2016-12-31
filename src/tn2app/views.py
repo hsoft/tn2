@@ -73,7 +73,10 @@ def discussion_group(request, group_slug):
     return render(request, 'discussion_group.html', context)
 
 def discussion(request, group_slug, discussion_slug):
-    discussion = Discussion.objects.get(group__slug=group_slug, slug=discussion_slug)
+    try:
+        discussion = Discussion.objects.get(group__slug=group_slug, slug=discussion_slug)
+    except Discussion.DoesNotExist:
+        raise Http404()
     if discussion.group.private and not request.user.has_perm('tn2app.access_private_groups'):
         raise PermissionDenied()
     context = {
