@@ -63,7 +63,7 @@ class UserProfile(models.Model):
         primary_key=True,
         related_name='profile',
     )
-    wpdb_id = models.IntegerField(null=True)
+    wpdb_id = models.IntegerField(null=True, blank=True)
     avatar = models.ImageField(
         upload_to=get_user_avatar_path,
         blank=True,
