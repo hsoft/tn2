@@ -24,7 +24,12 @@ class DiscussionGroupAdmin(admin.ModelAdmin):
     list_filter = ('group_type', 'private')
 
 admin.site.register(DiscussionGroup, DiscussionGroupAdmin)
-admin.site.register(Discussion)
+
+class DiscussionAdmin(admin.ModelAdmin):
+    list_display = ('slug', 'title', 'group', 'creation_time', 'last_activity')
+    list_filter = ('group', )
+
+admin.site.register(Discussion, DiscussionAdmin)
 admin.site.register(Project)
 
 class WPUserMetaInline(admin.TabularInline):
