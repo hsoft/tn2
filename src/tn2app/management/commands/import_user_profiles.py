@@ -4,6 +4,7 @@ from django.core.management.base import BaseCommand
 from django.contrib.auth import get_user_model
 
 from wordpress.models import WpV2Users, WpV2BpXprofileData
+from ...util import unescape_mysql
 
 class Command(BaseCommand):
     help = 'Imports buddypress profiles into users with a wpdb_id'
@@ -33,7 +34,7 @@ class Command(BaseCommand):
                 except WpV2BpXprofileData.MultipleObjectsReturned:
                     print("Multiple field objects (field_id={})? Now that's strange...".format(wpid))
                     value = bp_fields.filter(field_id=wpid).first().value
-                value = html.unescape(value).replace('\\\'', '\'')
+                value = unescape_mysql(html.unescape(value))
                 setattr(user.profile, fieldname, value)
             if len(user.profile.website) > 200:
                 print("Something's wrong with this URL: {}".format(user.profile.website))

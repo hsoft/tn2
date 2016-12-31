@@ -1,3 +1,5 @@
+import html
+
 from django.core.management.base import BaseCommand
 
 from wordpress.models import WpV2Terms, WpV2TermTaxonomy, WpV2TermRelationships
@@ -11,10 +13,13 @@ class Command(BaseCommand):
         termid2taxid = {t.term_id: t.term_taxonomy_id for t in wptaxes.all()}
         taxid2cat = {}
         for wpcat in WpV2Terms.objects.filter(term_id__in=termid2taxid).all():
+            if wpcat.slug == 'a-la-une':
+                # We get rid of that category in the new site
+                continue
             cat, created = ArticleCategory.objects.get_or_create(
                 slug=wpcat.slug,
                 defaults={
-                    'title': wpcat.name,
+                    'title': html.unescape(wpcat.name),
                 }
             )
             taxid2cat[termid2taxid[wpcat.term_id]] = cat
