@@ -138,6 +138,7 @@ LOGOUT_REDIRECT_URL = 'homepage'
 ACCOUNT_EMAIL_CONFIRMATION_REQUIRED = True
 ACCOUNT_HOOKSET = 'tn2app.account_hookset.AccountHookset'
 DEFAULT_FROM_EMAIL = 'tn2@hardcoded.net'
+SERVER_EMAIL = DEFAULT_FROM_EMAIL
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
