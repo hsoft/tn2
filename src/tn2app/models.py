@@ -92,7 +92,7 @@ class ArticleManager(models.Manager):
         sv = SearchVector('title', 'content', config='french')
         return self.annotate(search=sv)\
             .annotate(rank=SearchRank(sv, search_query))\
-            .filter(search=search_query)\
+            .filter(search=search_query, status=Article.STATUS_PUBLISHED)\
             .order_by('-rank')
 
 
@@ -168,7 +168,7 @@ class DiscussionGroup(models.Model):
     description = models.TextField()
     description_short = models.TextField(blank=True)
     group_type = models.SmallIntegerField(choices=TYPE_CHOICES, default=TYPE_NORMAL)
-    private = models.BooleanField(default=False)
+    private = models.BooleanField(default=False, db_index=True)
     avatar = models.ImageField(
         upload_to=get_group_avatar_path,
         blank=True,
@@ -196,7 +196,7 @@ class DiscussionManager(models.Manager):
         sv = SearchVector('title', 'content', config='french')
         return self.annotate(search=sv)\
             .annotate(rank=SearchRank(sv, search_query))\
-            .filter(search=search_query)\
+            .filter(search=search_query, group__private=False)\
             .order_by('-rank')
 
 
