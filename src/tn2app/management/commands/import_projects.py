@@ -11,9 +11,10 @@ from wordpress.models import (
     WpV2BpCoutureProjets, WpV2BpCoutureImages, WpV2BpCoutureCategories, WpV2Users
 )
 from ...models import Project, ProjectCategory, User
+from ...util import unescape_mysql
 
 def s(val):
-    return strip_tags(html.unescape(val))
+    return unescape_mysql(strip_tags(html.unescape(val)))
 
 class Command(BaseCommand):
     help = 'Imports projects from our WP DB'

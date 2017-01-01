@@ -7,7 +7,7 @@ from wordpress.models import (
     WpV2BpCoutureCommentaires, WpV2Users
 )
 from ...models import Project, User
-from ...util import sanitize_comment
+from ...util import sanitize_comment, unescape_mysql
 
 class Command(BaseCommand):
     help = 'Imports project comments from our WP DB'
@@ -26,7 +26,7 @@ class Command(BaseCommand):
                     content_object=proj,
                     site_id=1,
                     user=author,
-                    comment=linebreaks(sanitize_comment(wpcomment.content)),
+                    comment=linebreaks(unescape_mysql(sanitize_comment(wpcomment.content))),
                     submit_date=wpcomment.date_posted,
                 )
 
