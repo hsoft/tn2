@@ -5,8 +5,9 @@ from django.conf import settings
 from django.contrib.auth.models import User as UserBase, UserManager as UserManagerBase
 from django.contrib.auth.hashers import get_hasher
 from django.contrib.contenttypes.fields import GenericRelation
+from django.contrib.postgres.search import SearchVector, SearchRank
 from django.db import models
-from django.db.models import Max, Q
+from django.db.models import Max, Q, Count
 from django.urls import reverse
 from django.utils.text import slugify
 
@@ -85,6 +86,16 @@ class UserProfile(models.Model):
         return reverse('user_profile', args=[self.user.username])
 
 
+class ArticleManager(models.Manager):
+    def full_text_search(self, search_query):
+        # Postgres full-text index for this search added in migration 0031
+        sv = SearchVector('title', 'content', config='french')
+        return self.annotate(search=sv)\
+            .annotate(rank=SearchRank(sv, search_query))\
+            .filter(search=search_query)\
+            .order_by('-rank')
+
+
 class PublishedArticleManager(models.Manager):
     def get_queryset(self):
         return super().get_queryset().filter(status=Article.STATUS_PUBLISHED)
@@ -115,7 +126,7 @@ class Article(models.Model):
 
     comments = GenericRelation(Comment, object_id_field='object_pk')
 
-    objects = models.Manager()
+    objects = ArticleManager()
     published = PublishedArticleManager()
 
     def __str__(self):
@@ -226,6 +237,16 @@ def get_project_image_path(instance, filename, slot):
         ext = '.jpg'
     return 'projects/{}/img{}{}'.format(instance.id, slot, ext)
 
+class ProjectManager(models.Manager):
+    def full_text_search(self, search_query):
+        # Postgres full-text index for this search added in migration 0033
+        sv = SearchVector('title', 'description', 'pattern_name', config='french')
+        return self.annotate(search=sv)\
+            .annotate(num_likes=Count('likes'))\
+            .filter(search=search_query)\
+            .order_by('-num_likes')
+
+
 class Project(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='projects')
     title = models.CharField(
@@ -292,6 +313,8 @@ class Project(models.Model):
     legacy_like_count = models.PositiveSmallIntegerField(default=0)
 
     comments = GenericRelation(Comment, object_id_field='object_pk')
+
+    objects = ProjectManager()
 
     class Meta:
         ordering = ['-creation_time']

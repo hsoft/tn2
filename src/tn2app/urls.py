@@ -53,9 +53,19 @@ urlpatterns = [
         name='project_create'
     ),
     url(
+        r'^search/$',
+        views.CompoundSearchView.as_view(),
+        name='search',
+    ),
+    url(
         r'^search/articles/$',
         views.ArticleSearchView.as_view(),
         name='search_article',
+    ),
+    url(
+        r'^search/projets/$',
+        views.ProjectSearchView.as_view(),
+        name='search_project',
     ),
 ]
 

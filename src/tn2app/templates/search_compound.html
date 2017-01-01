@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load tn2 thumbnail %}
+
+{% block main_contents %}
+<p>
+    <a href="{% url 'homepage' %}">Accueil</a>&nbsp;&gt;&nbsp;
+    Recherche de "{{ search_query }}"
+</p>
+
+<div class="overline">
+    <h5>Projets</h5>
+</div>
+<div class="project-list">
+{% for project in project_qs|slice:":10" %}
+<a href="{{ project.get_absolute_url }}">
+    <img src="{{ project.image1|thumbnail_url:'project-list' }}"/>
+</a>
+{% endfor %}
+</div>
+<p>
+    <a href="{% url 'search_project' %}?q={{ search_query }}">Voir les {{ project_qs.count }} projets</a>
+</p>
+
+<div class="overline">
+    <h5>Articles</h5>
+</div>
+{% for article in article_qs|slice:":4" %}
+<div class="article-preview">
+    <h2><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></h2>
+    <p>
+        {% include 'include/article_meta_line.html' %}
+    </p>
+    <p class="excerpt">
+        {{ article.content|striptags|truncatewords:55 }}
+    </p>
+</div>
+{% endfor %}
+<p>
+    <a href="{% url 'search_article' %}?q={{ search_query }}">Voir les {{ article_qs.count }} articles</a>
+</p>
+{% endblock %}
+
+
+
