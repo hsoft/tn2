@@ -264,6 +264,12 @@ class ProjectSearchView(BaseSearchView):
     paginate_by = 15
 
 
+class DiscussionSearchView(BaseSearchView):
+    model = Discussion
+    template_name = 'search_discussion.html'
+    paginate_by = 10
+
+
 class CompoundSearchView(LoginRequiredMixin, TemplateView):
     template_name = 'search_compound.html'
 
@@ -273,11 +279,14 @@ class CompoundSearchView(LoginRequiredMixin, TemplateView):
         if q:
             article_qs = Article.objects.full_text_search(q)
             project_qs = Project.objects.full_text_search(q)
+            discussion_qs = Discussion.objects.full_text_search(q)
         else:
             article_qs = Article.objects.none()
-            article_qs = Project.objects.none()
+            project_qs = Project.objects.none()
+            discussion_qs = Discussion.objects.none()
         result['search_query'] = q
         result['article_qs'] = article_qs
         result['project_qs'] = project_qs
+        result['discussion_qs'] = discussion_qs
         return result
 

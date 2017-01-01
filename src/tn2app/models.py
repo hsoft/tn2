@@ -190,6 +190,16 @@ class DiscussionGroup(models.Model):
         return nonone(self.discussions.aggregate(Max('last_activity'))['last_activity__max'], '-')
 
 
+class DiscussionManager(models.Manager):
+    def full_text_search(self, search_query):
+        # Postgres full-text index for this search added in migration 0034
+        sv = SearchVector('title', 'content', config='french')
+        return self.annotate(search=sv)\
+            .annotate(rank=SearchRank(sv, search_query))\
+            .filter(search=search_query)\
+            .order_by('-rank')
+
+
 class Discussion(models.Model):
     group = models.ForeignKey(DiscussionGroup, related_name='discussions')
     author = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, related_name='+')
@@ -203,6 +213,8 @@ class Discussion(models.Model):
     is_sticky = models.BooleanField(default=False)
 
     comments = GenericRelation(Comment, object_id_field='object_pk')
+
+    objects = DiscussionManager()
 
     class Meta:
         unique_together = ('group', 'slug')

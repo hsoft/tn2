@@ -38,7 +38,20 @@
 <p>
     <a href="{% url 'search_article' %}?q={{ search_query }}">Voir les {{ article_qs.count }} articles</a>
 </p>
+
+<div class="overline">
+    <h5>Discussions</h5>
+</div>
+
+{% for discussion in discussion_qs|slice:":4" %}
+<div class="discussion-preview">
+    <h2><a href="{{ discussion.get_absolute_url }}">{{ discussion.title }}</a></h2>
+    <p class="excerpt">
+        {{ discussion.content|striptags|truncatewords:55 }}
+    </p>
+</div>
+{% endfor %}
+<p>
+    <a href="{% url 'search_discussion' %}?q={{ search_query }}">Voir les {{ discussion_qs.count }} discussions</a>
+</p>
 {% endblock %}
-
-
-

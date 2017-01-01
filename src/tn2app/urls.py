@@ -67,5 +67,10 @@ urlpatterns = [
         views.ProjectSearchView.as_view(),
         name='search_project',
     ),
+    url(
+        r'^search/discussions/$',
+        views.DiscussionSearchView.as_view(),
+        name='search_discussion',
+    ),
 ]
 
