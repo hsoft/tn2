@@ -43,44 +43,27 @@ div.header {
 div.subheader {
     background-color: $logo_bg_color;
     padding: 8px 0 8px 0;
-    /* otherwise, ends up over the user pop up menu */
-    z-index: -1;
 
     div.fullwidth {
-        position: relative;
-    }
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
 
-    a.publier-projet {
-        position: absolute;
-        right: 200px;
-        top: 18px;
-    }
+        div.rightmost {
+            display: flex;
+            align-items: center;
 
-    form[name="search"] {
-        position: absolute;
-        right: 0;
-        width: 220px;
-        top: 14px;
-        padding: 0;
-        margin: 0;
+            .publier-projet {
+                margin-right: 20px;
+            }
 
-        input[name="q"] {
-            float: right;
-            width: 175px;
-            margin: 0;
-        }
-
-        button[type="submit"] {
-            width: 17px;
-            height: 17px;
-            border: none;
-            cursor: pointer;
-            background-color: transparent;
-            position: absolute;
-            top: 7px;
-            right: 6px;
-            margin: 0;
-            padding: 0;
+            .search-button {
+                width: 17px;
+                height: 17px;
+                border: none;
+                cursor: pointer;
+                background-color: transparent;
+            }
         }
     }
 }

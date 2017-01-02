@@ -41,11 +41,13 @@
                     <img src="{% static 'images/tn-logo.png' %}"/>
                 </a>
                 {% if user.is_authenticated %}
-                <a class="button publier-projet" href="{% url 'project_create' username=user.username %}">Publier un projet</a>
-                <form name="search" method="get" action="{% url 'search' %}">
-                    <input name="q" autocomplete="on" placeholder="Recherche" type="text"/>
-                    <button class="fa fa-search" type="submit"/>
-                </form>
+                <div class="rightmost">
+                    <a class="button publier-projet" href="{% url 'project_create' username=user.username %}">Publier un projet</a>
+                    <form name="search" method="get" action="{% url 'search' %}">
+                        <input name="q" autocomplete="on" placeholder="Recherche" type="text"/>
+                        <button class="fa fa-search search-button" type="submit"/>
+                    </form>
+                </div>
                 {% endif %}
             </div>
         </div>
