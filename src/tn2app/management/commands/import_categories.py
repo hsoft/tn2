@@ -38,3 +38,25 @@ class Command(BaseCommand):
                 cat = taxid2cat[wprel.term_taxonomy_id]
                 article.categories.add(cat)
 
+        # Also, we transform the 'tuto-video' and 'interview' tags into categories.
+        TUTO_VIDEO_TAXID = 492
+        INTERVIEW_TAXID = 115
+        video_cat, created = ArticleCategory.objects.get_or_create(
+            slug='tuto-video',
+            defaults = {'title': "Vidéos"}
+        )
+        interview_cat, created = ArticleCategory.objects.get_or_create(
+            slug='interview',
+            defaults = {'title': "Interviews"}
+        )
+        print("Associating tuto-video")
+        for wprel in WpV2TermRelationships.objects.filter(term_taxonomy_id=TUTO_VIDEO_TAXID).all():
+            article = Article.objects.get(slug__startswith=str(wprel.object_id))
+            print(article.slug)
+            article.categories.add(video_cat)
+        print("Associating interview")
+        for wprel in WpV2TermRelationships.objects.filter(term_taxonomy_id=INTERVIEW_TAXID).all():
+            article = Article.objects.get(slug__startswith=str(wprel.object_id))
+            print(article.slug)
+            article.categories.add(interview_cat)
+
