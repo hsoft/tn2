@@ -5,6 +5,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href='http://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
         {% stylesheet 'main' %}
         <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}"/>
     </head>
@@ -56,6 +57,43 @@
         {% endblock %}
         </div>
 
+        <div class="footer">
+            <div class="fullwidth">
+                <div class="column">
+                    <h3>Thread&amp;Needles</h3>
+                    <p>
+                        Notre but ? Rassembler les passionnés de DIY francophones au travers d'un
+                        espace commun.
+                    </p>
+                    <p>
+                        <a href="http://www.hellocoton.fr/mapage/threadandneedles" rel="nofollow" title="Notre page Hellocoton"><img src="{% static 'images/hellocoton.png' %}" /></a>&nbsp;
+                        <a href="https://twitter.com/#!/threadneedlesfr" rel="nofollow" title="Suivez-nous sur twitter"><img src="{% static 'images/twitter.png' %}" /></a>&nbsp;
+                        <a href="https://www.facebook.com/pages/ThreadNeedles/121145491299220" rel="nofollow" title="Rejoignez-nous sur Facebook"><img src="{% static 'images/facebook.png' %}" /></a>&nbsp;
+                        <a href="/feed/" target="_blank" title="Flux RSS du blog"><img src="{% static 'images/rss.png' %}" /></a>
+                    </p>
+                </div>
+                <div class="column rightalign">
+                    <h4>Création</h4>
+                    <ul>
+                        <li><a href="{% url 'article_list' %}">Le blog thread&amp;needles</a></li>
+                        <li><a href="{% url 'article' slug='7771-les-trouvailles-de-la-semaine-le-sommaire' %}">Les trouvailles du net</a></li>
+                        <li><a href="{% url 'project_list' %}">La galerie des projets</a></li>
+                        <li><a href="{% url 'project_list' %}?type=populaires">Les projets populaires</a></li>
+                    </ul>
+                </div>
+                <div class="column rightalign">
+                    <h4>Communauté</h4>
+                    <ul>
+                        <li><a href="{% url 'discussion_groups' %}">Les groupes</a></li>
+                        <li><a href="{% url 'category' slug='needlenaute-du-mois' %}">Le needlenaute du mois</a></li>
+                    </ul>
+                </div>
+                <div class="column rightalign">
+                    <h4>Aide et support</h4>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
         {% block bottom_js %}
         {% endblock %}
     </body>

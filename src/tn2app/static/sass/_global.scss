@@ -1,6 +1,7 @@
 body {
     font-family: Arial, Helvetica, sans-serif;
     background-color: white;
+    color: $text-color;
 }
 
 a {
@@ -11,9 +12,23 @@ a.fa {
     color: $text-color;
 }
 
+h1, h2, h3, h4, h5, h6 {
+    color: $heading-color;
+}
+
 h1 {
     font-size: 32px;
     line-height: 38px;
+}
+
+h3 {
+    font-size: 22px;
+    line-height: 26px;
+}
+
+h4 {
+    font-size: 20px;
+    line-height: 25px;
 }
 
 .button {
@@ -30,3 +45,6 @@ h1 {
     }
 }
 
+.rightalign {
+    text-align: right;
+}
