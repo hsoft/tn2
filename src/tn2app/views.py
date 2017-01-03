@@ -179,7 +179,8 @@ class UserProfileEdit(UserPassesTestMixin, UpdateView):
     raise_exception = True
 
     def test_func(self):
-        return self.request.user == self.get_object().user
+        u = self.request.user
+        return u == self.get_object().user or u.has_perm('tn2app.change_userprofile')
 
     def get_object(self, queryset=None):
         if queryset is None:

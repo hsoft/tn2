@@ -5,8 +5,8 @@
 <p>
     <a href="{% url 'homepage' %}">Accueil</a>&nbsp;&gt;&nbsp;
     {{ shown_user }}
-    {% if shown_user == user %}
-        <a class="button" href="{% url 'user_profile_edit' username=user.username %}">Modifier</a>
+    {% if shown_user == user or user.is_staff %}
+        <a class="button" href="{% url 'user_profile_edit' username=shown_user.username %}">Modifier</a>
     {% endif %}
 </p>
 <h1>Profil de {{ shown_user }}</h1>

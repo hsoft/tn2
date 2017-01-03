@@ -7,7 +7,7 @@
     <a href="{% url 'article_list' %}">Blog</a>&nbsp;&gt;&nbsp;
     {{ article.title }}
     {% if user.is_staff %}
-    <a class="button" href="{% url 'admin:tn2app_article_change' article.id %}">Modifier</a>
+    <a class="button" href="{% url 'admin:tn2app_article_change' article.id %}">Administrer</a>
     {% endif %}
 </p>
 <h1>{{ article.title }}</h1>

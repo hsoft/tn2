@@ -8,6 +8,9 @@
     <a href="{% url 'homepage' %}">Accueil</a>&nbsp;&gt;&nbsp;
     <a href="{% url 'discussion_groups' %}">Groupes</a>&nbsp;&gt;&nbsp;
     {{ group.title }}
+    {% if user.is_staff %}
+    <a class="button" href="{% url 'admin:tn2app_discussiongroup_change' group.id %}">Administrer</a>
+    {% endif %}
 </p>
 <div class="page-title">
     <img src="{{ group|group_avatar_url }}"/>

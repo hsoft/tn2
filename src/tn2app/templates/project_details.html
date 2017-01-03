@@ -6,6 +6,9 @@
     <a href="{% url 'homepage' %}">Accueil</a>&nbsp;&gt;&nbsp;
     <a href="{% url 'project_list' %}">Projets couture</a>&nbsp;&gt;&nbsp;
     {{ project.title }}
+    {% if user.is_staff %}
+    <a class="button" href="{% url 'admin:tn2app_project_change' project.id %}">Administrer</a>
+    {% endif %}
 </p>
 <div class="inner-content">
 <div class="overline project_overtitle">
