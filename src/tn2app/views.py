@@ -155,18 +155,27 @@ class CommentEdit(UserPassesTestMixin, UpdateView):
         return self.request.user == self.get_object().user
 
 
-class UserProfileView(TemplateView):
+class UserProfileView(ListView):
     template_name = 'user_profile.html'
+    model = Project
+    ordering = '-creation_time'
+    paginate_by = 15
+
+    def _get_shown_user(self):
+        User = get_user_model()
+        try:
+            return User.objects.get(username=self.kwargs['username'])
+        except User.DoesNotExist:
+            raise Http404()
 
     def get_context_data(self, **kwargs):
         result = super().get_context_data(**kwargs)
-        User = get_user_model()
-        try:
-            user = User.objects.get(username=self.kwargs['username'])
-        except User.DoesNotExist:
-            raise Http404()
-        result['shown_user'] = user
+        result['shown_user'] = self._get_shown_user()
         return result
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.filter(author=self._get_shown_user())
 
 
 class UserProfileEdit(UserPassesTestMixin, UpdateView):

@@ -1,0 +1,50 @@
+body.user-profile {
+    img.img-avatar-big {
+        float: left;
+    }
+
+    div.username-title {
+        /* div.overline usually has clear: both, but we don't want that here */
+        clear: none;
+        margin-left: 70px;
+        width: auto;
+    }
+
+    ul.project-list {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+
+        li {
+            display: inline;
+
+            img {
+                margin: 12px;
+            }
+        }
+    }
+
+    .aproposdemoi {
+        dl {
+            width: 100%;
+            overflow: hidden;
+            padding: 0;
+            margin: 0;
+
+            dt, dd {
+                float: left;
+                padding: 0;
+                margin: 0;
+            }
+
+            dt {
+                font-weight: bold;
+                width: 30%;
+            }
+
+            dd {
+                width: 70%;
+            }
+        }
+    }
+}

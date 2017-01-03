@@ -22,3 +22,5 @@ def comment_was_posted(sender, comment, request, **kwargs):
 def user_was_saved(sender, instance, created, **kwargs):
     if created:
         UserProfile.objects.create(user=instance)
+        instance.profile.display_name = instance.username
+        instance.profile.save()

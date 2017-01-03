@@ -1,32 +1,58 @@
 {% extends 'base.html' %}
 {% load tn2 thumbnail %}
 
+{% block bodyclasses %}user-profile{% endblock %}
+
 {% block main_contents %}
 <p>
     <a href="{% url 'homepage' %}">Accueil</a>&nbsp;&gt;&nbsp;
-    {{ shown_user }}
+    {{ shown_user.profile.display_name }}
     {% if shown_user == user or user.is_staff %}
         <a class="button" href="{% url 'user_profile_edit' username=shown_user.username %}">Modifier</a>
     {% endif %}
 </p>
-<h1>Profil de {{ shown_user }}</h1>
+
+<div class="inner-content">
 <img class="img-avatar-big" src="{{ shown_user|avatar_big_url }}"/>
+<div class="overline username-title">
+<h1>{{ shown_user.profile.display_name }}</h1>
+</div>
 <table>
 <tbody>
-    <tr><td><strong>Pseudo</strong></td><td>{{ shown_user.profile.display_name }}</td></tr>
-    <tr><td><strong>Qui suis-je?</strong></td><td>{{ shown_user.profile.description|safe }}</td></tr>
-    <tr><td><strong>Ville</strong></td><td>{{ shown_user.profile.city }}</td></tr>
-    <tr><td><strong>Site web</strong></td><td>{{ shown_user.profile.website|urlize }}</td></tr>
-    <tr><td><strong>Niveau</strong></td><td>{{ shown_user.profile.skill_level }}</td></tr>
-    <tr><td><strong>MAC</strong></td><td>{{ shown_user.profile.sewing_machine }}</td></tr>
 </tbody>
 </table>
 
-<h2>Projets</h2>
-{% for project in shown_user.projects.all %}
+<div class="overline">
+    <h2>Projets ({{ page_obj.paginator.count }})</h2>
+</div>
+<ul class="project-list">
+{% for project in project_list %}
+<li>
 <a href="{{ project.get_absolute_url }}">
     <img src="{{ project.image1|thumbnail_url:'project-list' }}"/>
 </a>
+</li>
 {% endfor %}
+</ul>
+{% include "include/pagination.html" %}
+</div>
+
+<div class="sidebar">
+    <div class="overline">
+        <h4>A propos de moi</h4>
+    </div>
+    <div class="aproposdemoi">
+        <p class="bio">
+            {{ shown_user.profile.description|safe }}
+        </p>
+        <dl>
+            <dt>Pseudo</dt><dd>{{ shown_user.profile.display_name }}</dd>
+            <dt>Ville</dt><dd>{{ shown_user.profile.city }}</dd>
+            <dt>Site web</dt><dd>{{ shown_user.profile.website|urlize }}</dd>
+            <dt>Niveau</dt><dd>{{ shown_user.profile.skill_level }}</dd>
+            <dt>MAC</dt><dd>{{ shown_user.profile.sewing_machine }}</dd>
+        </dl>
+    </div>
+</div>
 {% endblock %}
 
