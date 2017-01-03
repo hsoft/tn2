@@ -5,7 +5,9 @@
 <p>
     <a href="{% url 'homepage' %}">Accueil</a>&nbsp;&gt;&nbsp;
     <a href="{% url 'discussion_groups' %}">Groupes</a>&nbsp;&gt;&nbsp;
-    <a href="{{ discussion.group.get_absolute_url }}">{{ discussion.group.title }}</a>
+    <a href="{{ discussion.group.get_absolute_url }}">
+        {{ discussion.group.title }}{% if discussion.group.private %} <span class="fa fa-lock">{% endif %}
+    </a>
     {% if user.is_staff %}
     <a class="button" href="{% url 'admin:tn2app_discussion_change' discussion.id %}">Administrer</a>
     {% endif %}

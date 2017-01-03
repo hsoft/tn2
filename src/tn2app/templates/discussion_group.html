@@ -7,7 +7,7 @@
 <p>
     <a href="{% url 'homepage' %}">Accueil</a>&nbsp;&gt;&nbsp;
     <a href="{% url 'discussion_groups' %}">Groupes</a>&nbsp;&gt;&nbsp;
-    {{ group.title }}
+    {{ group.title }}{% if group.private %} <span class="fa fa-lock">{% endif %}
     {% if user.is_staff %}
     <a class="button" href="{% url 'admin:tn2app_discussiongroup_change' group.id %}">Administrer</a>
     {% endif %}
@@ -15,7 +15,7 @@
 <div class="page-title">
     <img src="{{ group|group_avatar_url }}"/>
     <div class="overline">
-        <h1>{{ group.title }}</h1>
+        <h1>{{ group.title }}{% if group.private %} <span class="fa fa-lock">{% endif %}</span></h1>
     </div>
     <div class="clear"></div>
     <p class="desc">{{ group.description|safe }}</p>
