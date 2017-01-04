@@ -72,5 +72,15 @@ urlpatterns = [
         views.DiscussionSearchView.as_view(),
         name='search_discussion',
     ),
+
+    # pages
+    url(r'^contact/$', views.PageView.as_view(pagename='contact'), name='contact'),
+]
+
+PAGES = ['a-propos', 'cgu', 'foire-aux-questions', 'contact', 'presse', 'sponsors', 'mentions-legales']
+
+urlpatterns += [
+    url(r'^{}/$'.format(p), views.PageView.as_view(pagename=p), name='page_{}'.format(p))
+    for p in PAGES
 ]
 

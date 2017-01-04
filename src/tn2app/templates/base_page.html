@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block main_contents %}
+<div class="inner-content">
+{% block page_contents %}{% endblock %}
+</div>
+
+<div class="sidebar">
+    <div class="overline">
+        <h4>Des questions?</h4>
+    </div>
+    <p>
+        <a href="{% url 'page_contact' %}">Envoyez-nous un message</a>
+    </p>
+    <div class="overline">
+        <h4>Aide et support</h4>
+    </div>
+    <ul>
+        <li><a href="{% url 'page_a-propos' %}">A propos de nous</a></li>
+        <li><a href="{% url 'page_cgu' %}">Règlement / CGU</a></li>
+        <li><a href="{% url 'page_foire-aux-questions' %}">Foire Aux Questions</a></li>
+        <li><a href="{% url 'page_presse' %}">Parler de T&N</a></li>
+        <li><a href="{% url 'page_sponsors' %}">Sponsors / Publicité</a></li>
+    </ul>
+</div>
+{% endblock %}

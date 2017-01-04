@@ -380,3 +380,11 @@ class ProjectVote(models.Model):
     class Meta:
         unique_together = ('user', 'project')
 
+
+class PageContents(models.Model):
+    key = models.CharField(max_length=30, unique=True)
+    contents = RichTextField()
+
+    def __str__(self):
+        return self.key
+

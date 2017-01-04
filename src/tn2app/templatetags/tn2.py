@@ -5,6 +5,7 @@ from django.utils.safestring import mark_safe
 
 from easy_thumbnails.files import get_thumbnailer
 
+from ..models import PageContents
 from ..util import gravatar_url
 
 register = template.Library()
@@ -53,4 +54,11 @@ def user_link(user):
         ))
     else:
         return str(user)
+
+@register.simple_tag()
+def page_contents(keyname):
+    try:
+        return mark_safe(PageContents.objects.get(key=keyname).contents)
+    except PageContents.DoesNotExist:
+        return ''
 

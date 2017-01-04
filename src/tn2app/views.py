@@ -249,6 +249,13 @@ class ProjectLike(LoginRequiredMixin, RedirectView):
         return result
 
 
+class PageView(TemplateView):
+    pagename = None
+
+    def get_template_names(self):
+        return ["pages/{}.html".format(self.pagename)]
+
+
 # Full-Text search is a bit intensive, resource-wise. To minimize the risk of the server being
 # brought down to its knees simply because a bot decides that it searches a couple of things,
 # we're making the search available to logged users only. Later, we can work on making it more

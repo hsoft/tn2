@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load tn2 %}
+
+{% block main_contents %}
+<h1>A propos de T&N</h1>
+
+{% page_contents 'a-propos-presentation' %}
+{% page_contents 'a-propos-publiez' %}
+{% page_contents 'a-propos-questions' %}
+{% page_contents 'a-propos-avis' %}
+{% page_contents 'a-propos-equipe' %}
+{% page_contents 'a-propos-philosophie' %}
+{% page_contents 'a-propos-histoire' %}
+
+{% endblock %}
+
