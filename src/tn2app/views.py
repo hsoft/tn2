@@ -9,7 +9,7 @@ from django.http import Http404
 from django.shortcuts import render
 from django.views.generic import ListView, TemplateView, DetailView, RedirectView
 from django.views.generic.edit import CreateView, UpdateView
-from django.views.generic.base import ContextMixin
+from django.views.generic.detail import SingleObjectMixin
 
 from django_comments.models import Comment
 import account.views
@@ -42,46 +42,72 @@ def homepage(request):
     }
     return render(request, 'homepage.html', context)
 
-def discussion_groups(request):
-    groups = DiscussionGroup.objects.filter(group_type=DiscussionGroup.TYPE_NORMAL)
-    if not request.user.has_perm('tn2app.access_private_groups'):
-        groups = groups.filter(private=False)
-    groups = groups.annotate(latest_activity=Max('discussions__last_activity')).order_by('-latest_activity')
+class DiscussionGroupListView(ListView):
+    model = DiscussionGroup
+    template_name = 'discussion_groups.html'
+    paginate_by = 8
+
     featured_groups = DiscussionGroup.objects.filter(group_type=DiscussionGroup.TYPE_FEATURED)
     geo_groups = DiscussionGroup.objects.filter(group_type=DiscussionGroup.TYPE_GEOGRAPHICAL)
-    recent_discussions = Discussion.objects.filter(group__private=False)\
-        .order_by('-last_activity')[:6]
-    context = {
-        'groups': groups,
-        'featured_groups': featured_groups.all(),
-        'geo_groups': geo_groups.all(),
-        'recent_discussions': recent_discussions.all(),
-    }
-    return render(request, 'discussion_groups.html', context)
+    recent_discussions = Discussion.objects.filter(group__private=False).order_by('-last_activity')
 
-def discussion_group(request, group_slug):
-    group = DiscussionGroup.objects.get(slug=group_slug)
-    if group.private and not request.user.has_perm('tn2app.access_private_groups'):
-        raise PermissionDenied()
-    discussions = group.discussions.order_by('-last_activity')
-    context = {
-        'group': group,
-        'discussions': discussions,
-    }
-    return render(request, 'discussion_group.html', context)
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.filter(group_type=DiscussionGroup.TYPE_NORMAL)
+        if not self.request.user.has_perm('tn2app.access_private_groups'):
+            queryset = queryset.filter(private=False)
+        queryset = queryset.annotate(latest_activity=Max('discussions__last_activity'))\
+            .order_by('-latest_activity')
+        return queryset
 
-def discussion(request, group_slug, discussion_slug):
-    try:
-        discussion = Discussion.objects.get(group__slug=group_slug, slug=discussion_slug)
-    except Discussion.DoesNotExist:
-        raise Http404()
-    if discussion.group.private and not request.user.has_perm('tn2app.access_private_groups'):
-        raise PermissionDenied()
-    context = {
-        'discussion': discussion,
-        'user': request.user,
-    }
-    return render(request, 'discussion.html', context)
+
+# ref https://docs.djangoproject.com/en/1.10/topics/class-based-views/mixins/#using-singleobjectmixin-with-listview
+class DiscussionGroupDetailView(SingleObjectMixin, ListView):
+    slug_url_kwarg = 'group_slug'
+    paginate_by = 20
+    template_name = 'discussion_group.html'
+
+    def get(self, request, *args, **kwargs):
+        group = self.get_object(queryset=DiscussionGroup.objects.all())
+        if group.private and not request.user.has_perm('tn2app.access_private_groups'):
+            raise PermissionDenied()
+        self.object = group
+        return super().get(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['group'] = self.object
+        return context
+
+    def get_queryset(self):
+        return self.object.discussions.order_by('-last_activity')
+
+
+class DiscussionDetailView(SingleObjectMixin, ListView):
+    slug_url_kwarg = 'discussion_slug'
+    paginate_by = 15
+    template_name = 'discussion.html'
+
+    def get(self, request, *args, **kwargs):
+        discussion = self.get_object(queryset=Discussion.objects.filter(group__slug=kwargs['group_slug']))
+        if discussion.group.private and not request.user.has_perm('tn2app.access_private_groups'):
+            raise PermissionDenied()
+        self.object = discussion
+
+        # special case: if we have a "c" query arg, it's because we've just commented and we want
+        # to see the last page... but *only* if we don't already have a 'page' arg!
+        if 'page' not in request.GET and 'c' in request.GET:
+            self.kwargs['page'] = 'last'
+        return super().get(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['discussion'] = self.object
+        return context
+
+    def get_queryset(self):
+        return self.object.comments.order_by('submit_date')
+
 
 class DiscussionAdd(LoginRequiredMixin, CreateView):
     template_name = 'discussion_add.html'

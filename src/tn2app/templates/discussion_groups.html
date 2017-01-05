@@ -7,7 +7,7 @@
         <h4>Groupes d'entraide</h4>
     </div>
     <div class="groups-top-directory">
-        {% for group in featured_groups %}
+        {% for group in view.featured_groups.all %}
             <div class="bloc-groupe">
                 <a href="{{ group.get_absolute_url }}">
                     <img src="{{ group|group_avatar_big_url }}"/>
@@ -22,8 +22,9 @@
     <div class="overline">
         <h4>Groupes thématiques</h4>
     </div>
+    {% include "include/pagination.html" %}
     <ul class="group-list">
-    {% for group in groups %}
+    {% for group in discussiongroup_list %}
         <li>
             <a href="{{ group.get_absolute_url }}">
                 <img src="{{ group|group_avatar_url }}"/>
@@ -42,6 +43,7 @@
         </li>
     {% endfor %}
     </ul>
+    {% include "include/pagination.html" %}
 </div>
 
 <div class="sidebar">
@@ -55,7 +57,7 @@
         </p>
         <select class="open-url-on-select">
             <option>Choisissez une région</option>
-            {% for group in geo_groups %}
+            {% for group in view.geo_groups.all %}
             <option value="{{ group.slug }}" data-url="{{ group.get_absolute_url }}">{{ group.title }}</option>
             {% endfor %}
         </select>
@@ -64,7 +66,7 @@
         <div class="overline">
             <h4>Dernières discussions</h4>
         </div>
-        {% include 'include/discussion_ul.html' with discussions=recent_discussions short_mode=True only %}
+        {% include 'include/discussion_ul.html' with discussions=view.recent_discussions|slice:":6" short_mode=True only %}
     </div>
 </div>
 {% endblock %}

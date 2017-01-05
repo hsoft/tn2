@@ -13,6 +13,9 @@
     {% endif %}
 </p>
 <h1>{{ discussion.title }}</h1>
+{% include 'include/pagination.html' %}
+
+{% if not page_obj.has_previous %}
 <p>
     <img src="{{ discussion.author|avatar_url }}" />
     <em>Par <a href="{{ discussion.author.profile.get_absolute_url }}">{{ discussion.author }}</a> le {{ discussion.creation_time }}</em>
@@ -21,8 +24,11 @@
     {% endif %}
 </p>
 {{ discussion.content|safe }}
+{% endif %}
 
-{% render_comment_list for discussion %}
+{% include 'comments/tn2app/list.html' with comment_list=page_obj %}
+
+{% include 'include/pagination.html' %}
 
 {% if user.is_authenticated %}
     {% include 'include/add_comment_form.html' with ref_object=discussion %}

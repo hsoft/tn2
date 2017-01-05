@@ -25,12 +25,13 @@
     <h4>Discussions</h4>
 </div>
 
+{% include "include/pagination.html" %}
 <table class="discussion-list">
 <thead>
     <tr><td>Sujet</td><td></td><td>Dernier message</td></tr>
 </thead>
 <tbody>
-{% for discussion in discussions %}
+{% for discussion in page_obj %}
     <tr>
         <td><a href="{{ discussion.get_absolute_url }}">{{ discussion.title }}</a></td>
         <td>
@@ -43,6 +44,7 @@
 {% endfor %}
 </tbody>
 </table>
+{% include "include/pagination.html" %}
 {% if user.is_authenticated %}
 <p>
 <a class="button" href="{% url 'discussion_add' group_slug=group.slug %}">Créer une nouvelle discussion</a>
