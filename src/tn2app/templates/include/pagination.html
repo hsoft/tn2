@@ -1,10 +1,22 @@
 {% load add_get_parameter %}
 <div class="pagination">
     {% if page_obj.has_previous %}
-    <a href="{% add_get page=page_obj.previous_page_number %}"><span class="fa fa-chevron-circle-left"></span> Précédent</a>
+    <a href="{% add_get page=1 %}">
+        <span class="fa fa-angle-double-left"></span> Début
+    </a>
+    <a href="{% add_get page=page_obj.previous_page_number %}">
+        <span class="fa fa-angle-left"></span> Précédent
+    </a>
     {% endif %}
+    <span class="nav-info">
     Page {{ page_obj.number }} sur {{ page_obj.paginator.num_pages }}
+    </span>
     {% if page_obj.has_next %}
-    <a href="{% add_get page=page_obj.next_page_number %}">Suivant <span class="fa fa-chevron-circle-right"></span></a>
+    <a href="{% add_get page=page_obj.next_page_number %}">
+        Suivant <span class="fa fa-angle-right"></span>
+    </a>
+    <a href="{% add_get page=page_obj.paginator.num_pages %}">
+        Fin <span class="fa fa-angle-double-right"></span>
+    </a>
     {% endif %}
 </div>
