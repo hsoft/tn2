@@ -15,6 +15,10 @@ from wordpress.models import WpV2Posts, WpV2Postmeta
 from ...models import User, Article
 
 def internalize_links(content, wpcontent_path):
+    # These have been verified on the old server: they're broken.
+    KNOWN_BROKEN_LINKS = {
+        'uploads/2013/02/558722_10151000705976161_417488649_n.jpg',
+    }
     soup = BeautifulSoup(content)
     re_tnurl = re.compile(r'http://(www\.)?threadandneedles\.fr/wp-content/(.*)')
     for img in soup.find_all('img'):
@@ -31,8 +35,9 @@ def internalize_links(content, wpcontent_path):
                 try:
                     shutil.copy(src_path.encode('utf-8'), dest_path.encode('utf-8'))
                 except FileNotFoundError:
-                    # There are a couple of broken links on some articles.
-                    print("Warning: couldn't find {}".format(src_path))
+                    if internalized_path not in KNOWN_BROKEN_LINKS:
+                        raise Exception("Warning: couldn't find {}".format(src_path))
+
     return str(soup)
 
 
