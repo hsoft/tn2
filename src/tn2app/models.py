@@ -292,6 +292,9 @@ class Project(models.Model):
     )
     creation_time = models.DateTimeField(auto_now_add=True)
 
+    # Last time it had the "A la une" button clicked on
+    featured_time = models.DateTimeField(null=True)
+
     # baaah, it's not worth the extra indirection to create a model for project images.
     # Let's go low-tech and have 4 fields.
     image1 = models.ImageField(

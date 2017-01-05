@@ -8,6 +8,7 @@
     {{ project.title }}
     {% if user.is_staff %}
     <a class="button" href="{% url 'admin:tn2app_project_change' project.id %}">Administrer</a>
+    <a class="button" href="{% url 'project_feature' pk=project.pk slug=project.get_slug %}">Mettre à la une</a>
     {% endif %}
 </p>
 <div class="inner-content">

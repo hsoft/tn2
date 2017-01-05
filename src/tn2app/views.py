@@ -1,3 +1,5 @@
+import datetime
+
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth import get_user_model
 from django.core.exceptions import PermissionDenied
@@ -25,13 +27,14 @@ class SignupView(account.views.SignupView):
 
 def homepage(request):
     articles = Article.published.order_by('-creation_time')[:3]
+    featured_projects = Project.objects.filter(featured_time__isnull=False).order_by('-featured_time')
     popular_projects = Project.objects.annotate(num_likes=Count('likes')).order_by('-num_likes')
     latest_projects = Project.objects
     recent_discussions = Discussion.objects.filter(group__private=False)\
         .order_by('-last_activity')[:4]
     context = {
         'articles': articles,
-        'featured_projects': popular_projects,
+        'featured_projects': featured_projects,
         'popular_projects': popular_projects,
         'latest_projects': latest_projects,
         'recent_discussions': recent_discussions,
@@ -232,8 +235,11 @@ class ProjectCreate(LoginRequiredMixin, CreateView):
         return result
 
 
-class ProjectLike(LoginRequiredMixin, RedirectView):
+class ProjectAction(RedirectView):
     pattern_name = 'project_details'
+
+    def _do_project_action(self, project):
+        raise NotImplementedError()
 
     def get(self, request, *args, **kwargs):
         result = super().get(request, *args, **kwargs)
@@ -241,12 +247,29 @@ class ProjectLike(LoginRequiredMixin, RedirectView):
             project = Project.objects.get(pk=kwargs['pk'])
         except Project.DoesNotExist:
             raise Http404()
+        self._do_project_action(project)
+        return result
+
+
+class ProjectLike(LoginRequiredMixin, ProjectAction):
+    def _do_project_action(self, project):
         try:
             ProjectVote.objects.create(user=self.request.user, project=project)
         except IntegrityError:
             # double like, ignore
             pass
-        return result
+
+
+class ProjectFeature(UserPassesTestMixin, ProjectAction):
+    # for UserPassesTestMixin
+    raise_exception = True
+
+    def test_func(self):
+        return self.request.user.has_perm('tn2app.change_project')
+
+    def _do_project_action(self, project):
+        project.featured_time = datetime.datetime.now()
+        project.save()
 
 
 class PageView(TemplateView):
