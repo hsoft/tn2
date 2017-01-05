@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block main_contents %}
+<p>
+{% block breadcrumb %}{% endblock %}
+</p>
+
+<div class="inner-content">
+{% block inner_content %}{% endblock %}
+</div>
+
+<div class="sidebar">
+    <div class="categories">
+        <div class="overline">
+            <h4>Catégories</h4>
+        </div>
+        <ul>
+            {% for cat in view.featured_categories.all %}
+            <li><a href="{% url 'category' slug=cat.slug %}">{{ cat.title }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}
+
+

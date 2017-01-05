@@ -9,6 +9,7 @@ from django.http import Http404
 from django.shortcuts import render
 from django.views.generic import ListView, TemplateView, DetailView, RedirectView
 from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.base import ContextMixin
 
 from django_comments.models import Comment
 import account.views
@@ -40,11 +41,6 @@ def homepage(request):
         'recent_discussions': recent_discussions,
     }
     return render(request, 'homepage.html', context)
-
-def article(request, slug):
-    article = Article.objects.get(slug=slug)
-    context = {'article': article}
-    return render(request, 'article.html', context)
 
 def discussion_groups(request):
     groups = DiscussionGroup.objects.filter(group_type=DiscussionGroup.TYPE_NORMAL)
@@ -122,17 +118,22 @@ class DiscussionEdit(LoginRequiredMixin, UpdateView):
         return result
 
 
-class ArticleList(ListView):
+class ArticleMixin:
+    featured_categories = ArticleCategory.objects.filter(featured=True).order_by('title')
+
+
+class ArticleDetailView(ArticleMixin, DetailView):
+    model = Article
+    template_name = 'article.html'
+
+
+class ArticleList(ArticleMixin, ListView):
     template_name = 'article_list.html'
     model = Article
     queryset = Article.published
     ordering = '-creation_time'
     paginate_by = 5
 
-    def get_context_data(self, *args, **kwargs):
-        result = super().get_context_data(*args, **kwargs)
-        result['featured_categories'] = ArticleCategory.objects.filter(featured=True).order_by('title')
-        return result
 
 
 class ArticlesByCategoryList(ArticleList):

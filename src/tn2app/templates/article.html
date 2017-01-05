@@ -1,16 +1,21 @@
-{% extends 'base.html' %}
+{% extends 'base_article.html' %}
 {% load comments tn2 %}
 
-{% block main_contents %}
-<p>
+{% block bodyclasses %}article{% endblock %}
+
+{% block breadcrumb %}
     <a href="{% url 'homepage' %}">Accueil</a>&nbsp;&gt;&nbsp;
     <a href="{% url 'article_list' %}">Blog</a>&nbsp;&gt;&nbsp;
     {{ article.title }}
     {% if user.is_staff %}
     <a class="button" href="{% url 'admin:tn2app_article_change' article.id %}">Administrer</a>
     {% endif %}
-</p>
-<h1>{{ article.title }}</h1>
+{% endblock %}
+
+{% block inner_content %}
+<div class="overline">
+<h2>{{ article.title }}</h2>
+</div>
 <p>
     {% include 'include/article_meta_line.html' %}
 </p>
@@ -25,5 +30,7 @@
 {% endblock %}
 
 {% block bottom_js %}
+{% if user.is_authenticated %}
 {% include 'include/ckjs.html' %}
+{% endif %}
 {% endblock %}

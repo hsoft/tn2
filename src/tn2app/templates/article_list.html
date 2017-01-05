@@ -1,15 +1,14 @@
-{% extends 'base.html' %}
+{% extends 'base_article.html' %}
 {% load tn2 comments %}
 
 {% block bodyclasses %}article-list{% endblock %}
 
-{% block main_contents %}
-<p>
+{% block breadcrumb %}
     <a href="{% url 'homepage' %}">Accueil</a>&nbsp;&gt;&nbsp;
     Blog
-</p>
+{% endblock %}
 
-<div class="inner-content">
+{% block inner_content %}
     {% for article in article_list %}
     <div class="article-preview">
         <div class="overline">
@@ -38,19 +37,4 @@
     {% endfor %}
 
     {% include "include/pagination.html" %}
-</div>
-
-<div class="sidebar">
-    <div class="categories">
-        <div class="overline">
-            <h4>Catégories</h4>
-        </div>
-        <ul>
-            {% for cat in featured_categories.all %}
-            <li><a href="{% url 'category' slug=cat.slug %}">{{ cat.title }}</a></li>
-            {% endfor %}
-        </ul>
-    </div>
-</div>
 {% endblock %}
-
