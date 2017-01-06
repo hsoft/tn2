@@ -3,5 +3,15 @@
 
 {% block page_contents %}
 {% page_contents 'contact' %}
+
+{% if message_sent %}
+<p>Votre message a été envoyé!</p>
+{% else %}
+<form action="{% url 'page_contact' %}" method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input class="button" type="submit" value="Envoyer le message" />
+</form>
+{% endif %}
 {% endblock %}
 

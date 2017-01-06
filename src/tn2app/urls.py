@@ -82,11 +82,10 @@ urlpatterns = [
         name='search_discussion',
     ),
 
-    # pages
-    url(r'^contact/$', views.PageView.as_view(pagename='contact'), name='contact'),
+    url(r'^contact/$', views.ContactView.as_view(), name='page_contact'),
 ]
 
-PAGES = ['a-propos', 'cgu', 'foire-aux-questions', 'contact', 'presse', 'sponsors', 'mentions-legales']
+PAGES = ['a-propos', 'cgu', 'foire-aux-questions', 'presse', 'sponsors', 'mentions-legales']
 
 urlpatterns += [
     url(r'^{}/$'.format(p), views.PageView.as_view(pagename=p), name='page_{}'.format(p))

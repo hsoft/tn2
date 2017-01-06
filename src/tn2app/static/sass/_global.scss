@@ -64,3 +64,6 @@ h4 {
         margin-right: 5px;
     }
 }
+
+label.required:after {content: " *"; color: red;}
+

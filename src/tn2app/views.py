@@ -1,5 +1,6 @@
 import datetime
 
+from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth import get_user_model
 from django.core.exceptions import PermissionDenied
@@ -7,11 +8,12 @@ from django.db import IntegrityError
 from django.db.models import Max, Count
 from django.http import Http404
 from django.shortcuts import render
-from django.views.generic import ListView, TemplateView, DetailView, RedirectView
+from django.views.generic import ListView, TemplateView, DetailView, RedirectView, FormView
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.detail import SingleObjectMixin
 
 from django_comments.models import Comment
+from post_office import mail
 import account.views
 
 from .models import (
@@ -19,7 +21,7 @@ from .models import (
 )
 from .forms import (
     UserProfileForm, NewDiscussionForm, EditDiscussionForm, EditCommentForm, NewProjectForm,
-    SignupForm
+    SignupForm, ContactForm
 )
 
 class SignupView(account.views.SignupView):
@@ -304,6 +306,20 @@ class PageView(TemplateView):
 
     def get_template_names(self):
         return ["pages/{}.html".format(self.pagename)]
+
+
+class ContactView(FormView):
+    form_class = ContactForm
+    template_name = 'pages/contact.html'
+
+    def form_valid(self, form):
+        mail.send(
+            settings.DEFAULT_FROM_EMAIL,
+            form.cleaned_data['email'],
+            template='contact_form',
+            context=form.cleaned_data,
+        )
+        return self.render_to_response(self.get_context_data(message_sent=True))
 
 
 # Full-Text search is a bit intensive, resource-wise. To minimize the risk of the server being

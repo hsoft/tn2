@@ -1,47 +1,62 @@
 [
-    {
-        "fields": {
-            "content": "On a r\u00e9cemment cr\u00e9\u00e9 un compte sur {{ current_site.name }} en sp\u00e9cifiant votre adresse courriel.\r\n\r\nSi c'est vous, veuillez le confirmer en ouvrant {{ activate_url }}.\r\n\r\nSinon, veuillez ignorer ce courriel.",
-            "created": "2016-11-08T01:39:18.242",
-            "default_template": null,
-            "description": "Courriel de confirmation de l'adresse courriel d'un nouvel utilisateur",
-            "html_content": "",
-            "language": "",
-            "last_updated": "2016-11-08T01:39:18.242",
-            "name": "confirmation_email",
-            "subject": "Thread and needles: confirmation de votre courriel"
-        },
-        "model": "post_office.emailtemplate",
-        "pk": 1
-    },
-    {
-        "fields": {
-            "content": "On a r\u00e9cemment demand\u00e9 une r\u00e9-initialisation du mot de passe du compte associ\u00e9 \u00e0 votre courriel sur Thread & Needles. Le lien pour r\u00e9-initialiser votre mot de passe est:\r\n\r\n{{ password_reset_url }}\r\n\r\nSi vous n'avez pas demand\u00e9 cette r\u00e9-initialisation, veuillez ignorer ce courriel.",
-            "created": "2016-12-06T00:30:00.993",
-            "default_template": null,
-            "description": "Courriel avec le lien pour r\u00e9-initialiser le mot de passe.",
-            "html_content": "",
-            "language": "",
-            "last_updated": "2016-12-06T00:30:00.993",
-            "name": "password_reset_email",
-            "subject": "Thread and needles: r\u00e9-initialisation de mot de passe"
-        },
-        "model": "post_office.emailtemplate",
-        "pk": 2
-    },
-    {
-        "fields": {
-            "content": "Votre mot de passe a r\u00e9cemment \u00e9t\u00e9 chang\u00e9 sur le site de Thread & Needles.",
-            "created": "2016-12-06T00:38:04.382",
-            "default_template": null,
-            "description": "Courriel avertissant d'un changement de mot de passe.",
-            "html_content": "",
-            "language": "",
-            "last_updated": "2016-12-06T00:38:04.382",
-            "name": "password_change",
-            "subject": "Thread and needles: changement de mot de passe"
-        },
-        "model": "post_office.emailtemplate",
-        "pk": 3
+{
+    "model": "post_office.emailtemplate",
+    "pk": 1,
+    "fields": {
+        "name": "confirmation_email",
+        "description": "Courriel de confirmation de l'adresse courriel d'un nouvel utilisateur",
+        "created": "2016-11-08T01:39:18.242",
+        "last_updated": "2016-11-08T01:39:18.242",
+        "subject": "Thread and needles: confirmation de votre courriel",
+        "content": "On a r\u00e9cemment cr\u00e9\u00e9 un compte sur {{ current_site.name }} en sp\u00e9cifiant votre adresse courriel.\r\n\r\nSi c'est vous, veuillez le confirmer en ouvrant {{ activate_url }}.\r\n\r\nSinon, veuillez ignorer ce courriel.",
+        "html_content": "",
+        "language": "",
+        "default_template": null
     }
+},
+{
+    "model": "post_office.emailtemplate",
+    "pk": 2,
+    "fields": {
+        "name": "password_reset_email",
+        "description": "Courriel avec le lien pour r\u00e9-initialiser le mot de passe.",
+        "created": "2016-12-06T00:30:00.993",
+        "last_updated": "2016-12-06T00:30:00.993",
+        "subject": "Thread and needles: r\u00e9-initialisation de mot de passe",
+        "content": "On a r\u00e9cemment demand\u00e9 une r\u00e9-initialisation du mot de passe du compte associ\u00e9 \u00e0 votre courriel sur Thread & Needles. Le lien pour r\u00e9-initialiser votre mot de passe est:\r\n\r\n{{ password_reset_url }}\r\n\r\nSi vous n'avez pas demand\u00e9 cette r\u00e9-initialisation, veuillez ignorer ce courriel.",
+        "html_content": "",
+        "language": "",
+        "default_template": null
+    }
+},
+{
+    "model": "post_office.emailtemplate",
+    "pk": 3,
+    "fields": {
+        "name": "password_change",
+        "description": "Courriel avertissant d'un changement de mot de passe.",
+        "created": "2016-12-06T00:38:04.382",
+        "last_updated": "2016-12-06T00:38:04.382",
+        "subject": "Thread and needles: changement de mot de passe",
+        "content": "Votre mot de passe a r\u00e9cemment \u00e9t\u00e9 chang\u00e9 sur le site de Thread & Needles.",
+        "html_content": "",
+        "language": "",
+        "default_template": null
+    }
+},
+{
+    "model": "post_office.emailtemplate",
+    "pk": 4,
+    "fields": {
+        "name": "contact_form",
+        "description": "Courriel provenant du formulaire \"Contactez-nous\"",
+        "created": "2017-01-06T02:42:18.125",
+        "last_updated": "2017-01-06T02:42:18.125",
+        "subject": "Message T&N de {{ name }}: {{ subject }}",
+        "content": "{{ message }}",
+        "html_content": "",
+        "language": "",
+        "default_template": null
+    }
+}
 ]

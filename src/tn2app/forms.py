@@ -16,6 +16,8 @@ class SignupForm(account.forms.SignupForm):
 
 
 class BaseModelForm(forms.ModelForm):
+    required_css_class = 'required'
+
     def __init__(self, *args, **kwargs):
         kwargs.setdefault('label_suffix', '')
         super().__init__(*args, **kwargs)
@@ -104,4 +106,12 @@ class NewProjectForm(BaseModelForm):
 
         return instance
 
+
+class ContactForm(forms.Form):
+    required_css_class = 'required'
+
+    name = forms.CharField(label="Votre nom", max_length=100)
+    email = forms.EmailField(label="Votre email")
+    subject = forms.CharField(label="Sujet de votre message", max_length=200)
+    message = forms.CharField(label="Votre message", widget=forms.Textarea)
 
