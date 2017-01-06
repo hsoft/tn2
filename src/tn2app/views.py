@@ -21,7 +21,7 @@ from .models import (
 )
 from .forms import (
     UserProfileForm, NewDiscussionForm, EditDiscussionForm, EditCommentForm, NewProjectForm,
-    SignupForm, ContactForm
+    SignupForm, ContactForm, UserSendMessageForm
 )
 
 class SignupView(account.views.SignupView):
@@ -187,18 +187,20 @@ class CommentEdit(UserPassesTestMixin, UpdateView):
         return self.request.user == self.get_object().user
 
 
-class UserProfileView(ListView):
-    template_name = 'user_profile.html'
-    model = Project
-    ordering = '-creation_time'
-    paginate_by = 15
-
+class UserViewMixin:
     def _get_shown_user(self):
         User = get_user_model()
         try:
             return User.objects.get(username=self.kwargs['username'])
         except User.DoesNotExist:
             raise Http404()
+
+
+class UserProfileView(UserViewMixin, ListView):
+    template_name = 'user_profile.html'
+    model = Project
+    ordering = '-creation_time'
+    paginate_by = 15
 
     def get_context_data(self, **kwargs):
         result = super().get_context_data(**kwargs)
@@ -210,7 +212,7 @@ class UserProfileView(ListView):
         return queryset.filter(author=self._get_shown_user())
 
 
-class UserProfileEdit(UserPassesTestMixin, UpdateView):
+class UserProfileEdit(UserViewMixin, UserPassesTestMixin, UpdateView):
     template_name = 'user_profile_edit.html'
     model = UserProfile
     form_class = UserProfileForm
@@ -226,15 +228,32 @@ class UserProfileEdit(UserPassesTestMixin, UpdateView):
     def get_object(self, queryset=None):
         if queryset is None:
             queryset = self.get_queryset()
-        User = get_user_model()
-        try:
-            user = User.objects.get(username=self.kwargs['username'])
-        except User.DoesNotExist:
-            raise Http404()
-        if user.profile:
-            return user.profile
-        else:
-            return UserProfile(user=user, display_name=user.username)
+        return self._get_shown_user().profile
+
+
+class UserSendMessageView(UserViewMixin, LoginRequiredMixin, FormView):
+    form_class = UserSendMessageForm
+    template_name = 'user_sendmessage.html'
+
+    def get_context_data(self, **kwargs):
+        result = super().get_context_data(**kwargs)
+        result['shown_user'] = self._get_shown_user()
+        return result
+
+    def form_valid(self, form):
+        from_= self._get_shown_user()
+        to= self.request.user
+        mail.send(
+            from_.email,
+            to.email,
+            template='user_sendmessage_form',
+            context={
+                'from': from_,
+                'to': to,
+                'message': form.cleaned_data['message'],
+            },
+        )
+        return self.render_to_response(self.get_context_data(message_sent=True))
 
 
 class ProjectList(ListView):

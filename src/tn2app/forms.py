@@ -115,3 +115,9 @@ class ContactForm(forms.Form):
     subject = forms.CharField(label="Sujet de votre message", max_length=200)
     message = forms.CharField(label="Votre message", widget=forms.Textarea)
 
+
+class UserSendMessageForm(forms.Form):
+    required_css_class = 'required'
+
+    message = forms.CharField(label="Votre message", widget=forms.Textarea)
+

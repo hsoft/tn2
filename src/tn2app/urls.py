@@ -62,6 +62,11 @@ urlpatterns = [
         name='project_create'
     ),
     url(
+        r'^membres/(?P<username>[-\w]+)/sendmessage/$',
+        views.UserSendMessageView.as_view(),
+        name='user_sendmessage'
+    ),
+    url(
         r'^search/$',
         views.CompoundSearchView.as_view(),
         name='search',

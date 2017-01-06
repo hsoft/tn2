@@ -1,0 +1,19 @@
+{% extends 'base_user_profile.html' %}
+
+{% block class_for_message_link %}active{% endblock %}
+
+{% block inner_content %}
+<div class="overline">
+    <h2>Envoyer un message</h2>
+</div>
+{% if message_sent %}
+<p>Votre message a été envoyé!</p>
+{% else %}
+<form action="{% url 'user_sendmessage' username=shown_user.username %}" method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input class="button" type="submit" value="Envoyer le message" />
+</form>
+{% endif %}
+{% endblock %}
+

@@ -1,27 +1,9 @@
-{% extends 'base.html' %}
+{% extends 'base_user_profile.html' %}
 {% load tn2 thumbnail %}
 
-{% block bodyclasses %}user-profile{% endblock %}
+{% block class_for_profile_link %}active{% endblock %}
 
-{% block main_contents %}
-<p>
-    <a href="{% url 'homepage' %}">Accueil</a>&nbsp;&gt;&nbsp;
-    {{ shown_user.profile.display_name }}
-    {% if shown_user == user or user.is_staff %}
-        <a class="button" href="{% url 'user_profile_edit' username=shown_user.username %}">Modifier</a>
-    {% endif %}
-</p>
-
-<div class="inner-content">
-<img class="img-avatar-big" src="{{ shown_user|avatar_big_url }}"/>
-<div class="overline username-title">
-<h1>{{ shown_user.profile.display_name }}</h1>
-</div>
-<table>
-<tbody>
-</tbody>
-</table>
-
+{% block inner_content %}
 <div class="overline">
     <h2>Projets ({{ page_obj.paginator.count }})</h2>
 </div>
@@ -35,24 +17,4 @@
 {% endfor %}
 </ul>
 {% include "include/pagination.html" %}
-</div>
-
-<div class="sidebar">
-    <div class="overline">
-        <h4>A propos de moi</h4>
-    </div>
-    <div class="aproposdemoi">
-        <p class="bio">
-            {{ shown_user.profile.description|safe }}
-        </p>
-        <dl>
-            <dt>Pseudo</dt><dd>{{ shown_user.profile.display_name }}</dd>
-            <dt>Ville</dt><dd>{{ shown_user.profile.city }}</dd>
-            <dt>Site web</dt><dd>{{ shown_user.profile.website|urlize }}</dd>
-            <dt>Niveau</dt><dd>{{ shown_user.profile.skill_level }}</dd>
-            <dt>MAC</dt><dd>{{ shown_user.profile.sewing_machine }}</dd>
-        </dl>
-    </div>
-</div>
 {% endblock %}
-
