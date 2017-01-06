@@ -241,11 +241,11 @@ class UserSendMessageView(UserViewMixin, LoginRequiredMixin, FormView):
         return result
 
     def form_valid(self, form):
-        from_= self._get_shown_user()
-        to= self.request.user
+        to = self._get_shown_user()
+        from_ = self.request.user
         mail.send(
-            from_.email,
             to.email,
+            from_.email,
             template='user_sendmessage_form',
             context={
                 'from': from_,
