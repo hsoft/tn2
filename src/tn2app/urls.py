@@ -18,12 +18,17 @@ urlpatterns = [
         name='project_details'
     ),
     url(
-        r'^projets-couture/(?P<pk>\d+)-(?P<slug>[-\w]*)/like/$',
+        r'^projets-couture/(?P<pk>\d+)-(?P<slug>[-\w]*)/jaime/$',
         views.ProjectLike.as_view(),
         name='project_like'
     ),
     url(
-        r'^projets-couture/(?P<pk>\d+)-(?P<slug>[-\w]*)/feature/$',
+        r'^projets-couture/(?P<pk>\d+)-(?P<slug>[-\w]*)/favoris/$',
+        views.ProjectFavorite.as_view(),
+        name='project_favorite'
+    ),
+    url(
+        r'^projets-couture/(?P<pk>\d+)-(?P<slug>[-\w]*)/a-la-une/$',
         views.ProjectFeature.as_view(),
         name='project_feature'
     ),
@@ -62,7 +67,12 @@ urlpatterns = [
         name='project_create'
     ),
     url(
-        r'^membres/(?P<username>[-\w]+)/sendmessage/$',
+        r'^membres/(?P<username>[-\w]+)/favoris/$',
+        views.UserFavoritesView.as_view(),
+        name='user_favorites'
+    ),
+    url(
+        r'^membres/(?P<username>[-\w]+)/contacter/$',
         views.UserSendMessageView.as_view(),
         name='user_sendmessage'
     ),

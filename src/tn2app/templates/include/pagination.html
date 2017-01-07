@@ -1,4 +1,5 @@
 {% load add_get_parameter %}
+{% if page_obj.has_previous or page_obj.has_next %}
 <div class="pagination">
     {% if page_obj.has_previous %}
     <a href="{% add_get page=1 %}">
@@ -20,3 +21,4 @@
     </a>
     {% endif %}
 </div>
+{% endif %}

@@ -133,6 +133,14 @@ body.homepage {
     .vote a.active {
         background: url("#{$images_path}/favourite_on.png") 0 0 no-repeat;
     }
+
+    .favorite a {
+        background: url("#{$images_path}/star.png") 0 0 no-repeat;
+    }
+
+    .favorite a.active {
+        background: url("#{$images_path}/star_on.png") 0 0 no-repeat;
+    }
 }
 
 .project_overtitle {

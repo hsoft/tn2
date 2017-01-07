@@ -31,11 +31,18 @@
 <div class="sidebar">
     <div class="project_actions">
         <div class="bouton vote">
-            {% if is_liked %}
-            <a class="active">J'aime</a>
-            {% else %}
-            <a href="{% url 'project_like' pk=project.pk slug=project.get_slug %}">J'aime</a>
-            {% endif %}
+            <a
+               {% if view.is_liked %}class="active"{% endif %}
+                href="{% url 'project_like' pk=project.pk slug=project.get_slug %}">
+                J'aime
+            </a>
+        </div>
+        <div class="bouton favorite">
+            <a
+               {% if view.is_favorite %}class="active"{% endif %}
+                href="{% url 'project_favorite' pk=project.pk slug=project.get_slug %}">
+                Favori
+            </a>
         </div>
     </div>
     <div class="project-author">

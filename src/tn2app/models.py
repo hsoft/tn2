@@ -318,7 +318,11 @@ class Project(models.Model):
         verbose_name="Photographie alternative 3",
     )
 
-    likes = models.ManyToManyField(settings.AUTH_USER_MODEL, through='ProjectVote')
+    likes = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        related_name='liked_by',
+        through='ProjectVote'
+    )
 
     # The old system had a lot of spam users and we chose to aggressively weed them out during the
     # migration. Any user having likes and favorites for its only interactions with the system
@@ -380,6 +384,7 @@ class ProjectVote(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
     project = models.ForeignKey(Project)
     date_liked = models.DateTimeField(auto_now_add=True)
+    favorite = models.BooleanField(default=False, db_index=True)
 
     class Meta:
         unique_together = ('user', 'project')

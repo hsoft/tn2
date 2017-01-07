@@ -4,7 +4,6 @@ from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth import get_user_model
 from django.core.exceptions import PermissionDenied
-from django.db import IntegrityError
 from django.db.models import Max, Count
 from django.http import Http404
 from django.shortcuts import render
@@ -213,6 +212,22 @@ class UserProfileView(UserViewMixin, ListView):
         return queryset.filter(author=self._get_shown_user())
 
 
+class UserFavoritesView(UserViewMixin, ListView):
+    template_name = 'user_favorites.html'
+    model = ProjectVote
+    ordering = '-date_liked'
+    paginate_by = 15
+
+    def get_context_data(self, **kwargs):
+        result = super().get_context_data(**kwargs)
+        result['shown_user'] = self._get_shown_user()
+        return result
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.filter(user=self._get_shown_user(), favorite=True)
+
+
 class UserProfileEdit(UserViewMixin, UserPassesTestMixin, UpdateView):
     template_name = 'user_profile_edit.html'
     model = UserProfile
@@ -307,10 +322,16 @@ class ProjectDetails(DetailView):
     template_name = 'project_details.html'
     model = Project
 
-    def get_context_data(self, **kwargs):
-        result = super().get_context_data(**kwargs)
-        result['is_liked'] = result['project'].likes.filter(pk=self.request.user.id).exists()
-        return result
+    def is_liked(self):
+        return self.get_object().likes.filter(pk=self.request.user.id).exists()
+
+    def is_favorite(self):
+        try:
+            return ProjectVote.objects.get(
+                project=self.get_object(), user=self.request.user.id
+            ).favorite
+        except ProjectVote.DoesNotExist:
+            return False
 
 
 class ProjectCreate(LoginRequiredMixin, CreateView):
@@ -342,10 +363,17 @@ class ProjectAction(RedirectView):
 class ProjectLike(LoginRequiredMixin, ProjectAction):
     def _do_project_action(self, project):
         try:
+            ProjectVote.objects.get(user=self.request.user, project=project).delete()
+        except ProjectVote.DoesNotExist:
             ProjectVote.objects.create(user=self.request.user, project=project)
-        except IntegrityError:
-            # double like, ignore
-            pass
+
+
+class ProjectFavorite(LoginRequiredMixin, ProjectAction):
+    def _do_project_action(self, project):
+        vote, _ = ProjectVote.objects.get_or_create(user=self.request.user, project=project)
+        vote.favorite = not vote.favorite
+        vote.date_liked = datetime.datetime.now()
+        vote.save()
 
 
 class ProjectFeature(UserPassesTestMixin, ProjectAction):
