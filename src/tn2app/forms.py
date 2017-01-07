@@ -35,6 +35,13 @@ class UserProfileForm(BaseModelForm):
             'sewing_machine': forms.TextInput(),
         }
 
+    def clean_display_name(self):
+        display_name = self.cleaned_data['display_name']
+        if display_name.lower() != self.instance.display_name.lower():
+            if UserProfile.objects.filter(display_name__iexact=display_name).exists():
+                raise forms.ValidationError("Un autre utilisateur utilise déjà ce pseudo.")
+        return display_name
+
 
 class NewDiscussionForm(BaseModelForm):
     class Meta:

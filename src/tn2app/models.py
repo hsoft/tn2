@@ -70,7 +70,8 @@ class UserProfile(models.Model):
         blank=True,
         verbose_name="Avatar"
     )
-    display_name = models.CharField(max_length=60, blank=True, verbose_name="Pseudo")
+    # We can't have a unique index because of legacy users having the same display_name.
+    display_name = models.CharField(max_length=60, db_index=True, verbose_name="Pseudo")
     description = RichTextField(config_name='restricted', blank=True, verbose_name="Qui suis-je?")
     city = models.TextField(blank=True, verbose_name="Ville")
     website = models.URLField(blank=True, verbose_name="Site web")
