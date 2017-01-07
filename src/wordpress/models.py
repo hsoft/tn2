@@ -231,7 +231,8 @@ class WpV2BpCoutureCommentaires(models.Model):
 
 
 class WpV2BpCoutureFavoris(models.Model):
-    user_id = models.BigIntegerField()
+    # the primary_key thing is a hack. See comment at WpV2TermRelationships
+    user_id = models.BigIntegerField(primary_key=True)
     project_id = models.BigIntegerField()
 
     class Meta:
