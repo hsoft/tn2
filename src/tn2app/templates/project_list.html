@@ -29,21 +29,21 @@
         <li>
             <a
                 {% if view.active_order == 'latest' %}class="active"{% endif %}
-                href="{% add_get order='latest' %}">
+                href="{% add_get order='latest' page=1 %}">
                 Les derniers projets publiés
             </a>
         </li>
         <li>
             <a
                 {% if view.active_order == 'popular' %}class="active"{% endif %}
-                href="{% add_get order='popular' %}">
+                href="{% add_get order='popular' page=1 %}">
                 Les projets les plus populaires
             </a>
         </li>
         <li>
             <a
                 {% if view.active_order == 'random' %}class="active"{% endif %}
-                href="{% add_get order='random' %}">
+                href="{% add_get order='random' page=1 %}">
                 Projets au hasard
             </a>
         </li>
@@ -56,7 +56,7 @@
         <li>
             <a
                 {% if not active_category %}class="active"{% endif %}
-                href="{% add_get category='' %}">
+                href="{% add_get category='' page=1 %}">
                 Tous les projets
             </a>
         </li>
@@ -64,7 +64,7 @@
         <li>
             <a
                 {% if active_category == cat %}class="active"{% endif %}
-                href="{% add_get category=cat.id %}">
+                href="{% add_get category=cat.id page=1 %}">
                 {{ cat.name }}
             </a>
         </li>
