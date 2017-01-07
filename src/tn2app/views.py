@@ -245,7 +245,8 @@ class UserSendMessageView(UserViewMixin, LoginRequiredMixin, FormView):
         from_ = self.request.user
         mail.send(
             to.email,
-            from_.email,
+            settings.DEFAULT_FROM_EMAIL,
+            headers={'Reply-to': from_.email},
             template='user_sendmessage_form',
             context={
                 'from': from_,
