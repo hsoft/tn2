@@ -17,7 +17,8 @@ from post_office import mail
 import account.views
 
 from .models import (
-    UserProfile, Article, ArticleCategory, DiscussionGroup, Discussion, Project, ProjectVote
+    UserProfile, Article, ArticleCategory, DiscussionGroup, Discussion, Project, ProjectVote,
+    ProjectCategory
 )
 from .forms import (
     UserProfileForm, NewDiscussionForm, EditDiscussionForm, EditCommentForm, NewProjectForm,
@@ -260,8 +261,46 @@ class UserSendMessageView(UserViewMixin, LoginRequiredMixin, FormView):
 class ProjectList(ListView):
     template_name = 'project_list.html'
     model = Project
-    ordering = '-creation_time'
     paginate_by = 15
+
+    categories = ProjectCategory.objects
+
+    def active_order(self):
+        result = self.request.GET.get('order')
+        if result not in {'latest', 'popular', 'random'}:
+            result = 'latest'
+        return result
+
+    def active_category(self):
+        catid = self.request.GET.get('category')
+        if not catid:
+            return None
+        try:
+            return ProjectCategory.objects.get(id=catid)
+        except ProjectCategory.DoesNotExist:
+            return None
+
+    def get_ordering(self):
+        order = self.active_order()
+        if order == 'popular':
+            return '-num_likes'
+        elif order == 'random':
+            return '?'
+        else:
+            return '-creation_time'
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        category = self.active_category()
+        if category:
+            queryset = queryset.filter(category=category)
+        order = self.active_order()
+        if order == 'popular':
+            queryset = queryset.annotate(num_likes=Count('likes'))
+        elif order == 'random':
+            # We only want one page of this, paginating is irrelevant here.
+            queryset = queryset[:self.paginate_by]
+        return queryset
 
 
 class ProjectDetails(DetailView):

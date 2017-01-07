@@ -42,7 +42,7 @@
         <img class="img-avatar-big" src="{{ project.author|avatar_big_url }}"/>
         Par {{ project.author|user_link }} le {{ project.creation_time|date:'SHORT_DATE_FORMAT' }}
         <br>
-        dans {{ project.category }}
+        dans <a href="{% url 'project_list' %}?category={{ project.category.id }}">{{ project.category }}</a>
     </div>
     <h4 class="clear">Vues</h4>
     <div>

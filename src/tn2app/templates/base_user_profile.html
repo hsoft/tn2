@@ -17,7 +17,7 @@
 <div class="overline username-title">
 <h1>{{ shown_user.profile.display_name }}</h1>
 </div>
-<ul class="profile-sub-menu">
+<ul class="profile-sub-menu selector">
     <li><a class="{% block class_for_profile_link %}{% endblock %}" href="{% url 'user_profile' username=shown_user.username %}">Projets</a></li>
     <li><a class="{% block class_for_message_link %}{% endblock %}" href="{% url 'user_sendmessage' username=shown_user.username %}">Envoyer un message</a></li>
 </ul>

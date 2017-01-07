@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load tn2 thumbnail %}
+{% load tn2 thumbnail add_get_parameter %}
 
 {% block main_contents %}
 <p>
@@ -7,18 +7,71 @@
     Galerie
 </p>
 
+<div class="inner-content">
 {% include "include/pagination.html" %}
 
-<div class="project-list">
+<ul class="project-list">
 {% for project in project_list %}
+<li>
 <a href="{{ project.get_absolute_url }}">
     <img src="{{ project.image1|thumbnail_url:'project-list' }}"/>
 </a>
+</li>
 {% endfor %}
-</div>
+</ul>
 
 {% include "include/pagination.html" %}
+</div>
 
+<div class="sidebar">
+    {% include 'include/title.html' with text="Voir..." %}
+    <ul class="selector">
+        <li>
+            <a
+                {% if view.active_order == 'latest' %}class="active"{% endif %}
+                href="{% add_get order='latest' %}">
+                Les derniers projets publiés
+            </a>
+        </li>
+        <li>
+            <a
+                {% if view.active_order == 'popular' %}class="active"{% endif %}
+                href="{% add_get order='popular' %}">
+                Les projets les plus populaires
+            </a>
+        </li>
+        <li>
+            <a
+                {% if view.active_order == 'random' %}class="active"{% endif %}
+                href="{% add_get order='random' %}">
+                Projets au hasard
+            </a>
+        </li>
+    </ul>
+
+    {% include 'include/title.html' with text="Trier par catégorie" %}
+
+    {% with active_category=view.active_category %}
+    <ul class="selector">
+        <li>
+            <a
+                {% if not active_category %}class="active"{% endif %}
+                href="{% add_get category='' %}">
+                Tous les projets
+            </a>
+        </li>
+        {% for cat in view.categories.all %}
+        <li>
+            <a
+                {% if active_category == cat %}class="active"{% endif %}
+                href="{% add_get category=cat.id %}">
+                {{ cat.name }}
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+    {% endwith %}
+</div>
 {% endblock %}
 
 

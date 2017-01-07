@@ -21,28 +21,6 @@ body.user-profile {
         li {
             float: left;
             margin-right: 10px;
-
-            a {
-                font-weight: bold;
-
-                &.active {
-                    color: $heading_color;
-                }
-            }
-        }
-    }
-
-    ul.project-list {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-
-        li {
-            display: inline;
-
-            img {
-                margin: 12px;
-            }
         }
     }
 
