@@ -14,6 +14,7 @@ from django.views.generic.detail import SingleObjectMixin
 from django_comments.models import Comment
 from post_office import mail
 import account.views
+import account.forms
 
 from .models import (
     UserProfile, Article, ArticleCategory, DiscussionGroup, Discussion, Project, ProjectVote,
@@ -26,6 +27,10 @@ from .forms import (
 
 class SignupView(account.views.SignupView):
     form_class = SignupForm
+
+
+class LoginView(account.views.LoginView):
+    form_class = account.forms.LoginEmailForm
 
 
 def homepage(request):

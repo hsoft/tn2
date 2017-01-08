@@ -137,6 +137,7 @@ LOGIN_URL = 'account_login'
 LOGOUT_REDIRECT_URL = 'homepage'
 ACCOUNT_EMAIL_CONFIRMATION_REQUIRED = True
 ACCOUNT_HOOKSET = 'tn2app.account_hookset.AccountHookset'
+AUTHENTICATION_BACKENDS = ['account.auth_backends.EmailAuthenticationBackend']
 DEFAULT_FROM_EMAIL = 'tn2@hardcoded.net'
 SERVER_EMAIL = DEFAULT_FROM_EMAIL
 

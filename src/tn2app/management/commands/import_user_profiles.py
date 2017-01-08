@@ -3,6 +3,8 @@ import html
 from django.core.management.base import BaseCommand
 from django.contrib.auth import get_user_model
 
+from account.models import EmailAddress
+
 from wordpress.models import WpV2Users, WpV2BpXprofileData
 from ...util import unescape_mysql
 
@@ -16,6 +18,26 @@ class Command(BaseCommand):
 
         for user in users.all():
             print("{} ({})".format(user.username, user.profile.wpdb_id))
+            # First, let's make sure that we have a django-user-account email model associated with
+            # this user.
+
+            # these users below have duplicate email addresses in the old system. We've got to pick
+            # one. In each of the case, a manual review of the accounts was made and a user was
+            # picked. Email-less users can't log in.
+            EMAILLESS_USERS = {
+                'watoowatoo',
+                'essamra',
+                'curlingfox',
+            }
+            if user.username not in EMAILLESS_USERS and not EmailAddress.objects.get_primary(user):
+                EmailAddress.objects.create(
+                    user=user,
+                    email=user.email,
+                    verified=True,
+                    primary=True,
+                )
+
+            # Now, the WP profile
             wpuser = WpV2Users.objects.get(id=user.profile.wpdb_id)
             bp_fields = wpuser.bp_profile_fields
             FIELD2WPID = [
