@@ -106,6 +106,13 @@ ul.with-lines {
     }
 }
 
+ul.blue-links {
+    li a {
+        color: $text-color-link;
+        font-weight: bold;
+    }
+}
+
 div.sidebar ul.two-columns {
     overflow: hidden;
 
