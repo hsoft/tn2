@@ -27,6 +27,11 @@
 
 <h2 id="comments">Commentaires</h2>
 {% render_comment_list for project %}
+
+{% if user.is_authenticated %}
+    {% include 'include/add_comment_form.html' with ref_object=project %}
+{% endif %}
+
 </div>
 <div class="sidebar">
     <div class="project_actions">
@@ -81,4 +86,7 @@
 
 {% block bottom_js %}
 <script type="text/javascript" src="{% static "js/project_detail.js" %}"></script>
+{% if user.is_authenticated %}
+{% include 'include/ckjs.html' %}
+{% endif %}
 {% endblock %}
