@@ -14,10 +14,18 @@
         <div class="overline">
             <h4>Catégories</h4>
         </div>
-        <ul>
+        <ul class="selector with-lines">
+            {% with active_category=view.active_category %}
             {% for cat in view.featured_categories.all %}
-            <li><a href="{% url 'category' slug=cat.slug %}">{{ cat.title }}</a></li>
+            <li>
+                <a
+                    {% if active_category == cat %}class="active"{% endif %}
+                    href="{% url 'category' slug=cat.slug %}">
+                    {{ cat.title }}
+                </a>
+            </li>
             {% endfor %}
+            {% endwith %}
         </ul>
     </div>
 </div>

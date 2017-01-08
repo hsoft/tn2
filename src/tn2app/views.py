@@ -154,6 +154,9 @@ class DiscussionEdit(LoginRequiredMixin, UpdateView):
 class ArticleMixin:
     featured_categories = ArticleCategory.objects.filter(featured=True).order_by('title')
 
+    def active_category(self):
+        return None
+
 
 class ArticleDetailView(ArticleMixin, DetailView):
     model = Article
@@ -170,9 +173,12 @@ class ArticleList(ArticleMixin, ListView):
 
 
 class ArticlesByCategoryList(ArticleList):
+    def active_category(self):
+        return ArticleCategory.objects.get(slug=self.kwargs['slug'])
+
     def get_queryset(self):
         try:
-            cat = ArticleCategory.objects.get(slug=self.kwargs['slug'])
+            cat = self.active_category()
         except ArticleCategory.DoesNotExist:
             raise Http404()
         queryset = super().get_queryset()

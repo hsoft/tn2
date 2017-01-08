@@ -79,13 +79,39 @@ ul.project-list {
     }
 }
 
-ul.selector li {
-    a {
-        font-weight: bold;
+ul.selector {
+    list-style: none outside none;
+    margin: 0 0 10px 0;
+    padding: 0;
 
-        &.active {
-            color: $heading_color;
+    li {
+        padding: 4px 0;
+
+        a {
+            color: inherit;
+
+            &.active {
+                font-weight: bold;
+                color: $heading_color;
+            }
         }
+    }
+}
+
+ul.with-lines {
+    border-top: 1px solid $thin_sep_line_color;
+
+    li {
+        border-bottom: 1px solid $thin_sep_line_color;
+    }
+}
+
+div.sidebar ul.two-columns {
+    overflow: hidden;
+
+    li {
+        float: left;
+        width: 125px;
     }
 }
 

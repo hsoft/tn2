@@ -36,11 +36,11 @@
             {{ shown_user.profile.description|safe }}
         </p>
         <dl>
-            <dt>Pseudo</dt><dd>{{ shown_user.profile.display_name }}</dd>
-            <dt>Ville</dt><dd>{{ shown_user.profile.city }}</dd>
-            <dt>Site web</dt><dd>{{ shown_user.profile.website|urlize }}</dd>
-            <dt>Niveau</dt><dd>{{ shown_user.profile.skill_level }}</dd>
-            <dt>MAC</dt><dd>{{ shown_user.profile.sewing_machine }}</dd>
+            <dt>Pseudo</dt><dd>{{ shown_user.profile.display_name|default:"-" }}</dd>
+            <dt>Ville</dt><dd>{{ shown_user.profile.city|default:"-" }}</dd>
+            <dt>Site web</dt><dd>{{ shown_user.profile.website|urlize|default:"-" }}</dd>
+            <dt>Niveau</dt><dd>{{ shown_user.profile.skill_level|default:"-" }}</dd>
+            <dt>MAC</dt><dd>{{ shown_user.profile.sewing_machine|default:"-" }}</dd>
         </dl>
     </div>
 </div>

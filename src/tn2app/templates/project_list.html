@@ -25,7 +25,7 @@
 
 <div class="sidebar">
     {% include 'include/title.html' with text="Voir..." %}
-    <ul class="selector">
+    <ul class="selector with-lines">
         <li>
             <a
                 {% if view.active_order == 'latest' %}class="active"{% endif %}
@@ -52,7 +52,7 @@
     {% include 'include/title.html' with text="Trier par catégorie" %}
 
     {% with active_category=view.active_category %}
-    <ul class="selector">
+    <ul class="selector with-lines two-columns">
         <li>
             <a
                 {% if not active_category %}class="active"{% endif %}
@@ -60,6 +60,7 @@
                 Tous les projets
             </a>
         </li>
+        <li>&nbsp;</li>
         {% for cat in view.categories.all %}
         <li>
             <a
