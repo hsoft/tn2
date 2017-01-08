@@ -3,14 +3,6 @@
 
 {% block bodyclasses %}article-list{% endblock %}
 
-{% block breadcrumb %}
-    <a href="{% url 'homepage' %}">Accueil</a>&nbsp;&gt;&nbsp;
-    <a href="{% url 'article_list' %}">Blog</a>
-    {% if view.active_category %}
-    &nbsp;&gt;&nbsp;<a href="{% url 'category' slug=view.active_category.slug %}">{{ view.active_category.title }}</a>
-    {% endif %}
-{% endblock %}
-
 {% block inner_content %}
     {% for article in article_list %}
     <div class="article-preview">

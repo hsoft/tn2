@@ -7,6 +7,7 @@ from django.core.exceptions import PermissionDenied
 from django.db.models import Max, Count
 from django.http import Http404
 from django.shortcuts import render
+from django.urls import reverse
 from django.views.generic import ListView, TemplateView, DetailView, RedirectView, FormView
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.detail import SingleObjectMixin
@@ -157,10 +158,16 @@ class ArticleMixin:
     def active_category(self):
         return None
 
+    def breadcrumb(self):
+        return [(reverse('article_list'), "Blog")]
+
 
 class ArticleDetailView(ArticleMixin, DetailView):
     model = Article
     template_name = 'article.html'
+
+    def breadcrumb(self):
+        return super().breadcrumb() + [(None, self.get_object().title)]
 
 
 class ArticleList(ArticleMixin, ListView):
@@ -171,10 +178,15 @@ class ArticleList(ArticleMixin, ListView):
     paginate_by = 5
 
 
-
 class ArticlesByCategoryList(ArticleList):
     def active_category(self):
         return ArticleCategory.objects.get(slug=self.kwargs['slug'])
+
+    def breadcrumb(self):
+        result = super().breadcrumb()
+        cat = self.active_category()
+        return result + [(reverse('category', args=(cat.slug, )), cat.title)]
+
 
     def get_queryset(self):
         try:
@@ -206,6 +218,10 @@ class UserViewMixin:
         except User.DoesNotExist:
             raise Http404()
 
+    def breadcrumb(self):
+        u = self._get_shown_user()
+        return [(reverse('user_profile', args=(u.username, )), u.profile.display_name)]
+
 
 class UserProfileView(UserViewMixin, ListView):
     template_name = 'user_profile.html'
@@ -229,6 +245,9 @@ class UserFavoritesView(UserViewMixin, ListView):
     ordering = '-date_liked'
     paginate_by = 15
 
+    def breadcrumb(self):
+        return super().breadcrumb() + [(None, "Favoris")]
+
     def get_context_data(self, **kwargs):
         result = super().get_context_data(**kwargs)
         result['shown_user'] = self._get_shown_user()
@@ -248,6 +267,9 @@ class UserProfileEdit(UserViewMixin, UserPassesTestMixin, UpdateView):
     # for UserPassesTestMixin
     raise_exception = True
 
+    def breadcrumb(self):
+        return super().breadcrumb() + [(None, "Modifier")]
+
     def test_func(self):
         u = self.request.user
         return u == self.get_object().user or u.has_perm('tn2app.change_userprofile')
@@ -261,6 +283,9 @@ class UserProfileEdit(UserViewMixin, UserPassesTestMixin, UpdateView):
 class UserSendMessageView(UserViewMixin, LoginRequiredMixin, FormView):
     form_class = UserSendMessageForm
     template_name = 'user_sendmessage.html'
+
+    def breadcrumb(self):
+        return super().breadcrumb() + [(None, "Contacter")]
 
     def get_context_data(self, **kwargs):
         result = super().get_context_data(**kwargs)
@@ -306,6 +331,10 @@ class ProjectList(ListView):
         except ProjectCategory.DoesNotExist:
             return None
 
+    @staticmethod
+    def breadcrumb():
+        return [(reverse('project_list'), "Projets couture")]
+
     def get_ordering(self):
         order = self.active_order()
         if order == 'popular':
@@ -332,6 +361,9 @@ class ProjectList(ListView):
 class ProjectDetails(DetailView):
     template_name = 'project_details.html'
     model = Project
+
+    def breadcrumb(self):
+        return ProjectList.breadcrumb() + [(None, self.get_object().title)]
 
     def is_liked(self):
         return self.get_object().likes.filter(pk=self.request.user.id).exists()
@@ -438,11 +470,17 @@ class ArticleSearchView(BaseSearchView):
     template_name = 'search_article.html'
     paginate_by = 10
 
+    def breadcrumb(self):
+        return [(None, "Recherche d'articles")]
+
 
 class ProjectSearchView(BaseSearchView):
     model = Project
     template_name = 'search_project.html'
     paginate_by = 15
+
+    def breadcrumb(self):
+        return [(None, "Recherche projets")]
 
 
 class DiscussionSearchView(BaseSearchView):
@@ -450,9 +488,15 @@ class DiscussionSearchView(BaseSearchView):
     template_name = 'search_discussion.html'
     paginate_by = 10
 
+    def breadcrumb(self):
+        return [(None, "Recherche de discussions")]
+
 
 class CompoundSearchView(LoginRequiredMixin, TemplateView):
     template_name = 'search_compound.html'
+
+    def breadcrumb(self):
+        return [(None, "Recherche de '{}'".format(self.request.GET.get('q')))]
 
     def get_context_data(self, **kwargs):
         result = super().get_context_data(**kwargs)

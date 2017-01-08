@@ -4,9 +4,7 @@
 {% block bodyclasses %}article{% endblock %}
 
 {% block breadcrumb %}
-    <a href="{% url 'homepage' %}">Accueil</a>&nbsp;&gt;&nbsp;
-    <a href="{% url 'article_list' %}">Blog</a>&nbsp;&gt;&nbsp;
-    {{ article.title }}
+    {{ block.super }}
     {% if user.is_staff %}
     <a class="button" href="{% url 'admin:tn2app_article_change' article.id %}">Administrer</a>
     {% endif %}

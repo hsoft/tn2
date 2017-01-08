@@ -53,6 +53,22 @@
             </div>
         </div>
         <div class="main_contents fullwidth">
+        <p>
+        {% block breadcrumb %}
+            <a href="{% url 'homepage' %}">Accueil</a>
+            {% with breadcrumb=view.breadcrumb %}
+            {% for item in breadcrumb %}
+            &nbsp;&gt;&nbsp;
+            {% if item.0 %}
+                <a href="{{ item.0 }}">{{ item.1 }}</a>
+            {% else %}
+                {{ item.1 }}
+            {% endif %}
+            {% endfor %}
+            {% endwith %}
+        {% endblock %}
+        </p>
+
         {% block main_contents %}
         {% endblock %}
         </div>
