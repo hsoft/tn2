@@ -120,11 +120,13 @@ class Article(models.Model):
     slug = models.SlugField(max_length=255, unique=True)
     status = models.SmallIntegerField(choices=STATUS_CHOICES, default=STATUS_DRAFT)
     title = models.CharField(max_length=255)
+    subtitle = models.TextField(blank=True)
     content = RichTextUploadingField()
     main_image = models.ImageField(blank=True)
     categories = models.ManyToManyField('ArticleCategory')
     creation_time = models.DateTimeField(auto_now_add=True)
     publish_time = models.DateTimeField(blank=True, null=True)
+    featured = models.BooleanField(default=False, verbose_name="À la une")
 
     comments = GenericRelation(Comment, object_id_field='object_pk')
 

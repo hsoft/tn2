@@ -7,6 +7,7 @@
 @import 'project';
 @import 'group';
 @import 'userprofile';
+@import 'homepage';
 @import 'footer';
 
 .fullwidth {
@@ -23,34 +24,6 @@
 // It has to be invisible.
 #id_honeypot {
     display: none;
-}
-
-ol.threeitems {
-    padding: 0;
-
-    li {
-        list-style: none;
-        float: left;
-        margin-right: 44px;
-        width: 290px;
-
-        &:last-child {
-            margin-right: 0px;
-        }
-
-        img {
-            width: 288px;
-            height: 192px;
-            margin-bottom: 4px;
-
-        }
-
-        a {
-            color: $red_highlight;
-            text-decoration: none;
-            font-size: 14pt;
-        }
-    }
 }
 
 form p {

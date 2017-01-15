@@ -25,7 +25,6 @@ from .forms import (
     UserProfileForm, NewDiscussionForm, EditDiscussionForm, EditCommentForm, NewProjectForm,
     SignupForm, ContactForm, UserSendMessageForm
 )
-from .util import fa_str
 
 class SignupView(account.views.SignupView):
     form_class = SignupForm
@@ -36,11 +35,34 @@ class LoginView(account.views.LoginView):
 
 
 def homepage(request):
-    articles = Article.published.order_by('-creation_time')[:3]
-    featured_projects = Project.objects.filter(featured_time__isnull=False).order_by('-featured_time')
-    popular_projects = Project.objects.annotate(num_likes=Count('likes')).order_by('-num_likes')
+    # Affichage des trois articles de la page d'accueil:
+    # En règle générale, on veut les derniers articles en ordre de parution.
+    # ... sauf pour le 2e spot, qui est réservé aux trouvailles.
+    # Le premier spot, il est pour le dernier article "featured", mais ça se peut que
+    # cet article n'existe pas.
+    articles = Article.published\
+        .exclude(categories__slug='les-trouvailles')\
+        .order_by('-publish_time')
+    trouvailles = Article.published\
+        .filter(categories__slug='les-trouvailles')\
+        .order_by('-publish_time').first()
+    # Les trouvailles ont toujours le même titre sur la page d'accueil
+    trouvailles.title = "Les trouvailles de la semaine"
+    featured_articles = Article.published.filter(featured=True)
+    if featured_articles.exists():
+        featured_article = featured_articles.order_by('-publish_time').first()
+        articles = [featured_article, trouvailles, articles[0]]
+    else:
+        articles = [articles[0], trouvailles, articles[1]]
+    featured_projects = Project.objects\
+        .filter(featured_time__isnull=False)\
+        .order_by('-featured_time')
+    popular_projects = Project.objects\
+        .annotate(num_likes=Count('likes'))\
+        .order_by('-num_likes')
     latest_projects = Project.objects
-    recent_discussions = Discussion.objects.filter(group__private=False)\
+    recent_discussions = Discussion.objects\
+        .filter(group__private=False)\
         .order_by('-last_activity')[:4]
     context = {
         'articles': articles,

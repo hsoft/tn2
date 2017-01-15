@@ -19,8 +19,9 @@
         <li>
             <a href="{{ article.get_absolute_url }}">
                 <img src="{{ article.main_image|thumbnail_url:'preview' }}"/>
-                <p>{{ article.title }}</p>
+                <h5>{{ article.title }}</h5>
             </a>
+            {% if article.subtitle %}<p>{{ article.subtitle }}</p>{% endif %}
         </li>
         {% endfor %}
     </ol>

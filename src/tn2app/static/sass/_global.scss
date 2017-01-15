@@ -17,7 +17,12 @@ a.fa {
 }
 
 h1, h2, h3, h4, h5, h6 {
+    font-family: 'Puritan', arial, serif;
+    font-weight: normal;
+    font-variant: normal;
+    white-space: normal;
     color: $heading-color;
+    margin: 0;
 }
 
 h1 {

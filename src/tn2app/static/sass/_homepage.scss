@@ -1,0 +1,30 @@
+ol.threeitems {
+    padding: 0;
+
+    li {
+        list-style: none;
+        float: left;
+        margin-right: 44px;
+        width: 290px;
+
+        &:last-child {
+            margin-right: 0px;
+        }
+
+        img {
+            width: 288px;
+            height: 192px;
+            margin-bottom: 4px;
+
+        }
+
+        h5 {
+            color: $red_highlight;
+            font-size: 18px;
+        }
+
+        p {
+            margin-top: 4px;
+        }
+    }
+}
