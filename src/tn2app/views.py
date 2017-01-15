@@ -38,7 +38,7 @@ def homepage(request):
     # Affichage des trois articles de la page d'accueil:
     # En règle générale, on veut les derniers articles en ordre de parution.
     # ... sauf pour le 2e spot, qui est réservé aux trouvailles.
-    # Le premier spot, il est pour le dernier article "featured", mais ça se peut que
+    # Le 3e spot, il est pour le dernier article "featured", mais ça se peut que
     # cet article n'existe pas.
     articles = Article.published\
         .exclude(categories__slug='les-trouvailles')\
@@ -51,7 +51,7 @@ def homepage(request):
     featured_articles = Article.published.filter(featured=True)
     if featured_articles.exists():
         featured_article = featured_articles.order_by('-publish_time').first()
-        articles = [featured_article, trouvailles, articles[0]]
+        articles = [articles[0], trouvailles, featured_article]
     else:
         articles = [articles[0], trouvailles, articles[1]]
     featured_projects = Project.objects\
