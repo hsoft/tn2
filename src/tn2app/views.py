@@ -25,6 +25,7 @@ from .forms import (
     UserProfileForm, NewDiscussionForm, EditDiscussionForm, EditCommentForm, NewProjectForm,
     SignupForm, ContactForm, UserSendMessageForm
 )
+from .util import fa_str
 
 class SignupView(account.views.SignupView):
     form_class = SignupForm
@@ -59,6 +60,10 @@ class DiscussionGroupListView(ListView):
     geo_groups = DiscussionGroup.objects.filter(group_type=DiscussionGroup.TYPE_GEOGRAPHICAL)
     recent_discussions = Discussion.objects.filter(group__private=False).order_by('-last_activity')
 
+    @staticmethod
+    def breadcrumb():
+        return [(reverse('discussion_groups'), "Groupes")]
+
     def get_queryset(self):
         queryset = super().get_queryset()
         queryset = queryset.filter(group_type=DiscussionGroup.TYPE_NORMAL)
@@ -74,6 +79,10 @@ class DiscussionGroupDetailView(SingleObjectMixin, ListView):
     slug_url_kwarg = 'group_slug'
     paginate_by = 20
     template_name = 'discussion_group.html'
+
+    def breadcrumb(self):
+        result = DiscussionGroupListView.breadcrumb()
+        return result + [(None, self.object.title_display)]
 
     def get(self, request, *args, **kwargs):
         group = self.get_object(queryset=DiscussionGroup.objects.all())
@@ -95,6 +104,15 @@ class DiscussionDetailView(SingleObjectMixin, ListView):
     slug_url_kwarg = 'discussion_slug'
     paginate_by = 15
     template_name = 'discussion.html'
+
+    def breadcrumb(self):
+        result = DiscussionGroupListView.breadcrumb()
+        discussion = self.object
+        group = discussion.group
+        return result + [
+            (reverse('discussion_group', args=(group.slug, )), group.title_display()),
+            (None, discussion.title),
+        ]
 
     def get(self, request, *args, **kwargs):
         discussion = self.get_object(queryset=Discussion.objects.filter(group__slug=kwargs['group_slug']))

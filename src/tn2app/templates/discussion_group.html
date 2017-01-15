@@ -3,19 +3,18 @@
 
 {% block bodyclasses %}group-detail{% endblock %}
 
-{% block main_contents %}
-<p>
-    <a href="{% url 'homepage' %}">Accueil</a>&nbsp;&gt;&nbsp;
-    <a href="{% url 'discussion_groups' %}">Groupes</a>&nbsp;&gt;&nbsp;
-    {{ group.title }}{% if group.private %} <span class="fa fa-lock">{% endif %}
+{% block breadcrumb %}
+    {{ block.super }}
     {% if user.is_staff %}
     <a class="button" href="{% url 'admin:tn2app_discussiongroup_change' group.id %}">Administrer</a>
     {% endif %}
-</p>
+{% endblock %}
+
+{% block main_contents %}
 <div class="page-title">
     <img src="{{ group|group_avatar_url }}"/>
     <div class="overline">
-        <h1>{{ group.title }}{% if group.private %} <span class="fa fa-lock">{% endif %}</span></h1>
+        <h1>{{ group.title_display }}</h1>
     </div>
     <div class="clear"></div>
     <p class="desc">{{ group.description|safe }}</p>

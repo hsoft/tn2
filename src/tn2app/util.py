@@ -2,6 +2,8 @@ import hashlib
 import itertools
 import unicodedata
 
+from django.utils.html import format_html
+
 import bleach
 
 def sanitize_comment(text):
@@ -50,4 +52,7 @@ def gravatar_url(email, size=None, default_image=None):
     if params:
         url += '?' + '&'.join('{}={}'.format(k, v) for k, v in params.items())
     return url
+
+def fa_str(fa_name):
+    return format_html('<span class="fa fa-{}"></span>', fa_name)
 

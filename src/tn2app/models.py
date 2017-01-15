@@ -9,6 +9,7 @@ from django.contrib.postgres.search import SearchVector, SearchRank
 from django.db import models
 from django.db.models import Max, Q, Count
 from django.urls import reverse
+from django.utils.html import format_html
 from django.utils.text import slugify
 
 from PIL import Image
@@ -18,7 +19,7 @@ from django_comments.models import Comment
 
 from wordpress.models import WpV2Users
 
-from .util import sanitize_comment, nonone
+from .util import sanitize_comment, nonone, fa_str
 
 class UserManager(UserManagerBase):
     def get_from_wpuser_id(self, wpuser_id):
@@ -189,6 +190,13 @@ class DiscussionGroup(models.Model):
 
     def last_activity(self):
         return nonone(self.discussions.aggregate(Max('last_activity'))['last_activity__max'], '-')
+
+    def title_display(self):
+        """Title that includes, if appropriate, the "lock" icon to indicate a private group."""
+        if self.private:
+            return format_html("{} {}", self.title, fa_str('lock'))
+        else:
+            return self.title
 
 
 class DiscussionManager(models.Manager):
