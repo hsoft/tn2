@@ -1,6 +1,7 @@
 from django import template
 from django.templatetags.static import static
-from django.utils.html import escape
+from django.urls import reverse
+from django.utils.html import escape, format_html
 from django.utils.safestring import mark_safe
 
 from easy_thumbnails.files import get_thumbnailer
@@ -56,9 +57,18 @@ def user_link(user):
         return str(user)
 
 @register.simple_tag()
-def page_contents(keyname):
+def page_contents(keyname, user):
     try:
-        return mark_safe(PageContents.objects.get(key=keyname).contents)
+        page_contents = PageContents.objects.get(key=keyname)
+        if user.is_staff:
+            edit_link = reverse('admin:tn2app_pagecontents_change', args=(page_contents.id, ))
+            return format_html(
+                '<a class="page-edit-link" href="{}"><span class="fa fa-edit"></span></a>{}',
+                edit_link,
+                mark_safe(page_contents.contents),
+            )
+        else:
+            return mark_safe(page_contents.contents)
     except PageContents.DoesNotExist:
         return ''
 

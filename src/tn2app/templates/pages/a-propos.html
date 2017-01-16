@@ -1,16 +1,67 @@
 {% extends 'base.html' %}
-{% load tn2 %}
+{% load tn2 staticfiles %}
+
+{% block bodyclasses %}article page apropos{% endblock %}
+
+{% block breadcrumb %}{% endblock %}
 
 {% block main_contents %}
-<h1>A propos de T&N</h1>
+<div id="box-container" class="box-container">
+<div id="box1" class="box">
+    <div class="left">
+        <img src="{% static 'images/apropos.png' %}"/>
+    </div>
+    <div class="right">
+        {% page_contents 'a-propos-presentation' user %}
+    </div>
+</div>
+<div id="box2" class="box hidden">
+    <div class="left">
+        <img src="{% static 'images/creations.png' %}"/>
+    </div>
+    <div class="right">
+        {% page_contents 'a-propos-publiez' user %}
+    </div>
+</div>
+<div id="box3" class="box hidden">
+    <div class="left">
+        <img src="{% static 'images/questions.png' %}"/>
+    </div>
+    <div class="right">
+        {% page_contents 'a-propos-questions' user %}
+    </div>
+</div>
+<div id="box4" class="box hidden">
+    <div class="left">
+        <img src="{% static 'images/opinion.png' %}"/>
+    </div>
+    <div class="right">
+        {% page_contents 'a-propos-avis' user %}
+    </div>
+</div>
 
-{% page_contents 'a-propos-presentation' %}
-{% page_contents 'a-propos-publiez' %}
-{% page_contents 'a-propos-questions' %}
-{% page_contents 'a-propos-avis' %}
-{% page_contents 'a-propos-equipe' %}
-{% page_contents 'a-propos-philosophie' %}
-{% page_contents 'a-propos-histoire' %}
+<div class="menu">
+    <ul>
+        <li class="active"><a href="#" data-boxid="box1">A propos de T&amp;N</a></li>
+        <li><a href="#" data-boxid="box2">Publiez vos créations</a></li>
+        <li><a href="#" data-boxid="box3">Posez vos questions</a></li>
+        <li class="last"><a href="#" data-boxid="box4">Donnez votre avis</a></li>
+    </ul>
+</div>
+</div>
+<div class="clear overline">&nbsp;</div>
+<div class="column">
+{% page_contents 'a-propos-equipe' user %}
+</div>
+<div class="column">
+{% page_contents 'a-propos-philosophie' user %}
+</div>
+<div class="column last">
+{% page_contents 'a-propos-histoire' user %}
+</div>
 
 {% endblock %}
 
+{% block bottom_js %}
+<script type="text/javascript" src="{% static "js/apropos.js" %}"></script>
+{% endblock %}

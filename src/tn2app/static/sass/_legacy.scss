@@ -252,3 +252,25 @@ body.article-list {
         margin-right: 20px;
     }
 }
+
+div.article-preview {
+    position: relative;
+
+    img {
+        float: left;
+        width: 270px;
+        height: 180px;
+    }
+
+    p.readmore {
+        position: absolute;
+        margin: 0;
+        bottom: 0;
+        right: 0;
+
+        a {
+            text-decoration: none;
+        }
+    }
+}
+
