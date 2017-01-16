@@ -6,8 +6,9 @@ from django_comments.models import Comment
 from wordpress.models import (
     WpV2BpCoutureCommentaires, WpV2Users
 )
+from tn2comments.util import sanitize_comment
 from ...models import Project, User
-from ...util import sanitize_comment, unescape_mysql
+from ...util import unescape_mysql
 
 class Command(BaseCommand):
     help = 'Imports project comments from our WP DB'

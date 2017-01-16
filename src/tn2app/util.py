@@ -4,16 +4,6 @@ import unicodedata
 
 from django.utils.html import format_html
 
-import bleach
-
-def sanitize_comment(text):
-    ALLOWED_TAGS = ['b', 'i', 'u', 's', 'p', 'img', 'a', 'em', 'strong', 'ul', 'ol', 'li']
-    ALLOWED_ATTRS = {
-        'img': ['alt', 'src', 'width', 'height'],
-        'a': ['href'],
-    }
-    return bleach.linkify(bleach.clean(text, tags=ALLOWED_TAGS, attributes=ALLOWED_ATTRS))
-
 def dedupe_slug(slug, queryset, slug_field_name='slug'):
     model = queryset.model
     max_length = model._meta.get_field(slug_field_name).max_length

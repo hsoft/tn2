@@ -3,12 +3,13 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 from .models import UserProfile
-from .util import sanitize_comment
 
 User = get_user_model()
 
 def comment_will_be_posted(sender, comment, request, **kwargs):
-    comment.comment = sanitize_comment(comment.comment)
+    # We don't want any anonymous comments.
+    if not comment.user:
+        return False
 
 def comment_was_posted(sender, comment, request, **kwargs):
     if hasattr(comment.content_object, 'last_activity'):

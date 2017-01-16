@@ -4,8 +4,8 @@ from django.utils.html import linebreaks
 from django_comments.models import Comment
 
 from wordpress.models import WpV2Comments, WpV2Users
+from tn2comments.util import sanitize_comment
 from ...models import User, Article
-from ...util import sanitize_comment
 
 class Command(BaseCommand):
     help = 'Imports articles\' comments from our WP DB'

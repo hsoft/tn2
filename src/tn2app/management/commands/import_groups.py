@@ -10,8 +10,9 @@ from django_comments.models import Comment
 from wordpress.models import (
     WpV2BpGroups, WpV2BpGroupsGroupmeta, WpV2BbTopics, WpV2BbPosts, WpV2Users,
 )
+from tn2comments.util import sanitize_comment
 from ...models import User, DiscussionGroup, Discussion
-from ...util import deaccent, sanitize_comment, unescape_mysql
+from ...util import deaccent, unescape_mysql
 
 class Command(BaseCommand):
     help = 'Imports groups from our WP DB'

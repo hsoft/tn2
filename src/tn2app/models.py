@@ -19,7 +19,8 @@ from django_comments.models import Comment
 
 from wordpress.models import WpV2Users
 
-from .util import sanitize_comment, nonone, fa_str
+from tn2comments.util import sanitize_comment
+from .util import nonone, fa_str
 
 class UserManager(UserManagerBase):
     def get_from_wpuser_id(self, wpuser_id):
