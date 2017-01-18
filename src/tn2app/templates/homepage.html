@@ -30,6 +30,7 @@
     <div class="col_left featured-projects">
         <div class="overline">
             <h4>Les projets à la Une</h4>
+            <a class="rightmost" href="{% url 'project_list' %}">Voir tous les projets</a>
         </div>
         {% for project in featured_projects.all|slice:":3" %}
         <a href="{{ project.get_absolute_url }}">
@@ -58,6 +59,7 @@
     <div class="col_left">
         <div class="overline">
             <h4>Récemment dans les groupes</h4>
+            <a class="rightmost" href="{% url 'discussion_groups' %}">Voir tous les groupes</a>
         </div>
         {% include 'include/discussion_ul.html' with discussions=recent_discussions only %}
     </div>
