@@ -397,7 +397,7 @@ class Project(models.Model):
 class ProjectVote(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
     project = models.ForeignKey(Project)
-    date_liked = models.DateTimeField(auto_now_add=True)
+    date_liked = models.DateTimeField(auto_now_add=True, db_index=True)
     favorite = models.BooleanField(default=False, db_index=True)
 
     class Meta:
