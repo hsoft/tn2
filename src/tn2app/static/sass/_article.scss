@@ -11,4 +11,23 @@ body.article {
             background-color: $bg-link-funky;
         }
     }
+
+    .alignleft {
+        float: left;
+        margin-right: 12px;
+        margin-bottom: 4px;
+    }
+
+    .aligncenter {
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+    }
+
+    .alignright {
+        float: right;
+        margin-left: 12px;
+        margin-bottom: 4px;
+    }
+
 }
