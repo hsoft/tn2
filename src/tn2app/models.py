@@ -20,7 +20,7 @@ from django_comments.models import Comment
 from wordpress.models import WpV2Users
 
 from tn2comments.util import sanitize_comment
-from .util import nonone, fa_str
+from .util import nonone, fa_str, embed_videos
 
 class UserManager(UserManagerBase):
     def get_from_wpuser_id(self, wpuser_id):
@@ -139,6 +139,9 @@ class Article(models.Model):
 
     def get_absolute_url(self):
         return reverse('article', args=[self.slug])
+
+    def get_content(self):
+        return embed_videos(self.content)
 
 
 class ArticleCategory(models.Model):

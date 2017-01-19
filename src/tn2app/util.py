@@ -1,5 +1,6 @@
 import hashlib
 import itertools
+import re
 import unicodedata
 
 from django.utils.html import format_html
@@ -45,4 +46,45 @@ def gravatar_url(email, size=None, default_image=None):
 
 def fa_str(fa_name):
     return format_html('<span class="fa fa-{}"></span>', fa_name)
+
+def embed_videos(html, width=630):
+    """Replaces youtube and vimeo links by proper embed iframes
+    """
+    def youtuberepl(match):
+        youtube_id = match.group(1)
+        HEIGHT_RATIO = 380 / 630
+        height = width * HEIGHT_RATIO
+        return '<iframe width="{width:.0f}" height="{height:.0f}" src="https://www.youtube.com/embed/{id}" frameborder="0" allowfullscreen></iframe>'.format(
+            width=width,
+            height=height,
+            id=youtube_id
+        )
+
+    html = re.sub(
+        r'(?!")(?<!")(?:\[youtube[^]]*\])?https?://www\.youtube\.com/watch\?v=([\w\-]+)(?:\[/youtube\])?',
+        youtuberepl,
+        html
+    )
+    html = re.sub(
+        r'\[youtube[^]]*\]([\w\-]+)\[/youtube\]',
+        youtuberepl,
+        html
+    )
+
+    def vimeorepl(match):
+        vimeo_id = match.group(1)
+        HEIGHT_RATIO = 354 / 630
+        height = width * HEIGHT_RATIO
+        return '<iframe src="https://player.vimeo.com/video/{id}" width="{width:.0f}" height="{height:.0f}" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>'.format(
+            width=width,
+            height=height,
+            id=vimeo_id
+        )
+
+    html = re.sub(
+        r'(?!")(?<!")(?:\[vimeo[^]]*\])?https?://vimeo\.com/(\d+)(?:\[/vimeo\])?',
+        vimeorepl,
+        html
+    )
+    return html
 

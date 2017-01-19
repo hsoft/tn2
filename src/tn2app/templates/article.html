@@ -17,7 +17,7 @@
 <p>
     {% include 'include/article_meta_line.html' %}
 </p>
-{{ article.content|safe }}
+{{ article.get_content|safe }}
 
 <h2 id="comments">Commentaires</h2>
 {% render_comment_list for article %}
