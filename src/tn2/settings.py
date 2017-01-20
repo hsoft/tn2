@@ -173,6 +173,7 @@ CKEDITOR_CONFIGS = {
             ['Source'],
         ],
         'format_tags': 'p;h2;h3;h4;h5;h6;pre',
+        'disableNativeSpellChecker': False,
     },
     'restricted': {
         'toolbar': 'Custom',
@@ -183,6 +184,7 @@ CKEDITOR_CONFIGS = {
             ['Smiley', 'SpecialChar'],
             ['Source'],
         ],
+        'disableNativeSpellChecker': False,
     },
 }
 
