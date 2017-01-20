@@ -123,6 +123,7 @@ class Article(models.Model):
     title = models.CharField(max_length=255)
     subtitle = models.TextField(blank=True)
     content = RichTextUploadingField()
+    # TODO: Set blank to True when the import is over
     main_image = models.ImageField(blank=True)
     categories = models.ManyToManyField('ArticleCategory')
     creation_time = models.DateTimeField(auto_now_add=True)
