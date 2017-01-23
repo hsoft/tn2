@@ -73,6 +73,10 @@ ul.acces_rapide {
         border-radius: 4px;
         color: white;
         background: url("#{$images_path}/polas.png") 14px 51% no-repeat #cccccc;
+
+        &:hover {
+            background-color: $red_highlight;
+        }
     }
 }
 
@@ -147,11 +151,21 @@ ul.group-list {
 
     li {
         margin-bottom: 40px;
+        padding: 6px 0;
+
+        a.title {
+            font-weight: bold;
+        }
     }
 
     img {
         float: left;
         margin-right: 18px;
+        width: 64px;
+    }
+
+    p {
+        margin: 7px 0;
     }
 
     .activity {
@@ -162,7 +176,6 @@ ul.group-list {
 body.homepage ul.group-list {
     li {
         margin-bottom: 0;
-        padding: 10px 0;
         border-bottom: 1px solid #eeeeee;
     }
 }
