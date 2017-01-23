@@ -291,6 +291,7 @@ class UserFavoritesView(UserViewMixin, ListView):
     def get_context_data(self, **kwargs):
         result = super().get_context_data(**kwargs)
         result['shown_user'] = self._get_shown_user()
+        result['project_list'] = [vote.project for vote in result['projectvote_list']]
         return result
 
     def get_queryset(self):

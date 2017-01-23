@@ -78,46 +78,6 @@ ul.acces_rapide {
 
 /* --- Specific --- */
 
-body.homepage {
-    div.col_left {
-        float:left;
-        width: 600px;
-    }
-
-    div.col_right {
-        float: right;
-        width: 270px;
-    }
-
-    div.featured-projects {
-        img {
-            margin: 0 25px 7px 0;
-        }
-
-        *:last-child img {
-            margin-right: 0;
-        }
-    }
-
-    div.latest-projects {
-        div.popular {
-            img {
-                width: 80px;
-                height: 80px;
-                margin: 0 7px 7px 0;
-            }
-        }
-
-        div.new {
-            img {
-                width: 45px;
-                height: 45px;
-                margin: 0 5px 4px 0;
-            }
-        }
-    }
-}
-
 .project_actions {
     height: 25px;
     margin: 7px 0 35px 0;

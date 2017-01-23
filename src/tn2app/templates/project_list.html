@@ -5,15 +5,7 @@
 <div class="inner-content">
 {% include "include/pagination.html" %}
 
-<ul class="project-list">
-{% for project in project_list %}
-<li>
-<a href="{{ project.get_absolute_url }}">
-    <img src="{{ project.image1|thumbnail_url:'project-list' }}"/>
-</a>
-</li>
-{% endfor %}
-</ul>
+{% include "include/project-list.html" with project_list=project_list only %}
 
 {% include "include/pagination.html" %}
 </div>

@@ -7,15 +7,9 @@
 <div class="overline">
     <h2>Favoris ({{ page_obj.paginator.count }})</h2>
 </div>
-<ul class="project-list">
-{% for vote in projectvote_list %}
-<li>
-<a href="{{ vote.project.get_absolute_url }}">
-    <img src="{{ vote.project.image1|thumbnail_url:'project-list' }}"/>
-</a>
-</li>
-{% endfor %}
-</ul>
+
+{% include "include/project-list.html" with project_list=project_list only %}
+
 {% include "include/pagination.html" %}
 {% endblock %}
 

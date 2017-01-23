@@ -32,11 +32,7 @@
             <h4>Les projets à la Une</h4>
             <a class="rightmost" href="{% url 'project_list' %}">Voir tous les projets</a>
         </div>
-        {% for project in featured_projects.all|slice:":3" %}
-        <a href="{{ project.get_absolute_url }}">
-            <img src="{{ project.image1|thumbnail_url:'project-list' }}"/>
-        </a>
-        {% endfor %}
+        {% include "include/project-list.html" with project_list=featured_projects.all|slice:":3" only %}
     </div>
 
     <div class="col_right">

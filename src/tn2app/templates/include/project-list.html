@@ -1,0 +1,20 @@
+{% load thumbnail %}
+
+<ul class="project-list">
+{% for project in project_list %}
+<li>
+    <a href="{{ project.get_absolute_url }}">
+        <img src="{{ project.image1|thumbnail_url:'project-list' }}"/>
+        <p class="overlay">
+            {{ project.title }}
+            <span class="subtext">
+                par {{ project.author.profile.display_name }}
+                <br>
+                dans {{ project.category }}
+            </span>
+        </p>
+    </a>
+</li>
+{% endfor %}
+</ul>
+

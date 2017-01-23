@@ -28,3 +28,48 @@ ol.threeitems {
         }
     }
 }
+
+body.homepage {
+    div.col_left {
+        float:left;
+        width: 600px;
+    }
+
+    div.col_right {
+        float: right;
+        width: 270px;
+    }
+
+    div.featured-projects ul.project-list {
+        img {
+            margin: 0 25px 7px 0;
+        }
+
+        p.overlay {
+            padding: 0 10px;
+        }
+
+        li:last-child img {
+            margin-right: 0;
+        }
+    }
+
+    div.latest-projects {
+        div.popular {
+            img {
+                width: 80px;
+                height: 80px;
+                margin: 0 7px 7px 0;
+            }
+        }
+
+        div.new {
+            img {
+                width: 45px;
+                height: 45px;
+                margin: 0 5px 4px 0;
+            }
+        }
+    }
+}
+
