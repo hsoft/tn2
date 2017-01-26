@@ -1,15 +1,11 @@
 ol.threeitems {
     padding: 0;
+    display: flex;
+    justify-content: space-between;
 
     li {
         list-style: none;
-        display: inline-block;
-        margin-right: 42px;
         width: 290px;
-
-        &:last-child {
-            margin-right: 0px;
-        }
 
         img {
             width: 288px;
