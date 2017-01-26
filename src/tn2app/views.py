@@ -78,8 +78,8 @@ class DiscussionGroupListView(ListView):
     template_name = 'discussion_groups.html'
     paginate_by = 8
 
-    featured_groups = DiscussionGroup.objects.filter(group_type=DiscussionGroup.TYPE_FEATURED)
-    geo_groups = DiscussionGroup.objects.filter(group_type=DiscussionGroup.TYPE_GEOGRAPHICAL)
+    featured_groups = DiscussionGroup.objects.filter(group_type=DiscussionGroup.TYPE_FEATURED).order_by('display_order')
+    geo_groups = DiscussionGroup.objects.filter(group_type=DiscussionGroup.TYPE_GEOGRAPHICAL).order_by('display_order')
     recent_discussions = Discussion.objects.filter(group__private=False).order_by('-last_activity')
 
     @staticmethod

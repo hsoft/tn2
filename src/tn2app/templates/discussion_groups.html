@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% load humanize tn2 staticfiles %}
 
+{% block bodyclasses %}discussion-groups{% endblock %}
+
 {% block main_contents %}
 <div class="inner-content">
     <div class="overline">
@@ -22,7 +24,6 @@
     <div class="overline">
         <h4>Groupes thématiques</h4>
     </div>
-    {% include "include/pagination.html" %}
     <ul class="group-list">
     {% for group in discussiongroup_list %}
         <li>
@@ -31,8 +32,8 @@
             </a>
             <div class="item">
                 <div class="title">
-                    <a href="{{ group.get_absolute_url }}">{{ group.title_display }}</a>
-                    <span class="activity">{{ group.last_activity|naturaltime }}</span>
+                    <a class="title" href="{{ group.get_absolute_url }}">{{ group.title_display }}</a>
+                    <span class="activity">Actif {{ group.last_activity|naturaltime }}</span>
                 </div>
                 <p>{{ group.description|striptags|truncatewords:20 }}</p>
             </div>

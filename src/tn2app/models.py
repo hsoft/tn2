@@ -183,6 +183,7 @@ class DiscussionGroup(models.Model):
         blank=True,
         verbose_name="Avatar"
     )
+    display_order = models.SmallIntegerField(default=0, db_index=True)
 
     class Meta:
         permissions = (

@@ -144,69 +144,6 @@ div.groups-top-directory {
     }
 }
 
-ul.group-list {
-    padding: 0;
-    margin: 0;
-    list-style: none outside none;
-
-    li {
-        margin-bottom: 40px;
-        padding: 6px 0;
-
-        a.title {
-            font-weight: bold;
-        }
-    }
-
-    img {
-        float: left;
-        margin-right: 18px;
-        width: 64px;
-    }
-
-    p {
-        margin: 7px 0;
-    }
-
-    .activity {
-        display: block;
-    }
-}
-
-body.homepage ul.group-list {
-    li {
-        margin-bottom: 0;
-        border-bottom: 1px solid #eeeeee;
-    }
-}
-
-/* sidebar in group list */
-div.recent-discussions ul.group-list {
-    li {
-        margin-bottom: 0;
-        padding: 10px 0;
-        font-size: 11px;
-        border-bottom: 1px solid #eeeeee;
-    }
-
-    img {
-        width: 30px;
-        height: 30px;
-        margin-right: 10px;
-    }
-
-    p {
-        margin: 0;
-    }
-}
-
-.groupes_geo {
-    img {
-        display: block;
-        margin: auto;
-    }
-}
-
 body.group-detail {
     .page-title {
         img {

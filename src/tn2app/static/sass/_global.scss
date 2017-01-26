@@ -10,6 +10,10 @@ a {
     text-decoration: none;
     color: $text-color-link;
     outline: none;
+
+    &:hover {
+        color: $red_highlight;
+    }
 }
 
 a.fa {
@@ -70,6 +74,14 @@ h4 {
     span.nav-info {
         margin-left: 5px;
         margin-right: 5px;
+    }
+}
+
+p.breadcrumb {
+    font-size: 11px;
+
+    a {
+        color: $text-color;
     }
 }
 
