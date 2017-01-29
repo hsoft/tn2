@@ -161,6 +161,14 @@ class DiscussionAdd(LoginRequiredMixin, CreateView):
     template_name = 'discussion_add.html'
     form_class = NewDiscussionForm
 
+    def breadcrumb(self):
+        result = DiscussionGroupListView.breadcrumb()
+        group = self.get_context_data()['group']
+        return result + [
+            (group.get_absolute_url(), group.title_display),
+            (None, "Nouvelle discussion"),
+        ]
+
     def get_context_data(self, *args, **kwargs):
         result = super().get_context_data(*args, **kwargs)
         result['group'] = result['form'].group
@@ -181,6 +189,14 @@ class DiscussionEdit(LoginRequiredMixin, UpdateView):
     form_class = EditDiscussionForm
     context_object_name = 'discussion'
     slug_url_kwarg = 'discussion_slug'
+
+    def breadcrumb(self):
+        result = DiscussionGroupListView.breadcrumb()
+        group = self.object.group
+        return result + [
+            (group.get_absolute_url(), group.title_display),
+            (None, "Modifier une discussion"),
+        ]
 
     def get_object(self, queryset=None):
         if queryset is None:

@@ -154,49 +154,6 @@ label.required:after {content: " *"; color: red;}
     display: none;
 }
 
-form p {
-    label {
-        display: block;
-        font-weight: bold;
-        margin-bottom: 8px;
-    }
-
-    input, select {
-        display: block;
-    }
-
-    .helptext {
-        display: block;
-        margin-top: 8px;
-    }
-}
-
-form.userprofile {
-    input[name="display_name"], input[name="city"], input[name="website"], input[name="sewing_machine"] {
-        width: 300px;
-    }
-}
-
-form.newproject {
-    input[type="text"], input[type="url"] {
-        width: 80%;
-    }
-}
-
-form.loginform {
-    p label {
-        display: inline-block;
-        width: 150px;
-    }
-}
-
-form.signupform {
-    p label {
-        display: inline-block;
-        width: 200px;
-    }
-}
-
 #comments {
     dt {
         font-style: italic;
