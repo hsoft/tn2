@@ -250,6 +250,9 @@ class Discussion(models.Model):
     def get_absolute_url(self):
         return reverse('discussion', args=[self.group.slug, self.slug])
 
+    def post_count(self):
+        return self.comments.count() + 1
+
 
 class ProjectCategory(models.Model):
     name = models.CharField(max_length=100)

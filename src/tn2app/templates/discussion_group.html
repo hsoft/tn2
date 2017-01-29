@@ -1,5 +1,5 @@
-{% extends 'base.html' %}
-{% load humanize tn2 %}
+{% extends 'base_with_sidebar.html' %}
+{% load tn2 %}
 
 {% block bodyclasses %}group-detail{% endblock %}
 
@@ -10,40 +10,44 @@
     {% endif %}
 {% endblock %}
 
-{% block main_contents %}
+{% block inner_content %}
 <div class="page-title">
     <img src="{{ group|group_avatar_url }}"/>
     <div class="overline">
         <h1>{{ group.title_display }}</h1>
     </div>
     <div class="clear"></div>
-    <p class="desc">{{ group.description|safe }}</p>
 </div>
 
 <div class="overline">
-    <h4>Discussions</h4>
+    <h4 class="red">Discussions</h4>
 </div>
 
-{% include "include/pagination.html" %}
 <table class="discussion-list">
 <thead>
-    <tr><td>Sujet</td><td></td><td>Dernier message</td></tr>
+    <tr>
+        <th class="title">Titre du sujet</th>
+        <th class="poster"></th>
+        <th class="message-count">Messages</th>
+        <th class="last-activity">Il y a</th>
+    </tr>
 </thead>
 <tbody>
 {% for discussion in page_obj %}
     <tr>
-        <td><a href="{{ discussion.get_absolute_url }}">{{ discussion.title }}</a></td>
-        <td>
+        <td class="title"><a href="{{ discussion.get_absolute_url }}">{{ discussion.title }}</a></td>
+        <td class="poster">
             {% if discussion.last_poster %}
             <img class="avatar" src="{{ discussion.last_poster|avatar_url }}"/>
             {% endif %}
         </td>
-        <td>{{ discussion.last_activity|naturaltime }}</td>
+        <td class="message-count">{{ discussion.post_count }}</td>
+        <td class="last-activity">{{ discussion.last_activity|timesince }}</td>
     </tr>
 {% endfor %}
 </tbody>
 </table>
-{% include "include/pagination.html" %}
+{% include "include/pagination.html" with rightalign=True %}
 {% if user.is_authenticated %}
 <p>
 <a class="button" href="{% url 'discussion_add' group_slug=group.slug %}">Créer une nouvelle discussion</a>
@@ -51,3 +55,11 @@
 {% endif %}
 {% endblock %}
 
+{% block sidebar %}
+<div class="overline">
+    <h4>Le groupe</h4>
+</div>
+<div class="bio">
+{{ group.description|safe }}
+</div>
+{% endblock %}

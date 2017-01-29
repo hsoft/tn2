@@ -110,3 +110,68 @@ body.discussion-groups {
         }
     }
 }
+
+// Group detail page style
+
+body.group-detail {
+    div.page-title {
+        margin-bottom: 50px;
+    }
+
+    div.bio {
+        padding: 10px;
+        background-color: #eeeeee;
+        font-size: 11px;
+    }
+
+    table.discussion-list {
+        margin-bottom: 10px;
+
+        th {
+            color: #555555;
+            padding-bottom: 15px;
+            border-bottom: 1px solid $thin_sep_line_color;
+        }
+
+        th.title {
+            width: 66%;
+            text-align: left;
+        }
+
+        th.poster {
+            width: 6%;
+        }
+
+        th.message-count {
+            width: 8%;
+        }
+
+        th.last-activity {
+            width: 20%;
+            text-align: right;
+        }
+
+        td {
+            vertical-align: middle;
+            padding: 5px 0;
+            border-bottom: 1px solid $thin_sep_line_color;
+        }
+
+        td.title {
+            font-weight: bold;
+        }
+
+        td.poster {
+            text-align: center;
+        }
+
+        td.message-count {
+            text-align: center;
+        }
+
+        td.last-activity {
+            text-align: right;
+            font-size: 11px;
+        }
+    }
+}

@@ -1,6 +1,6 @@
 {% load add_get_parameter %}
 {% if page_obj.has_previous or page_obj.has_next %}
-<div class="pagination">
+<div class="pagination {% if rightalign %}rightalign{% endif %}">
     {% if page_obj.has_previous %}
     <a href="{% add_get page=1 %}">
         <span class="fa fa-angle-double-left"></span> Début

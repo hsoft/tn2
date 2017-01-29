@@ -1,71 +1,69 @@
-{% extends 'base.html' %}
+{% extends 'base_with_sidebar.html' %}
 {% load humanize tn2 staticfiles %}
 
 {% block bodyclasses %}discussion-groups{% endblock %}
 
-{% block main_contents %}
-<div class="inner-content">
-    <div class="overline">
-        <h4>Groupes d'entraide</h4>
-    </div>
-    <div class="groups-top-directory">
-        {% for group in view.featured_groups.all %}
-            <div class="bloc-groupe">
-                <a href="{{ group.get_absolute_url }}">
-                    <img src="{{ group|group_avatar_big_url }}"/>
-                </a>
-                <div class="group-titre">
-                    <a href="{{ group.get_absolute_url }}">{{ group.title }}</a>
-                </div>
-                <p>{{ group.description_short }}</p>
-            </div>
-        {% endfor %}
-    </div>
-    <div class="overline">
-        <h4>Groupes thématiques</h4>
-    </div>
-    <ul class="group-list">
-    {% for group in discussiongroup_list %}
-        <li>
-            <a href="{{ group.get_absolute_url }}">
-                <img src="{{ group|group_avatar_url }}"/>
-            </a>
-            <div class="item">
-                <div class="title">
-                    <a class="title" href="{{ group.get_absolute_url }}">{{ group.title_display }}</a>
-                    <span class="activity">Actif {{ group.last_activity|naturaltime }}</span>
-                </div>
-                <p>{{ group.description|striptags|truncatewords:20 }}</p>
-            </div>
-            <div class="clear"></div>
-        </li>
-    {% endfor %}
-    </ul>
-    {% include "include/pagination.html" %}
+{% block inner_content %}
+<div class="overline">
+    <h4>Groupes d'entraide</h4>
 </div>
+<div class="groups-top-directory">
+    {% for group in view.featured_groups.all %}
+        <div class="bloc-groupe">
+            <a href="{{ group.get_absolute_url }}">
+                <img src="{{ group|group_avatar_big_url }}"/>
+            </a>
+            <div class="group-titre">
+                <a href="{{ group.get_absolute_url }}">{{ group.title }}</a>
+            </div>
+            <p>{{ group.description_short }}</p>
+        </div>
+    {% endfor %}
+</div>
+<div class="overline">
+    <h4>Groupes thématiques</h4>
+</div>
+<ul class="group-list">
+{% for group in discussiongroup_list %}
+    <li>
+        <a href="{{ group.get_absolute_url }}">
+            <img src="{{ group|group_avatar_url }}"/>
+        </a>
+        <div class="item">
+            <div class="title">
+                <a class="title" href="{{ group.get_absolute_url }}">{{ group.title_display }}</a>
+                <span class="activity">Actif {{ group.last_activity|naturaltime }}</span>
+            </div>
+            <p>{{ group.description|striptags|truncatewords:20 }}</p>
+        </div>
+        <div class="clear"></div>
+    </li>
+{% endfor %}
+</ul>
+{% include "include/pagination.html" %}
+{% endblock %}
 
-<div class="sidebar">
-    <div class="groupes_geo">
-        <div class="overline">
-            <h4>Groupes géographiques</h4>
-        </div>
-        <img src="{% static 'images/carte-france.jpg' %}"/>
-        <p>
-            Envie de rencontrer des needlenautes de votre région et de partager adresses et bons plans ?
-        </p>
-        <select class="open-url-on-select">
-            <option>Choisissez une région</option>
-            {% for group in view.geo_groups.all %}
-            <option value="{{ group.slug }}" data-url="{{ group.get_absolute_url }}">{{ group.title }}</option>
-            {% endfor %}
-        </select>
+{% block sidebar %}
+<div class="groupes_geo">
+    <div class="overline">
+        <h4>Groupes géographiques</h4>
     </div>
-    <div class="recent-discussions">
-        <div class="overline">
-            <h4>Dernières discussions</h4>
-        </div>
-        {% include 'include/discussion_ul.html' with discussions=view.recent_discussions|slice:":6" short_mode=True only %}
+    <img src="{% static 'images/carte-france.jpg' %}"/>
+    <p>
+        Envie de rencontrer des needlenautes de votre région et de partager adresses et bons plans ?
+    </p>
+    <select class="open-url-on-select">
+        <option>Choisissez une région</option>
+        {% for group in view.geo_groups.all %}
+        <option value="{{ group.slug }}" data-url="{{ group.get_absolute_url }}">{{ group.title }}</option>
+        {% endfor %}
+    </select>
+</div>
+<div class="recent-discussions">
+    <div class="overline">
+        <h4>Dernières discussions</h4>
     </div>
+    {% include 'include/discussion_ul.html' with discussions=view.recent_discussions|slice:":6" short_mode=True only %}
 </div>
 {% endblock %}
 

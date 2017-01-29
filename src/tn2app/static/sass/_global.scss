@@ -66,6 +66,10 @@ h4 {
     text-align: right;
 }
 
+.red {
+    color: $red-highlight;
+}
+
 .hidden {
     display: none;
 }
@@ -74,6 +78,10 @@ h4 {
     span.nav-info {
         margin-left: 5px;
         margin-right: 5px;
+    }
+
+    a {
+        font-weight: bold;
     }
 }
 
