@@ -1,4 +1,4 @@
-{% extends 'base_with_sidebar.html' %}
+{% extends 'base_discussion.html' %}
 {% load tn2 %}
 
 {% block bodyclasses %}group-detail{% endblock %}
@@ -10,19 +10,7 @@
     {% endif %}
 {% endblock %}
 
-{% block inner_content %}
-<div class="page-title">
-    <img src="{{ group|group_avatar_url }}"/>
-    <div class="overline">
-        <h1>{{ group.title_display }}</h1>
-    </div>
-    <div class="clear"></div>
-</div>
-
-<div class="overline">
-    <h4 class="red">Discussions</h4>
-</div>
-
+{% block discussion_inner_content %}
 <table class="discussion-list">
 <thead>
     <tr>
@@ -53,13 +41,4 @@
 <a class="button" href="{% url 'discussion_add' group_slug=group.slug %}">Créer une nouvelle discussion</a>
 </p>
 {% endif %}
-{% endblock %}
-
-{% block sidebar %}
-<div class="overline">
-    <h4>Le groupe</h4>
-</div>
-<div class="bio">
-{{ group.description|safe }}
-</div>
 {% endblock %}

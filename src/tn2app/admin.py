@@ -12,6 +12,13 @@ from .models import (
 )
 from .util import dedupe_slug
 
+class BaseModelAdmin(admin.ModelAdmin):
+    class Media:
+        css = {
+            'all': ('css/admin.css', ),
+        }
+
+
 class ArticleAdminForm(forms.ModelForm):
     class Meta:
         model = Article
@@ -43,7 +50,7 @@ class ArticleAdminForm(forms.ModelForm):
         return instance
 
 
-class ArticleAdmin(admin.ModelAdmin):
+class ArticleAdmin(BaseModelAdmin):
     form = ArticleAdminForm
     list_display = ('slug', 'title', 'author', 'status', 'publish_time', 'featured')
     list_filter = ('status', 'featured', 'author')
@@ -57,26 +64,26 @@ class ArticleAdmin(admin.ModelAdmin):
 
 admin.site.register(Article, ArticleAdmin)
 
-class ArticleCategoryAdmin(admin.ModelAdmin):
+class ArticleCategoryAdmin(BaseModelAdmin):
     list_display = ('slug', 'title', 'featured')
     list_filter = ('featured', )
 
 
 admin.site.register(ArticleCategory, ArticleCategoryAdmin)
 
-class DiscussionGroupAdmin(admin.ModelAdmin):
+class DiscussionGroupAdmin(BaseModelAdmin):
     list_display = ('slug', 'title', 'group_type', 'private')
     list_filter = ('group_type', 'private')
 
 admin.site.register(DiscussionGroup, DiscussionGroupAdmin)
 
-class DiscussionAdmin(admin.ModelAdmin):
+class DiscussionAdmin(BaseModelAdmin):
     list_display = ('slug', 'title', 'group', 'creation_time', 'last_activity')
     list_filter = ('group', )
 
 admin.site.register(Discussion, DiscussionAdmin)
-admin.site.register(Project)
-admin.site.register(PageContents)
+admin.site.register(Project, BaseModelAdmin)
+admin.site.register(PageContents, BaseModelAdmin)
 
 class WPUserMetaInline(admin.TabularInline):
     model = WpV2Usermeta

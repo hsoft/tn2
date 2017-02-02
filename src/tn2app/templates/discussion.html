@@ -1,5 +1,7 @@
-{% extends 'base.html' %}
+{% extends 'base_discussion.html' %}
 {% load comments tn2 %}
+
+{% block bodyclasses %}discussion-detail{% endblock %}
 
 {% block breadcrumb %}
     {{ block.super }}
@@ -8,8 +10,8 @@
     {% endif %}
 {% endblock %}
 
-{% block main_contents %}
-<h1>{{ discussion.title }}</h1>
+{% block discussion_inner_content %}
+<h4>{{ discussion.title }}</h4>
 {% include 'include/pagination.html' %}
 
 {% if not page_obj.has_previous %}

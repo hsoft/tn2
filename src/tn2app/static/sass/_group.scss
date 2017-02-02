@@ -111,11 +111,23 @@ body.discussion-groups {
     }
 }
 
-// Group detail page style
+// Style common to group-detail and discussion-detail
 
-body.group-detail {
+body.group-detail,body.discussion-detail {
     div.page-title {
         margin-bottom: 50px;
+
+        img {
+            float: left;
+            width: 60px;
+            height: 60px;
+        }
+
+        div.overline {
+            margin-left: 70px;
+            clear: none;
+            width: auto;
+        }
     }
 
     div.bio {
@@ -123,7 +135,11 @@ body.group-detail {
         background-color: #eeeeee;
         font-size: 11px;
     }
+}
 
+// Group detail page style
+
+body.group-detail {
     table.discussion-list {
         margin-bottom: 10px;
 

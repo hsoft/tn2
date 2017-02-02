@@ -1,0 +1,27 @@
+{% extends 'base_with_sidebar.html' %}
+{% load tn2 %}
+
+{% block inner_content %}
+<div class="page-title">
+    <img src="{{ group|group_avatar_url }}"/>
+    <div class="overline">
+        <h1>{{ group.title_display }}</h1>
+    </div>
+    <div class="clear"></div>
+</div>
+
+<div class="overline">
+    <h4 class="red">Discussions</h4>
+</div>
+
+{% block discussion_inner_content %}{% endblock %}
+{% endblock %}
+
+{% block sidebar %}
+<div class="overline">
+    <h4>Le groupe</h4>
+</div>
+<div class="bio">
+{{ group.description|safe }}
+</div>
+{% endblock %}

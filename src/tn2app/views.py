@@ -151,6 +151,7 @@ class DiscussionDetailView(SingleObjectMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['discussion'] = self.object
+        context['group'] = self.object.group
         return context
 
     def get_queryset(self):
