@@ -6,6 +6,7 @@
     {% csrf_token %}
     {{ form.as_p }}
     <input class="button" type="submit" value="Modifier la discussion" />
+    <a href="{{ discussion.get_absolute_url }}">Retour</a>
 </form>
 {% endblock %}
 

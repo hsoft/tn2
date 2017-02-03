@@ -49,8 +49,14 @@ h4 {
     line-height: 25px;
 }
 
+h5 {
+    font-size: 16px;
+    line-height: 21px;
+}
+
 .button {
     background: $red_highlight;
+    font-size: 12px;
     font-weight: bold;
     text-transform: uppercase;
     padding: 5px 10px;

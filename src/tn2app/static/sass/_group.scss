@@ -191,3 +191,44 @@ body.group-detail {
         }
     }
 }
+
+// Discussion page
+body.discussion-detail {
+    p.retour-aux-forums {
+        margin: 0;
+        font-size: 11px;
+    }
+
+    img.avatar {
+        float: left;
+        width: 50px;
+        height: 50px;
+        margin-right: 18px;
+    }
+
+    div.message,#comments {
+        div.title a:first-of-type {
+            font-weight: bold;
+        }
+
+        div.content p {
+            padding: 6px 0 0 68px;
+            text-align: justify;
+        }
+    }
+
+    div.message {
+        margin-top: 15px;
+        margin-bottom: 35px;
+    }
+
+    #comments {
+        dt {
+            font-style: normal;
+        }
+
+        dd {
+            margin-bottom: 35px;
+        }
+    }
+}

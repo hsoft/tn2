@@ -1,5 +1,8 @@
 {% load comments %}
-<h2>Répondre</h2>
+<div class="overline">
+<h5>Répondre</h5>
+</div>
+
 {% get_comment_form for ref_object as form %}
 <form class="comment-form" action="{% comment_form_target %}" method="POST">
 {% csrf_token %}

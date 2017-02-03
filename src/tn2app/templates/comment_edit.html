@@ -7,7 +7,7 @@
     {{ form.as_p }}
     <input type="hidden" name="next" value="{{ comment.content_object.get_absolute_url }}" />
     <input class="button" type="submit" value="Enregistrer" />
-    <a class="button" href="{{ comment.content_object.get_absolute_url }}">Retour</a>
+    <a href="{{ comment.content_object.get_absolute_url }}">Retour</a>
 </form>
 {% endblock %}
 

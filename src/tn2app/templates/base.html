@@ -47,7 +47,7 @@
                     <a class="button publier-projet" href="{% url 'project_create' username=user.username %}">Publier un projet</a>
                     <form name="search" method="get" action="{% url 'search' %}">
                         <input name="q" autocomplete="on" placeholder="Recherche" type="text"/>
-                        <button class="fa fa-search search-button" type="submit"/>
+                        <button class="fa fa-search search-button" type="submit"></button>
                     </form>
                 </div>
                 {% endif %}

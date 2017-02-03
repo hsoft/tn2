@@ -1,5 +1,5 @@
 {% extends 'base_discussion.html' %}
-{% load comments tn2 %}
+{% load comments tn2 humanize %}
 
 {% block bodyclasses %}discussion-detail{% endblock %}
 
@@ -12,28 +12,36 @@
 
 {% block discussion_inner_content %}
 <h4>{{ discussion.title }}</h4>
-{% include 'include/pagination.html' %}
+<p class="retour-aux-forums"><a href="{{ discussion.group.get_absolute_url }}">Retour aux forums</a></p>
+
+{% include 'include/pagination.html' with rightalign=True %}
 
 {% if not page_obj.has_previous %}
-<p>
-    <img src="{{ discussion.author|avatar_url }}" />
-    <em>Par <a href="{{ discussion.author.profile.get_absolute_url }}">{{ discussion.author }}</a> le {{ discussion.creation_time }}</em>
-    {% if discussion.author == user %}
-    <a class="fa fa-edit" href="{% url 'discussion_edit' group_slug=discussion.group.slug discussion_slug=discussion.slug %}"></a>
-    {% endif %}
-</p>
-{{ discussion.content|safe }}
+<div class="message">
+    <img class="avatar" src="{{ discussion.author|avatar_big_url }}" />
+    <div class="title">
+        {{ discussion.author|user_link }} ({{ discussion.creation_time|naturaltime }})
+        {% if discussion.author == user %}
+        <a class="fa fa-edit" href="{% url 'discussion_edit' group_slug=discussion.group.slug discussion_slug=discussion.slug %}"></a>
+        {% endif %}
+    </div>
+    <div class="content">
+        {{ discussion.content|safe }}
+    </div>
+</div>
 {% endif %}
 
-{% include 'comments/tn2app/list.html' with comment_list=page_obj %}
+{% include 'comments/tn2app/discussion/list.html' with comment_list=page_obj %}
 
-{% include 'include/pagination.html' %}
+{% include 'include/pagination.html' with rightalign=True %}
 
-{% if user.is_authenticated %}
+{% if user.is_authenticated and not page_obj.has_next %}
     {% include 'include/add_comment_form.html' with ref_object=discussion %}
 {% endif %}
 {% endblock %}
 
 {% block bottom_js %}
+{% if user.is_authenticated and not page_obj.has_next %}
 {% include 'include/ckjs.html' %}
+{% endif %}
 {% endblock %}
