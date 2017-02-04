@@ -9,7 +9,7 @@
       {% endif %}
       <img src="{{ comment.user|avatar_url }}" />
       Par {{ comment.user|user_link }} le {{ comment.submit_date }}
-      {% if comment.user == user %}
+      {% if comment.user == user or user.is_staff %}
       <a class="fa fa-edit" href="{% url 'comment_edit' comment.id %}"></a>
       {% endif %}
     </dt>

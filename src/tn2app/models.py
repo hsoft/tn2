@@ -253,6 +253,13 @@ class Discussion(models.Model):
     def post_count(self):
         return self.comments.count() + 1
 
+    def update_last_activity(self):
+        if self.comments.exists():
+            last_comment = self.comments.last()
+            self.last_activity = last_comment.submit_date
+            self.last_poster = last_comment.user
+            self.save()
+
 
 class ProjectCategory(models.Model):
     name = models.CharField(max_length=100)

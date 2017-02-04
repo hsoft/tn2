@@ -62,10 +62,16 @@ h5 {
     padding: 5px 10px;
     border-radius: 4px;
     border: none;
+    cursor: pointer;
 
     &, &:link, &:visited {
         color: $pink_button_text_color;
     }
+}
+
+.delete-button {
+    background: red;
+    float: right;
 }
 
 .rightalign {
@@ -165,6 +171,10 @@ label.required:after {content: " *"; color: red;}
         font-style: italic;
         border-top: dotted 1px;
         padding-top: 8px;
+    }
+
+    dt.noline {
+        border-top: none;
     }
 
     dd {

@@ -8,6 +8,7 @@
     <input type="hidden" name="next" value="{{ comment.content_object.get_absolute_url }}" />
     <input class="button" type="submit" value="Enregistrer" />
     <a href="{{ comment.content_object.get_absolute_url }}">Retour</a>
+    <input class="button delete-button" type="submit" name="delete" value="Supprimer" />
 </form>
 {% endblock %}
 

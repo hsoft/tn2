@@ -5,7 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth import get_user_model
 from django.core.exceptions import PermissionDenied
 from django.db.models import Max, Count
-from django.http import Http404
+from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from django.views.generic import ListView, TemplateView, DetailView, RedirectView, FormView
@@ -204,9 +204,18 @@ class DiscussionEdit(LoginRequiredMixin, UpdateView):
             queryset = self.get_queryset()
         queryset = queryset.filter(group__slug=self.kwargs['group_slug'])
         result = super().get_object(queryset=queryset)
-        if result.author != self.request.user:
+        if result.author != self.request.user and not self.request.user.has_perm('tn2app.change_discussion'):
             raise PermissionDenied()
         return result
+
+    def post(self, request, *args, **kwargs):
+        if 'delete' in request.POST:
+            discussion = self.get_object()
+            group = discussion.group
+            discussion.delete()
+            return HttpResponseRedirect(group.get_absolute_url())
+        else:
+            return super().post(request, *args, **kwargs)
 
 
 class ArticleMixin:
@@ -264,7 +273,18 @@ class CommentEdit(UserPassesTestMixin, UpdateView):
     raise_exception = True
 
     def test_func(self):
-        return self.request.user == self.get_object().user
+        u = self.request.user
+        return u == self.get_object().user or u.has_perm('django_comments.change_comment')
+
+    def post(self, request, *args, **kwargs):
+        if 'delete' in request.POST:
+            comment = self.get_object()
+            parent_obj = comment.content_object
+            comment.delete()
+            parent_obj.update_last_activity()
+            return HttpResponseRedirect(parent_obj.get_absolute_url())
+        else:
+            return super().post(request, *args, **kwargs)
 
 
 class UserViewMixin:

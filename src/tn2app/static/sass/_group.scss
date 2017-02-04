@@ -211,8 +211,8 @@ body.discussion-detail {
             font-weight: bold;
         }
 
-        div.content p {
-            padding: 6px 0 0 68px;
+        div.content > * {
+            margin: 6px 0 0 68px;
             text-align: justify;
         }
     }

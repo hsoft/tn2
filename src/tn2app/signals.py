@@ -12,12 +12,8 @@ def comment_will_be_posted(sender, comment, request, **kwargs):
         return False
 
 def comment_was_posted(sender, comment, request, **kwargs):
-    if hasattr(comment.content_object, 'last_activity'):
-        comment.content_object.last_activity = comment.submit_date
-        comment.content_object.save()
-    if hasattr(comment.content_object, 'last_poster'):
-        comment.content_object.last_poster = comment.user
-        comment.content_object.save()
+    if hasattr(comment.content_object, 'update_last_activity'):
+        comment.content_object.update_last_activity()
 
 @receiver(post_save, sender=User)
 def user_was_saved(sender, instance, created, **kwargs):

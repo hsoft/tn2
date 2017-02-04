@@ -2,7 +2,7 @@
 
 <dl id="comments">
   {% for comment in comment_list %}
-    <dt>
+    <dt {% if noline_on_first and forloop.first %}class="noline"{% endif %}>
       <a name="c{{ comment.id }}"></a>
       {% if forloop.last %}
       <a name="last-comment"></a>
@@ -10,7 +10,7 @@
       <img class="avatar" src="{{ comment.user|avatar_big_url }}" />
       <div class="title">
           {{ comment.user|user_link }} ({{ comment.submit_date|naturaltime }})
-          {% if comment.user == user %}
+          {% if comment.user == user or user.is_staff %}
           <a class="fa fa-edit" href="{% url 'comment_edit' comment.id %}"></a>
           {% endif %}
       </div>

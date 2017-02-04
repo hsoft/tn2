@@ -21,7 +21,7 @@
     <img class="avatar" src="{{ discussion.author|avatar_big_url }}" />
     <div class="title">
         {{ discussion.author|user_link }} ({{ discussion.creation_time|naturaltime }})
-        {% if discussion.author == user %}
+        {% if discussion.author == user or user.is_staff %}
         <a class="fa fa-edit" href="{% url 'discussion_edit' group_slug=discussion.group.slug discussion_slug=discussion.slug %}"></a>
         {% endif %}
     </div>
@@ -31,7 +31,7 @@
 </div>
 {% endif %}
 
-{% include 'comments/tn2app/discussion/list.html' with comment_list=page_obj %}
+{% include 'comments/tn2app/discussion/list.html' with comment_list=page_obj noline_on_first=page_obj.has_previous %}
 
 {% include 'include/pagination.html' with rightalign=True %}
 

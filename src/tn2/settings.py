@@ -47,6 +47,7 @@ INSTALLED_APPS = [
 ]
 
 COMMENTS_APP = 'tn2comments'
+COMMENT_MAX_LENGTH = 10000
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
