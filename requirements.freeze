@@ -5,7 +5,7 @@ beautifulsoup4==4.5.3
 bleach==1.5.0
 django-appconf==1.0.2
 django-ckeditor==5.2.1
-django-contrib-comments==1.7.3
+django-contrib-comments==1.8.0
 django-hashers-passlib==0.3
 django-pipeline==1.6.11
 django-post-office==2.0.8
