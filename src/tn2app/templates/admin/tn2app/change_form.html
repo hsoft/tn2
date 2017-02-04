@@ -1,0 +1,21 @@
+{% extends "admin/change_form.html" %}
+{% load i18n admin_urls %}
+
+{% comment %}
+Override so that "View on site" opens on a _blank target. except for target="_blank", it's a
+verbatim copy/paste from django.
+{% endcomment %}
+
+{% block object-tools %}
+{% if change %}{% if not is_popup %}
+  <ul class="object-tools">
+    {% block object-tools-items %}
+    <li>
+        {% url opts|admin_urlname:'history' original.pk|admin_urlquote as history_url %}
+        <a href="{% add_preserved_filters history_url %}" class="historylink">{% trans "History" %}</a>
+    </li>
+    {% if has_absolute_url %}<li><a href="{{ absolute_url }}" class="viewsitelink" target="_blank">{% trans "View on site" %}</a></li>{% endif %}
+    {% endblock %}
+  </ul>
+{% endif %}{% endif %}
+{% endblock %}
