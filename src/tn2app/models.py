@@ -1,3 +1,4 @@
+import html
 import os.path
 from functools import partial
 
@@ -8,6 +9,7 @@ from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.postgres.search import SearchVector, SearchRank
 from django.db import models
 from django.db.models import Max, Q, Count
+from django.template.defaultfilters import striptags, truncatewords
 from django.urls import reverse
 from django.utils.html import format_html
 from django.utils.text import slugify
@@ -143,6 +145,15 @@ class Article(models.Model):
 
     def get_content(self):
         return embed_videos(self.content)
+
+    def get_excerpt(self):
+        return truncatewords(
+            embed_videos(
+                html.unescape(striptags(self.content)),
+                strip=True
+            ),
+            55
+        )
 
 
 class ArticleCategory(models.Model):

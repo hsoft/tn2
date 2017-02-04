@@ -16,7 +16,7 @@
             <img class="article-main-image" src="{{ article|article_thumbnail }}"/>
         </a>
         <p class="excerpt">
-            {{ article.content|striptags|truncatewords:55 }}
+            {{ article.get_excerpt }}
         </p>
         <p class="readmore">
             {% get_comment_count for article as comment_count %}

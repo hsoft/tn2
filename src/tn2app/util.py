@@ -47,10 +47,12 @@ def gravatar_url(email, size=None, default_image=None):
 def fa_str(fa_name):
     return format_html('<span class="fa fa-{}"></span>', fa_name)
 
-def embed_videos(html, width=630):
+def embed_videos(html, width=630, strip=False):
     """Replaces youtube and vimeo links by proper embed iframes
     """
     def youtuberepl(match):
+        if strip:
+            return ''
         youtube_id = match.group(1)
         HEIGHT_RATIO = 380 / 630
         height = width * HEIGHT_RATIO
@@ -72,6 +74,8 @@ def embed_videos(html, width=630):
     )
 
     def vimeorepl(match):
+        if strip:
+            return ''
         vimeo_id = match.group(1)
         HEIGHT_RATIO = 354 / 630
         height = width * HEIGHT_RATIO
