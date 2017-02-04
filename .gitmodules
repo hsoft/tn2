@@ -4,7 +4,6 @@
 [submodule "ansible/roles/django"]
 	path = ansible/roles/django
 	url = https://github.com/savoirfairelinux/ansible-django.git
-	url = git@github.com:savoirfairelinux/ansible-django.git
 [submodule "ansible/roles/common"]
 	path = ansible/roles/common
 	url = https://github.com/hsoft/ansible-common.git
@@ -14,3 +13,6 @@
 [submodule "ansible/roles/mariadb-install"]
 	path = ansible/roles/mariadb-install
 	url = https://github.com/hsoft/ansible-mariadb-install.git
+[submodule "ansible/roles/django-deploy"]
+	path = ansible/roles/django-deploy
+	url = https://github.com/savoirfairelinux/ansible-django-deploy.git

@@ -17,4 +17,5 @@
     - mariadb-install # for the WP db
     - nginx
     - django
+    - django-deploy
     - tn2
