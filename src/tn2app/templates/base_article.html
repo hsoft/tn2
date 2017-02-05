@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load staticfiles %}
 
 {% block main_contents %}
 <div class="inner-content">
@@ -24,6 +25,50 @@
             {% endwith %}
         </ul>
     </div>
+
+    <div>
+        <div class="overline">
+            <h4>Accès rapide</h4>
+        </div>
+        <ul class="acces_rapide">
+            <li>
+                <a href="{% url 'category' slug='techniques-tutos' %}">Tous les tutos en images</a>
+            </li>
+            <li>
+                <a href="{% url 'category' slug='tuto-video' %}">Toutes les vidéos</a>
+            </li>
+            <li>
+                <a href="{% url 'category' slug='interview' %}">Toutes les interviews</a>
+            </li>
+        </ul>
+    </div>
+
+    <div>
+        <div class="overline">
+            <h4>Publiez vos articles</h4>
+        </div>
+        <p>Vous souhaitez contribuer au blog en écrivant un article ?</p>
+        <ul class="acces_rapide">
+            <li>
+                <a href="{% url 'page_envoyez-nous-vos-articles' %}">Envoyez-le à la rédaction !</a>
+            </li>
+        </ul>
+    </div>
+
+    <div>
+        <iframe
+            src="https://www.facebook.com/plugins/likebox.php?href=https%3A%2F%2Fwww.facebook.com%2Fpages%2FThreadNeedles%2F121145491299220&amp;width=250&amp;colorscheme=light&amp;show_faces=true&amp;border_color=%23dddddd&amp;stream=false&amp;header=true&amp;height=290"
+            scrolling="no"
+            frameborder="0"
+            style="border:none; overflow:hidden; width:250px; height:290px;"
+            allowTransparency="true">
+        </iframe>
+    </div>
+
+    <div>
+        <a href="{% url 'article' slug='7771-les-trouvailles-de-la-semaine-le-sommaire' %}">
+            <img src="{% static 'images/trouvailles_sommaire.png' %}">
+        </a>
 </div>
 {% endblock %}
 

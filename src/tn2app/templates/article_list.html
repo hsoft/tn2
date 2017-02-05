@@ -4,12 +4,17 @@
 {% block bodyclasses %}article-list{% endblock %}
 
 {% block inner_content %}
+    {% with cat=view.active_category %}
+    {% if cat %}
+    <div class="overline"><h4 class="red">{{ cat.title }}</h4></div>
+    {% endif %}
+    {% endwith %}
     {% for article in article_list %}
     <div class="article-preview">
         <div class="overline">
             <h2><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></h2>
         </div>
-        <p>
+        <p class="metaline">
             {% include 'include/article_meta_line.html' %}
         </p>
         <a href="{{ article.get_absolute_url }}">
@@ -23,6 +28,7 @@
             <a href="{{ article.get_absolute_url }}#comments">
                 {{ comment_count }} Commentaire{{ comment_count|pluralize }}
             </a>
+            &nbsp;&nbsp;
             <a href="{{ article.get_absolute_url }}">
                 Lire l'article <span class="fa fa-chevron-circle-right"></span>
             </a>

@@ -1,0 +1,10 @@
+{% extends 'base_page.html' %}
+{% load tn2 staticfiles %}
+
+{% block page_contents %}
+<div class="overline"><h2>Envoyez-nous vos articles</h2></div>
+<img class="rightfloat" src="{% static 'images/envoyez-nous-vos-articles.jpg' %}" width="274" height="400">
+{% page_contents 'envoyez-nous-vos-articles' user %}
+{% endblock %}
+
+

@@ -1,3 +1,50 @@
+div.article-preview {
+    position: relative;
+
+    img {
+        float: left;
+        width: 270px;
+        height: 180px;
+    }
+
+    p.readmore {
+        position: absolute;
+        margin: 0;
+        bottom: 0;
+        right: 0;
+        font-weight: bold;
+
+        a {
+            text-decoration: none;
+        }
+    }
+}
+
+body.article-list {
+    div.article-preview {
+        margin-bottom: 60px;
+
+        div.overline {
+            margin-bottom: 5px;
+        }
+
+        p.metaline {
+            margin-top: 0;
+            margin-bottom: 30px;
+            color: #999999;
+
+            a {
+                color: inherit;
+                text-decoration: underline;
+            }
+        }
+    }
+
+    img.article-main-image {
+        margin-right: 20px;
+    }
+}
+
 body.article {
     h3 {
         font-size: 18px;

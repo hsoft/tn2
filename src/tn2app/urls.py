@@ -100,7 +100,10 @@ urlpatterns = [
     url(r'^contact/$', views.ContactView.as_view(), name='page_contact'),
 ]
 
-PAGES = ['a-propos', 'cgu', 'foire-aux-questions', 'presse', 'sponsors', 'mentions-legales']
+PAGES = [
+    'a-propos', 'cgu', 'foire-aux-questions', 'presse', 'sponsors', 'mentions-legales',
+    'envoyez-nous-vos-articles',
+]
 
 urlpatterns += [
     url(r'^{}/$'.format(p), views.PageView.as_view(pagename=p), name='page_{}'.format(p))

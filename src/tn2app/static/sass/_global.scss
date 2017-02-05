@@ -78,6 +78,12 @@ h5 {
     text-align: right;
 }
 
+.rightfloat {
+    float: right;
+    margin-left: 12px;
+    margin-bottom: 4px;
+}
+
 .red {
     color: $red-highlight;
 }
@@ -191,6 +197,14 @@ div.inner-content {
 div.sidebar {
     width: 250px;
     float: right;
+
+    > div {
+        margin-bottom: 25px;
+    }
+
+    div.overline {
+        margin-bottom: 15px;
+    }
 }
 
 img.img-avatar-big {
