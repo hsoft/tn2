@@ -12,10 +12,6 @@ django_name: tn2
 
 django_requirements_file: "{{ django_project_path }}/requirements.freeze"
 
-django_fixtures_to_load:
-  - tn2app/fixtures/emails.json
-  - tn2app/fixtures/pages.json
-
 django_env_settings_extra: |
   {% if tn2_smtp is defined %}
   EMAIL_HOST = '{{ tn2_smtp.host }}'
