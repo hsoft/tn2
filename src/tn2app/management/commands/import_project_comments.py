@@ -1,8 +1,6 @@
 from django.core.management.base import BaseCommand
 from django.utils.html import linebreaks
 
-from django_comments.models import Comment
-
 from wordpress.models import (
     WpV2BpCoutureCommentaires, WpV2Users
 )
@@ -15,7 +13,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         for proj in Project.objects.all():
-            Comment.objects.for_model(proj).delete()
+            proj.comments.all().delete()
             wpcomments = WpV2BpCoutureCommentaires.objects.filter(item_id=proj.id)
             for wpcomment in wpcomments.all():
                 try:
@@ -23,9 +21,7 @@ class Command(BaseCommand):
                 except WpV2Users.DoesNotExist:
                     print("WP user id {} doesn't exist? strange...".format(wpcomment.user_id))
                     continue
-                Comment.objects.create(
-                    content_object=proj,
-                    site_id=1,
+                proj.comments.create(
                     user=author,
                     comment=linebreaks(unescape_mysql(sanitize_comment(wpcomment.content))),
                     submit_date=wpcomment.date_posted,

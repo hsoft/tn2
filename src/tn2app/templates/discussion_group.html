@@ -29,7 +29,7 @@
             <img class="avatar" src="{{ discussion.last_poster|avatar_url }}"/>
             {% endif %}
         </td>
-        <td class="message-count">{{ discussion.post_count }}</td>
+        <td class="message-count">{{ discussion.comment_count|add:1 }}</td>
         <td class="last-activity">{{ discussion.last_activity|timesince }}</td>
     </tr>
 {% endfor %}

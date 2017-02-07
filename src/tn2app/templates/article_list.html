@@ -1,5 +1,5 @@
 {% extends 'base_article.html' %}
-{% load tn2 comments %}
+{% load tn2 %}
 
 {% block bodyclasses %}article-list{% endblock %}
 
@@ -24,10 +24,11 @@
             {{ article.get_excerpt }}
         </p>
         <p class="readmore">
-            {% get_comment_count for article as comment_count %}
+            {% with comment_count=article.comments.count %}
             <a href="{{ article.get_absolute_url }}#comments">
                 {{ comment_count }} Commentaire{{ comment_count|pluralize }}
             </a>
+            {% endwith %}
             &nbsp;&nbsp;
             <a href="{{ article.get_absolute_url }}">
                 Lire l'article <span class="fa fa-chevron-circle-right"></span>

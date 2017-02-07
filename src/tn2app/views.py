@@ -8,21 +8,20 @@ from django.db.models import Max, Count
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-from django.views.generic import ListView, TemplateView, DetailView, RedirectView, FormView
+from django.views.generic import ListView, TemplateView, DetailView, RedirectView, FormView, View
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.detail import SingleObjectMixin
 
-from django_comments.models import Comment
 from post_office import mail
 import account.views
 import account.forms
 
 from .models import (
     UserProfile, Article, ArticleCategory, DiscussionGroup, Discussion, Project, ProjectVote,
-    ProjectCategory
+    ProjectCategory, ArticleComment, DiscussionComment, ProjectComment
 )
 from .forms import (
-    UserProfileForm, NewDiscussionForm, EditDiscussionForm, EditCommentForm, NewProjectForm,
+    UserProfileForm, NewDiscussionForm, EditDiscussionForm, CommentForm, NewProjectForm,
     SignupForm, ContactForm, UserSendMessageForm
 )
 
@@ -32,6 +31,11 @@ class SignupView(account.views.SignupView):
 
 class LoginView(account.views.LoginView):
     form_class = account.forms.LoginEmailForm
+
+
+class ViewWithCommentsMixin:
+    def get_comment_form(self):
+        return CommentForm()
 
 
 def homepage(request):
@@ -119,10 +123,15 @@ class DiscussionGroupDetailView(SingleObjectMixin, ListView):
         return context
 
     def get_queryset(self):
-        return self.object.discussions.order_by('-last_activity')
+        # comment anootate() is the biggest speedup here. author__profile is a minor speedup, but
+        # still...
+        return self.object.discussions\
+            .annotate(comment_count=Count('comments'))\
+            .select_related('author__profile')\
+            .order_by('-last_activity')
 
 
-class DiscussionDetailView(SingleObjectMixin, ListView):
+class DiscussionDetailView(SingleObjectMixin, ViewWithCommentsMixin, ListView):
     slug_url_kwarg = 'discussion_slug'
     paginate_by = 15
     template_name = 'discussion.html'
@@ -228,7 +237,7 @@ class ArticleMixin:
         return [(reverse('article_list'), "Blog")]
 
 
-class ArticleDetailView(ArticleMixin, DetailView):
+class ArticleDetailView(ArticleMixin, ViewWithCommentsMixin, DetailView):
     model = Article
     template_name = 'article.html'
 
@@ -261,30 +270,6 @@ class ArticlesByCategoryList(ArticleList):
             raise Http404()
         queryset = super().get_queryset()
         return queryset.filter(categories=cat)
-
-
-class CommentEdit(UserPassesTestMixin, UpdateView):
-    template_name = 'comment_edit.html'
-    model = Comment
-    form_class = EditCommentForm
-    context_object_name = 'comment'
-
-    # for UserPassesTestMixin
-    raise_exception = True
-
-    def test_func(self):
-        u = self.request.user
-        return u == self.get_object().user or u.has_perm('django_comments.change_comment')
-
-    def post(self, request, *args, **kwargs):
-        if 'delete' in request.POST:
-            comment = self.get_object()
-            parent_obj = comment.content_object
-            comment.delete()
-            parent_obj.update_last_activity()
-            return HttpResponseRedirect(parent_obj.get_absolute_url())
-        else:
-            return super().post(request, *args, **kwargs)
 
 
 class UserViewMixin:
@@ -436,7 +421,7 @@ class ProjectList(ListView):
         return queryset
 
 
-class ProjectDetails(DetailView):
+class ProjectDetails(ViewWithCommentsMixin, DetailView):
     template_name = 'project_details.html'
     model = Project
 
@@ -528,6 +513,77 @@ class ContactView(FormView):
             context=form.cleaned_data,
         )
         return self.render_to_response(self.get_context_data(message_sent=True))
+
+
+class CommentViewMixin:
+    def get_model(self):
+        modelname = self.kwargs['model']
+        return {
+            'article': ArticleComment,
+            'discussion': DiscussionComment,
+            'project': ProjectComment,
+        }[modelname]
+
+
+class CommentAdd(LoginRequiredMixin, CommentViewMixin, View):
+    TARGET_MODEL_VIEW = None
+    http_method_names = ['post']
+
+    def post(self, request, *args, **kwargs):
+        model = self.get_model().target.field.rel.to
+        target = model.objects.get(id=self.kwargs['model_pk'])
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            # Don't allow duplicate comments
+            duplicate = False
+            from_same_user = target.comments.filter(user=request.user)
+            if from_same_user.exists():
+                if from_same_user.last().comment == form.cleaned_data['comment']:
+                    duplicate = True
+            if not duplicate:
+                target.comments.create(
+                    user=request.user,
+                    comment=form.cleaned_data['comment'],
+                )
+                if hasattr(target, 'update_last_activity'):
+                    target.update_last_activity()
+        return HttpResponseRedirect(target.get_absolute_url())
+
+
+class CommentEdit(UserPassesTestMixin, CommentViewMixin, FormView):
+    template_name = 'comment_edit.html'
+    form_class = CommentForm
+    context_object_name = 'comment'
+
+    # for UserPassesTestMixin
+    raise_exception = True
+
+    def test_func(self):
+        u = self.request.user
+        return u == self.get_object().user or u.has_perm('django_comments.change_comment')
+
+    def get_object(self):
+        model = self.get_model()
+        return model.objects.get(id=self.kwargs['comment_pk'])
+
+    def get_initial(self):
+        return {'comment': self.get_object().comment}
+
+    def post(self, request, *args, **kwargs):
+        comment = self.get_object()
+        success_url = comment.target.get_absolute_url()
+        if 'delete' in request.POST:
+            parent_obj = comment.target
+            comment.delete()
+            if hasattr(parent_obj, 'update_last_activity'):
+                parent_obj.update_last_activity()
+        else:
+            form = CommentForm(request.POST)
+            if form.is_valid():
+                comment = self.get_object()
+                comment.comment = form.cleaned_data['comment']
+                comment.save()
+        return HttpResponseRedirect(success_url)
 
 
 # Full-Text search is a bit intensive, resource-wise. To minimize the risk of the server being

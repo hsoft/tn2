@@ -50,7 +50,8 @@ urlpatterns = [
         views.DiscussionEdit.as_view(),
         name='discussion_edit'
     ),
-    url(r'^comments/(?P<pk>\d+)/edit/$', views.CommentEdit.as_view(), name='comment_edit'),
+    url(r'^comments/(?P<model>\w+)/(?P<model_pk>\d+)/add/$', views.CommentAdd.as_view(), name='comment_add'),
+    url(r'^comments/(?P<model>\w+)/(?P<comment_pk>\d+)/edit/$', views.CommentEdit.as_view(), name='comment_edit'),
     url(
         r'^membres/(?P<username>[-\w]+)/profil/$',
         views.UserProfileView.as_view(),

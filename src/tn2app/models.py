@@ -5,7 +5,6 @@ from functools import partial
 from django.conf import settings
 from django.contrib.auth.models import User as UserBase, UserManager as UserManagerBase
 from django.contrib.auth.hashers import get_hasher
-from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.postgres.search import SearchVector, SearchRank
 from django.db import models
 from django.db.models import Max, Q, Count
@@ -17,7 +16,6 @@ from django.utils.text import slugify
 from PIL import Image
 from ckeditor.fields import RichTextField
 from ckeditor_uploader.fields import RichTextUploadingField
-from django_comments.models import Comment
 
 from wordpress.models import WpV2Users
 
@@ -91,6 +89,26 @@ class UserProfile(models.Model):
         return reverse('user_profile', args=[self.user.username])
 
 
+class AbstractComment(models.Model):
+    class Meta:
+        abstract = True
+        ordering = ('submit_date', )
+
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    submit_date = models.DateTimeField(auto_now_add=True, db_index=True)
+    comment = models.TextField(max_length=10000)
+
+    def get_edit_url(self):
+        model_name = self.target._meta.model_name
+        return reverse('comment_edit', kwargs={'model': model_name, 'comment_pk': self.id})
+
+
+class CommentableMixin:
+    def get_submit_comment_url(self):
+        model_name = self._meta.model_name
+        return reverse('comment_add', args=[model_name, self.id])
+
+
 class ArticleManager(models.Manager):
     def full_text_search(self, search_query):
         # Postgres full-text index for this search added in migration 0031
@@ -105,7 +123,7 @@ class PublishedArticleManager(models.Manager):
     def get_queryset(self):
         return super().get_queryset().filter(status=Article.STATUS_PUBLISHED)
 
-class Article(models.Model):
+class Article(CommentableMixin, models.Model):
     STATUS_DRAFT = 0
     STATUS_REVISION = 1
     STATUS_PUBLISHED = 2
@@ -132,8 +150,6 @@ class Article(models.Model):
     publish_time = models.DateTimeField(blank=True, null=True)
     featured = models.BooleanField(default=False, verbose_name="À la une")
 
-    comments = GenericRelation(Comment, object_id_field='object_pk')
-
     objects = ArticleManager()
     published = PublishedArticleManager()
 
@@ -154,6 +170,10 @@ class Article(models.Model):
             ),
             55
         )
+
+
+class ArticleComment(AbstractComment):
+    target = models.ForeignKey(Article, related_name='comments')
 
 
 class ArticleCategory(models.Model):
@@ -228,19 +248,17 @@ class DiscussionManager(models.Manager):
             .order_by('-rank')
 
 
-class Discussion(models.Model):
+class Discussion(CommentableMixin, models.Model):
     group = models.ForeignKey(DiscussionGroup, related_name='discussions')
     author = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, related_name='+')
     slug = models.SlugField(max_length=255)
     title = models.CharField(max_length=255, verbose_name="Titre")
     content = RichTextField(config_name='restricted', verbose_name="Message")
-    creation_time = models.DateTimeField(auto_now_add=True)
-    last_activity = models.DateTimeField(auto_now_add=True)
+    creation_time = models.DateTimeField(auto_now_add=True, db_index=True)
+    last_activity = models.DateTimeField(auto_now_add=True, db_index=True)
     last_poster = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, related_name='+')
-    is_locked = models.BooleanField(default=False)
-    is_sticky = models.BooleanField(default=False)
-
-    comments = GenericRelation(Comment, object_id_field='object_pk')
+    is_locked = models.BooleanField(default=False, db_index=True)
+    is_sticky = models.BooleanField(default=False, db_index=True)
 
     objects = DiscussionManager()
 
@@ -261,15 +279,16 @@ class Discussion(models.Model):
     def get_absolute_url(self):
         return reverse('discussion', args=[self.group.slug, self.slug])
 
-    def post_count(self):
-        return self.comments.count() + 1
-
     def update_last_activity(self):
         if self.comments.exists():
             last_comment = self.comments.last()
             self.last_activity = last_comment.submit_date
             self.last_poster = last_comment.user
             self.save()
+
+
+class DiscussionComment(AbstractComment):
+    target = models.ForeignKey(Discussion, related_name='comments')
 
 
 class ProjectCategory(models.Model):
@@ -297,7 +316,7 @@ class ProjectManager(models.Manager):
             .order_by('-num_likes')
 
 
-class Project(models.Model):
+class Project(CommentableMixin, models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='projects')
     title = models.CharField(
         max_length=100,
@@ -369,8 +388,6 @@ class Project(models.Model):
     # This field's value never changes and stays to zero for all post-migration projects.
     legacy_like_count = models.PositiveSmallIntegerField(default=0)
 
-    comments = GenericRelation(Comment, object_id_field='object_pk')
-
     objects = ProjectManager()
 
     class Meta:
@@ -415,6 +432,10 @@ class Project(models.Model):
 
     def get_like_count(self):
         return self.likes.count() + self.legacy_like_count
+
+
+class ProjectComment(AbstractComment):
+    target = models.ForeignKey(Project, related_name='comments')
 
 
 class ProjectVote(models.Model):

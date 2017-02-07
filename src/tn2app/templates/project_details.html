@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load comments tn2 thumbnail staticfiles %}
+{% load tn2 thumbnail staticfiles %}
 
 {% block bodyclasses %}project{% endblock %}
 
@@ -25,10 +25,10 @@
 {{ project.description|safe }}
 
 <h2 id="comments">Commentaires</h2>
-{% render_comment_list for project %}
+{% include 'comments/tn2app/list.html' with comment_list=project.comments.all %}
 
 {% if user.is_authenticated %}
-    {% include 'include/add_comment_form.html' with ref_object=project %}
+    {% include 'include/add_comment_form.html' with target=project %}
 {% endif %}
 
 </div>

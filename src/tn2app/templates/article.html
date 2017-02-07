@@ -1,5 +1,5 @@
 {% extends 'base_article.html' %}
-{% load comments tn2 %}
+{% load tn2 %}
 
 {% block bodyclasses %}article{% endblock %}
 
@@ -20,10 +20,10 @@
 {{ article.get_content|safe }}
 
 <h2 id="comments">Commentaires</h2>
-{% render_comment_list for article %}
+{% include 'comments/tn2app/list.html' with comment_list=article.comments.all %}
 
 {% if user.is_authenticated %}
-    {% include 'include/add_comment_form.html' with ref_object=article %}
+    {% include 'include/add_comment_form.html' with target=article %}
 {% endif %}
 {% endblock %}
 

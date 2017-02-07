@@ -1,5 +1,5 @@
 {% extends 'base_discussion.html' %}
-{% load comments tn2 humanize %}
+{% load tn2 humanize %}
 
 {% block bodyclasses %}discussion-detail{% endblock %}
 
@@ -36,7 +36,7 @@
 {% include 'include/pagination.html' with rightalign=True %}
 
 {% if user.is_authenticated and not page_obj.has_next %}
-    {% include 'include/add_comment_form.html' with ref_object=discussion %}
+    {% include 'include/add_comment_form.html' with target=discussion %}
 {% endif %}
 {% endblock %}
 

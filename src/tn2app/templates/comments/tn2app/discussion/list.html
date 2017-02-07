@@ -11,7 +11,7 @@
       <div class="title">
           {{ comment.user|user_link }} ({{ comment.submit_date|naturaltime }})
           {% if comment.user == user or user.is_staff %}
-          <a class="fa fa-edit" href="{% url 'comment_edit' comment.id %}"></a>
+          <a class="fa fa-edit" href="{{ comment.get_edit_url }}"></a>
           {% endif %}
       </div>
     </dt>

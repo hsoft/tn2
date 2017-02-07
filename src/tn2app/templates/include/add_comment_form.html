@@ -1,20 +1,14 @@
-{% load comments %}
 <div class="overline">
 <h5>Répondre</h5>
 </div>
 
-{% get_comment_form for ref_object as form %}
-<form class="comment-form" action="{% comment_form_target %}" method="POST">
+{% with form=view.get_comment_form %}
+<form class="comment-form" action="{{ target.get_submit_comment_url }}" method="POST">
 {% csrf_token %}
 {{ form.comment }}
-{{ form.honeypot }}
-{{ form.content_type }}
-{{ form.object_pk }}
-{{ form.timestamp }}
-{{ form.security_hash }}
-<input type="hidden" name="next" value="{{ ref_object.get_absolute_url }}#last-comment" />
 <p>
     <input class="button" type="submit" value="Commenter" />
 </p>
 </form>
+{% endwith %}
 

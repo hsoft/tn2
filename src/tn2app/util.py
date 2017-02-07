@@ -3,6 +3,7 @@ import itertools
 import re
 import unicodedata
 
+import bleach
 from django.utils.html import format_html
 
 def dedupe_slug(slug, queryset, slug_field_name='slug'):
@@ -91,4 +92,12 @@ def embed_videos(html, width=630, strip=False):
         html
     )
     return html
+
+def sanitize_comment(text):
+    ALLOWED_TAGS = ['b', 'i', 'u', 's', 'p', 'br', 'img', 'a', 'em', 'strong', 'ul', 'ol', 'li']
+    ALLOWED_ATTRS = {
+        'img': ['alt', 'src', 'width', 'height'],
+        'a': ['href'],
+    }
+    return bleach.linkify(bleach.clean(text, tags=ALLOWED_TAGS, attributes=ALLOWED_ATTRS))
 

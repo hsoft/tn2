@@ -2,12 +2,11 @@
 
 {% block main_contents %}
 <h1>Modifier un commentaire</h1>
-<form action="{% url 'comment_edit' comment.id %}" method="POST">
+<form action="{{ comment.get_edit_url }}" method="POST">
     {% csrf_token %}
     {{ form.as_p }}
-    <input type="hidden" name="next" value="{{ comment.content_object.get_absolute_url }}" />
     <input class="button" type="submit" value="Enregistrer" />
-    <a href="{{ comment.content_object.get_absolute_url }}">Retour</a>
+    <a href="{{ comment.target.get_absolute_url }}">Retour</a>
     <input class="button delete-button" type="submit" name="delete" value="Supprimer" />
 </form>
 {% endblock %}

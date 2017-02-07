@@ -1,14 +1,13 @@
 from django import forms
+from django.conf import settings
 from django.utils.text import slugify
 
-from django_comments.models import Comment
-from django_comments.forms import COMMENT_MAX_LENGTH
 from ckeditor.widgets import CKEditorWidget
 from captcha.fields import CaptchaField
 import account.forms
 
 from .models import UserProfile, Discussion, Project
-from .util import dedupe_slug
+from .util import dedupe_slug, sanitize_comment
 
 
 class SignupForm(account.forms.SignupForm):
@@ -73,16 +72,16 @@ class EditDiscussionForm(BaseModelForm):
         fields = ['title', 'content']
 
 
-class EditCommentForm(BaseModelForm):
-    class Meta:
-        model = Comment
-        fields = ['comment']
-
+class CommentForm(forms.Form):
     comment = forms.CharField(
         label="Commentaire",
         widget=CKEditorWidget(config_name='restricted'),
-        max_length=COMMENT_MAX_LENGTH
+        max_length=settings.COMMENT_MAX_LENGTH
     )
+
+    def clean_comment(self):
+        return sanitize_comment(self.cleaned_data['comment'])
+
 
 class NewProjectForm(BaseModelForm):
     class Meta:
