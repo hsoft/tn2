@@ -38,15 +38,12 @@ INSTALLED_APPS = [
     'ckeditor_uploader',
     'easy_thumbnails',
     'pipeline',
-    'django_comments',
     'captcha',
 
     'wordpress',
-    'tn2comments',
     'tn2app.apps.Tn2AppConfig',
 ]
 
-COMMENTS_APP = 'tn2comments'
 COMMENT_MAX_LENGTH = 10000
 
 MIDDLEWARE = [

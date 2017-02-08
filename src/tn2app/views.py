@@ -560,7 +560,7 @@ class CommentEdit(UserPassesTestMixin, CommentViewMixin, FormView):
 
     def test_func(self):
         u = self.request.user
-        return u == self.get_object().user or u.has_perm('django_comments.change_comment')
+        return u == self.get_object().user or u.has_perm('tn2app.change_articlecomment')
 
     def get_object(self):
         model = self.get_model()

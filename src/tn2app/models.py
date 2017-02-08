@@ -19,8 +19,7 @@ from ckeditor_uploader.fields import RichTextUploadingField
 
 from wordpress.models import WpV2Users
 
-from tn2comments.util import sanitize_comment
-from .util import nonone, fa_str, embed_videos
+from .util import nonone, fa_str, embed_videos, sanitize_comment
 
 class UserManager(UserManagerBase):
     def get_from_wpuser_id(self, wpuser_id):
@@ -96,7 +95,7 @@ class AbstractComment(models.Model):
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
     submit_date = models.DateTimeField(auto_now_add=True, db_index=True)
-    comment = models.TextField(max_length=10000)
+    comment = models.TextField(max_length=settings.COMMENT_MAX_LENGTH)
 
     def get_edit_url(self):
         model_name = self.target._meta.model_name

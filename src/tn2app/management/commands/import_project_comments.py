@@ -4,9 +4,8 @@ from django.utils.html import linebreaks
 from wordpress.models import (
     WpV2BpCoutureCommentaires, WpV2Users
 )
-from tn2comments.util import sanitize_comment
 from ...models import Project, User
-from ...util import unescape_mysql
+from ...util import unescape_mysql, sanitize_comment
 
 class Command(BaseCommand):
     help = 'Imports project comments from our WP DB'

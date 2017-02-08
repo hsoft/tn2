@@ -8,9 +8,8 @@ from django.utils.html import linebreaks
 from wordpress.models import (
     WpV2BpGroups, WpV2BpGroupsGroupmeta, WpV2BbTopics, WpV2BbPosts, WpV2Users,
 )
-from tn2comments.util import sanitize_comment
 from ...models import User, DiscussionGroup, Discussion
-from ...util import deaccent, unescape_mysql
+from ...util import deaccent, unescape_mysql, sanitize_comment
 
 class Command(BaseCommand):
     help = 'Imports groups from our WP DB'

@@ -23,7 +23,6 @@ urlpatterns = [
         account_views.PasswordResetTokenView.as_view(),
         name='account_password_reset_token'
     ),
-    url(r'^comments/', include('django_comments.urls')),
     url(r'^ckeditor/upload/', ckperms(ckeditor_views.upload), name='ckeditor_upload'),
     url(r'^ckeditor/browse/', ckperms(ckeditor_views.browse), name='ckeditor_browse'),
     url(r'^captcha/', include('captcha.urls')),
