@@ -67,3 +67,23 @@ body.project {
         cursor: pointer;
     }
 }
+
+body.project-list {
+    div.inner-content div.overline {
+        margin-bottom: 40px;
+    }
+
+    ul.project-list {
+        margin-bottom: 20px;
+    }
+
+    div.pagination {
+        // We want the pagination to have the copyright notice to its left and using float right
+        // seemed like the easiest solution.
+        float: right;
+    }
+
+    div.sidebar ul.selector {
+        margin-bottom: 25px;
+    }
+}

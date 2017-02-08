@@ -1,3 +1,4 @@
+import datetime
 import html
 import os.path
 from functools import partial
@@ -312,6 +313,12 @@ class ProjectManager(models.Manager):
         return self.annotate(search=sv)\
             .annotate(num_likes=Count('likes'))\
             .filter(search=search_query)\
+            .order_by('-num_likes')
+
+    def popular_this_week(self):
+        last_week = datetime.date.today() - datetime.timedelta(days=7)
+        return self.filter(projectvote__date_liked__gt=last_week)\
+            .annotate(num_likes=Count('projectvote'))\
             .order_by('-num_likes')
 
 

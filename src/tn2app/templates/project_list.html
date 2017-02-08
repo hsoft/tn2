@@ -1,13 +1,29 @@
 {% extends 'base.html' %}
 {% load tn2 thumbnail add_get_parameter %}
 
+{% block bodyclasses %}project-list{% endblock %}
+
 {% block main_contents %}
 <div class="inner-content">
-{% include "include/pagination.html" %}
+
+{% if not page_obj.has_previous %}
+<div class="overline">
+    <h3>Populaires cette semaine</h3>
+</div>
+
+{% include "include/project-list.html" with project_list=view.popular_this_week|slice:":3" only %}
+{% endif %}
+
+<div class="overline">
+    <h3>Galerie des projets</h3>
+</div>
 
 {% include "include/project-list.html" with project_list=project_list only %}
 
-{% include "include/pagination.html" %}
+{% include "include/pagination.html" with rightalign=True %}
+<p>
+    Les projets figurant sur ce site sont © Tous droits réservés.
+</p>
 </div>
 
 <div class="sidebar">

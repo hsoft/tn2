@@ -394,6 +394,9 @@ class ProjectList(ListView):
         except ProjectCategory.DoesNotExist:
             return None
 
+    def popular_this_week(self):
+        return Project.objects.popular_this_week()
+
     @staticmethod
     def breadcrumb():
         return [(reverse('project_list'), "Projets couture")]
