@@ -1,0 +1,34 @@
+dl.comments {
+    img.avatar {
+        float: left;
+        width: 50px;
+        height: 50px;
+        margin-right: 18px;
+    }
+
+    div.title a:first-of-type {
+        font-weight: bold;
+    }
+
+    div.content > * {
+        margin: 6px 0 0 68px;
+        text-align: justify;
+    }
+
+    dt {
+        border-top: dotted 1px;
+        padding-top: 8px;
+    }
+
+    dt.noline {
+        border-top: none;
+    }
+
+    dd {
+        // Remove default 40px margin of dd elements.
+        margin-left: 0;
+        margin-bottom: 35px;
+    }
+}
+
+

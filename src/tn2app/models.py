@@ -434,7 +434,8 @@ class Project(CommentableMixin, models.Model):
         return slugify(self.title)
 
     def get_images(self):
-        return [self.image1, self.image2, self.image3, self.image4]
+        result = [self.image1, self.image2, self.image3, self.image4]
+        return [i for i in result if i]
 
     def get_like_count(self):
         return self.likes.count() + self.legacy_like_count

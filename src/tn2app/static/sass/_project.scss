@@ -57,14 +57,67 @@ ul.project-list {
 }
 
 div.project-author {
+    background: url("#{$images_path}/bg-stripes-light.gif") bottom left repeat-x;
+    padding-bottom: 15px;
+    margin-bottom: 25px;
+
     img {
         float: left;
+        padding-right: 10px;
+        width: 50px;
+        height: 50px;
+        background-color: white;
+    }
+
+    span {
+        font-size: 11px;
     }
 }
 
 body.project {
+    div.socialactions {
+        color: #cccccc;
+        font-family: 'Lobster';
+        font-size: 32px;
+        height: 50px;
+        line-height: 50px;
+        margin: 0 0 40px 0;
+
+        img {
+            float: right;
+            margin: 0 0 0 10px;
+        }
+    }
+
     img.project-image-preview {
         cursor: pointer;
+    }
+
+    div.project-info {
+        background-color: #eeeeee;
+        padding: 10px;
+
+        a.blog-url {
+            font-weight: bold;
+        }
+    }
+
+    div.myprojects,div.allprojects {
+        img {
+            width: 76px;
+            height: 76px;
+            margin: 0 7px 7px 0;
+
+        }
+
+        a:last-of-type img {
+            margin-right: 0;
+        }
+    }
+
+    div.voir_tout {
+        font-size: 11px;
+        text-align: right;
     }
 }
 

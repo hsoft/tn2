@@ -105,6 +105,7 @@ h5 {
 
 p.breadcrumb {
     font-size: 11px;
+    margin-bottom: 30px;
 
     a {
         color: $text-color;
@@ -164,29 +165,6 @@ label.required:after {content: " *"; color: red;}
 
 .clear {
     clear: both;
-}
-
-// This is a field that is automatically added by django-contrib-comments.
-// It has to be invisible.
-#id_honeypot {
-    display: none;
-}
-
-#comments {
-    dt {
-        font-style: italic;
-        border-top: dotted 1px;
-        padding-top: 8px;
-    }
-
-    dt.noline {
-        border-top: none;
-    }
-
-    dd {
-        // Remove default 40px margin of dd elements.
-        margin-left: 0;
-    }
 }
 
 div.inner-content {

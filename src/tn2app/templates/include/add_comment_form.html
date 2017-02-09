@@ -1,6 +1,8 @@
+{% if not notitle %}
 <div class="overline">
 <h5>Répondre</h5>
 </div>
+{% endif %}
 
 {% with form=view.get_comment_form %}
 <form class="comment-form" action="{{ target.get_submit_comment_url }}" method="POST">

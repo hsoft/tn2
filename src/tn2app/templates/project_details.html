@@ -24,11 +24,34 @@
 </div>
 {{ project.description|safe }}
 
-<h2 id="comments">Commentaires</h2>
-{% include 'comments/tn2app/list.html' with comment_list=project.comments.all %}
+<div class="overline">&nbsp;</div>
 
+<div class="socialactions">
+    Vous avez aimé ce projet?
+    <a href="https://www.facebook.com/sharer.php?u={{ view.request.build_absolute_uri }}" target="_blank" title="Partager sur Facebook">
+        <img src="{% static 'images/facebook_big.png' %}">
+    </a>
+
+    <a href="https://twitter.com/share?count=none&text={{ project.title|iriencode }}+sur+Thread%26Needles&url={{ view.request.build_absolute_uri }}&lang=fr" target="_blank" title="Partager sur Twitter">
+        <img src="{% static 'images/twitter_big.png' %}">
+    </a>
+</div>
+
+<div class="overline">
+    <h4 class="red">Ajouter un commentaire</h4>
+</div>
 {% if user.is_authenticated %}
-    {% include 'include/add_comment_form.html' with target=project %}
+    {% include 'include/add_comment_form.html' with target=project notitle=True %}
+{% else %}
+    <p>Vous devez être <a href="{% url 'account_login' %}">connecté</a> pour publier un commentaire.</p>
+    <p>&nbsp;</p>
+{% endif %}
+
+{% if project.comments.exists %}
+<div class="overline">
+<h4 id="comments">Commentaires</h2>
+</div>
+{% include 'comments/tn2app/list.html' with comment_list=project.comments.all noline_on_first=True %}
 {% endif %}
 
 </div>
@@ -51,23 +74,28 @@
     </div>
     <div class="project-author">
         <img class="img-avatar-big" src="{{ project.author|avatar_big_url }}"/>
-        Par {{ project.author|user_link }} le {{ project.creation_time|date:'SHORT_DATE_FORMAT' }}
+        Par {{ project.author|user_link }} <span>({{ project.creation_time|date:'d/m/Y' }})</span>
         <br>
-        dans <a href="{% url 'project_list' %}?category={{ project.category.id }}">{{ project.category }}</a>
+        <span>dans <a href="{% url 'project_list' %}?category={{ project.category.id }}">{{ project.category }}</a></span>
     </div>
-    <h4 class="clear">Vues</h4>
+    {% if project.get_images|length > 1 %}
+    <div class="overline clear">
+        <h4>Vues</h4>
+    </div>
     <div>
     {% for image in project.get_images %}
-    {% if image %}
         <img
             class="project-image-preview"
             src="{{ image|thumbnail_url:'project-alternate-view' }}"
             data-full-url="{{ image.url }}"
         />
-    {% endif %}
     {% endfor %}
     </div>
-    <h4>Détails du projet</h4>
+    {% endif %}
+
+    <div class="overline">
+        <h4>Détails du projet</h4>
+    </div>
     <div class="project-info">
         <strong>Patron:</strong>
         {% if project.pattern_url %}
@@ -77,8 +105,42 @@
         {% endif %}
         <br>
         {% if project.blog_post_url %}
-        <a href="{{ project.blog_post_url }}">Retrouvez ce projet sur mon blog</a>
+        <a class="blog-url" href="{{ project.blog_post_url }}">Retrouvez ce projet sur mon blog</a>
+        <br>
         {% endif %}
+        © Tous droits réservés
+    </div>
+
+    <div class="overline">
+        <h4>Ma galerie</h4>
+    </div>
+
+    <div class="myprojects">
+        {% for project in view.myprojects.all|slice:":3" %}
+        <a href="{{ project.get_absolute_url }}">
+            <img src="{{ project.image1|thumbnail_url:'project-list' }}"/>
+        </a>
+        {% endfor %}
+
+        <div class="voir_tout">
+            <a href="{% url 'project_list' %}">Voir tous les projets →</a>
+        </div>
+    </div>
+
+    <div class="overline">
+        <h4>Tous les projets</h4>
+    </div>
+
+    <div class="allprojects">
+        {% for project in view.allprojects %}
+        <a href="{{ project.get_absolute_url }}">
+            <img src="{{ project.image1|thumbnail_url:'project-list' }}"/>
+        </a>
+        {% endfor %}
+
+        <div class="voir_tout">
+            <a href="{% url 'project_list' %}">Voir tous les projets →</a>
+        </div>
     </div>
 </div>
 {% endblock %}

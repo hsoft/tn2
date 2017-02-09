@@ -17,21 +17,23 @@
 {% include 'include/pagination.html' with rightalign=True %}
 
 {% if not page_obj.has_previous %}
-<div class="message">
-    <img class="avatar" src="{{ discussion.author|avatar_big_url }}" />
-    <div class="title">
-        {{ discussion.author|user_link }} ({{ discussion.creation_time|naturaltime }})
-        {% if discussion.author == user or user.is_staff %}
-        <a class="fa fa-edit" href="{% url 'discussion_edit' group_slug=discussion.group.slug discussion_slug=discussion.slug %}"></a>
-        {% endif %}
-    </div>
-    <div class="content">
-        {{ discussion.content|safe }}
-    </div>
-</div>
+<dl class="comments">
+    <dt class="noline">
+        <img class="avatar" src="{{ discussion.author|avatar_big_url }}" />
+        <div class="title">
+            {{ discussion.author|user_link }} ({{ discussion.creation_time|naturaltime }})
+            {% if discussion.author == user or user.is_staff %}
+            <a class="fa fa-edit" href="{% url 'discussion_edit' group_slug=discussion.group.slug discussion_slug=discussion.slug %}"></a>
+            {% endif %}
+        </div>
+    </dt>
+    <dd>
+        <div class="content">{{ discussion.content|safe }}</div>
+    </dd>
+</dl>
 {% endif %}
 
-{% include 'comments/tn2app/discussion/list.html' with comment_list=page_obj noline_on_first=page_obj.has_previous %}
+{% include 'comments/tn2app/list.html' with comment_list=page_obj noline_on_first=page_obj.has_previous %}
 
 {% include 'include/pagination.html' with rightalign=True %}
 

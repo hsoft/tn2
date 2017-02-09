@@ -442,6 +442,24 @@ class ProjectDetails(ViewWithCommentsMixin, DetailView):
         except ProjectVote.DoesNotExist:
             return False
 
+    def myprojects(self):
+        current = self.get_object()
+        return current.author.projects.exclude(id=current.id)
+
+    def allprojects(self):
+        # it's a really strange query that is made in the old app: it's 3 items with, in the middle,
+        # the current project. Then, on the left, the project created just before it, and on the
+        # right, the project created after it. Well... let's do the same thing.
+        current = self.get_object()
+        q1 = self.model.objects.filter(id__lt=current.id).order_by('-id')
+        q2 = self.model.objects.filter(id__gt=current.id).order_by('id')
+        if q1.exists() and q2.exists():
+            return [q1.first(), current, q2.first()]
+        elif not q1.exists():
+            return [current] + list(q2.all()[:2])
+        else:
+            return list(q1.all()[:2]) + [current]
+
 
 class ProjectCreate(LoginRequiredMixin, CreateView):
     template_name = 'project_create.html'
@@ -556,7 +574,6 @@ class CommentAdd(LoginRequiredMixin, CommentViewMixin, View):
 class CommentEdit(UserPassesTestMixin, CommentViewMixin, FormView):
     template_name = 'comment_edit.html'
     form_class = CommentForm
-    context_object_name = 'comment'
 
     # for UserPassesTestMixin
     raise_exception = True

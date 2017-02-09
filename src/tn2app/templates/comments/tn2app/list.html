@@ -1,20 +1,23 @@
-{% load tn2 %}
+{% load tn2 humanize %}
 
-<dl id="comments">
+<dl class="comments">
   {% for comment in comment_list %}
-    <dt>
+    <dt {% if noline_on_first and forloop.first %}class="noline"{% endif %}>
       <a name="c{{ comment.id }}"></a>
       {% if forloop.last %}
       <a name="last-comment"></a>
       {% endif %}
-      <img src="{{ comment.user|avatar_url }}" />
-      Par {{ comment.user|user_link }} le {{ comment.submit_date }}
-      {% if comment.user == user or user.is_staff %}
-      <a class="fa fa-edit" href="{{ comment.get_edit_url }}"></a>
-      {% endif %}
+      <img class="avatar" src="{{ comment.user|avatar_big_url }}" />
+      <div class="title">
+          {{ comment.user|user_link }} ({{ comment.submit_date|naturaltime }})
+          {% if comment.user == user or user.is_staff %}
+          <a class="fa fa-edit" href="{{ comment.get_edit_url }}"></a>
+          {% endif %}
+      </div>
     </dt>
     <dd>
-      <p>{{ comment.comment|safe }}</p>
+      <div class="content">{{ comment.comment|safe }}</div>
     </dd>
   {% endfor %}
 </dl>
+
