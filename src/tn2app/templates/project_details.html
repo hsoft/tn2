@@ -54,6 +54,18 @@
 {% include 'comments/tn2app/list.html' with comment_list=project.comments.all noline_on_first=True %}
 {% endif %}
 
+<div class="overline">
+    <h4>Ils aiment ce projet</h4>
+</div>
+
+<div class="userlist">
+    {% for u in project.likes.all %}
+        <a href="{{ u.profile.get_absolute_url }}">
+            <img class="avatar" src="{{ u|avatar_big_url }}" alt="{{ u.profile.display_name }}">
+        </a>
+    {% endfor %}
+</div>
+
 </div>
 <div class="sidebar">
     <div class="project_actions">
