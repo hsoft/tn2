@@ -26,6 +26,13 @@ def avatar_big_url(user):
     return gravatar_url(user.email, size=60, default_image='mm')
 
 @register.filter(is_safe=True)
+def avatar_bigger_url(user):
+    if user.profile:
+        if user.profile.avatar:
+            return get_thumbnailer(user.profile.avatar)['avatar-bigger'].url
+    return gravatar_url(user.email, size=80, default_image='mm')
+
+@register.filter(is_safe=True)
 def group_avatar_url(group):
     if group.avatar:
         return get_thumbnailer(group.avatar)['group-avatar'].url

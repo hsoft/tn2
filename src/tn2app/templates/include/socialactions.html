@@ -1,0 +1,12 @@
+{% load staticfiles %}
+<div class="socialactions">
+    {{ prompt }}
+    <a href="https://www.facebook.com/sharer.php?u={{ view.request.build_absolute_uri }}" target="_blank" title="Partager sur Facebook">
+        <img src="{% static 'images/facebook_big.png' %}">
+    </a>
+
+    <a href="https://twitter.com/share?count=none&text={{ twitter_title|iriencode }}+sur+Thread%26Needles&url={{ view.request.build_absolute_uri }}&lang=fr" target="_blank" title="Partager sur Twitter">
+        <img src="{% static 'images/twitter_big.png' %}">
+    </a>
+</div>
+

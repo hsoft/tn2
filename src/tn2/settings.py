@@ -193,6 +193,7 @@ THUMBNAIL_ALIASES = {
         'preview': {'size': (300, 200), 'crop': True},
         'avatar': {'size': (34, 34), 'crop': True},
         'avatar-big': {'size': (60, 60), 'crop': True},
+        'avatar-bigger': {'size': (80, 80), 'crop': True},
         'group-avatar': {'size': (80, 80), 'crop': True},
         'group-avatar-big': {'size': (150, 150), 'crop': True},
         'project-list': {'size': (180, 180), 'crop': True},

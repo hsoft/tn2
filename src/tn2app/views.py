@@ -261,7 +261,6 @@ class ArticlesByCategoryList(ArticleList):
         cat = self.active_category()
         return result + [(reverse('category', args=(cat.slug, )), cat.title)]
 
-
     def get_queryset(self):
         try:
             cat = self.active_category()
@@ -269,6 +268,24 @@ class ArticlesByCategoryList(ArticleList):
             raise Http404()
         queryset = super().get_queryset()
         return queryset.filter(categories=cat)
+
+
+class ArticlesByAuthorList(ArticleList):
+    def active_author(self):
+        return User.objects.get(username=self.kwargs['slug'])
+
+    def breadcrumb(self):
+        result = super().breadcrumb()
+        author = self.active_author()
+        return result + [(reverse('blog_by_author', args=(author.username, )), author.profile.display_name)]
+
+    def get_queryset(self):
+        try:
+            author = self.active_author()
+        except User.DoesNotExist:
+            raise Http404()
+        queryset = super().get_queryset()
+        return queryset.filter(author=author)
 
 
 class UserViewMixin:

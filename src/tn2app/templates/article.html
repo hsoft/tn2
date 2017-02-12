@@ -14,17 +14,40 @@
 <div class="overline">
 <h2>{{ article.title }}</h2>
 </div>
-<p>
+<p class="metaline">
     {% include 'include/article_meta_line.html' %}
 </p>
 {{ article.get_content|safe }}
 
-<h2 id="comments">Commentaires</h2>
-{% include 'comments/tn2app/list.html' with comment_list=article.comments.all %}
+<div class="author-bio">
+    <a href="{{ article.author.profile.get_absolute_url }}">
+        <img src="{{ article.author|avatar_bigger_url }}">
+    </a>
+    <h5>
+        A propos de l'auteur : {{ article.author|user_link }}
+    </h5>
+    <p>{{ article.author.profile.description_for_articles }}</p>
+    <a href="{% url 'blog_by_author' slug=article.author.username %}">Tous les articles</a>
+    <div class="clear"></div>
+</div>
 
+{% include 'include/socialactions.html' with prompt='Vous avez aimé cet article?' twitter_title=article.title %}
+
+<div class="overline">
+    <h4 class="red">Ajouter un commentaire</h4>
+</div>
 {% if user.is_authenticated %}
-    {% include 'include/add_comment_form.html' with target=article %}
+    {% include 'include/add_comment_form.html' with target=article notitle=True %}
+{% else %}
+    <p>Vous devez être <a href="{% url 'account_login' %}">connecté</a> pour publier un commentaire.</p>
+    <p>&nbsp;</p>
 {% endif %}
+
+<div class="overline">
+    <h2>Commentaires</h2>
+</div>
+{% include 'comments/tn2app/list.html' with comment_list=article.comments.all noline_on_first=True %}
+
 {% endblock %}
 
 {% block bottom_js %}

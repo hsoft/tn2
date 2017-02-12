@@ -11,6 +11,11 @@ urlpatterns = [
         views.ArticlesByCategoryList.as_view(),
         name='category'
     ),
+    url(
+        r'^blog/author/(?P<slug>[-\w]+)/$',
+        views.ArticlesByAuthorList.as_view(),
+        name='blog_by_author'
+    ),
     url(r'^projets-couture/$', views.ProjectList.as_view(), name='project_list'),
     url(
         r'^projets-couture/(?P<pk>\d+)-(?P<slug>[-\w]*)$',

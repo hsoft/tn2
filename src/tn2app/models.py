@@ -87,6 +87,7 @@ class UserProfile(models.Model):
         verbose_name="Niveau",
     )
     sewing_machine = models.TextField(blank=True, verbose_name="MAC")
+    description_for_articles = models.TextField(blank=True, verbose_name="Description Rédacteur")
 
     def get_absolute_url(self):
         return reverse('user_profile', args=[self.user.username])
@@ -147,7 +148,7 @@ class Article(CommentableMixin, models.Model):
     subtitle = models.TextField(blank=True)
     content = RichTextUploadingField()
     # TODO: Set blank to True when the import is over
-    main_image = models.ImageField(blank=True)
+    main_image = models.ImageField(upload_to='articles', blank=True)
     categories = models.ManyToManyField('ArticleCategory')
     creation_time = models.DateTimeField(auto_now_add=True)
     publish_time = models.DateTimeField(blank=True, null=True)

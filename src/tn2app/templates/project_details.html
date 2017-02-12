@@ -26,16 +26,7 @@
 
 <div class="overline">&nbsp;</div>
 
-<div class="socialactions">
-    Vous avez aimé ce projet?
-    <a href="https://www.facebook.com/sharer.php?u={{ view.request.build_absolute_uri }}" target="_blank" title="Partager sur Facebook">
-        <img src="{% static 'images/facebook_big.png' %}">
-    </a>
-
-    <a href="https://twitter.com/share?count=none&text={{ project.title|iriencode }}+sur+Thread%26Needles&url={{ view.request.build_absolute_uri }}&lang=fr" target="_blank" title="Partager sur Twitter">
-        <img src="{% static 'images/twitter_big.png' %}">
-    </a>
-</div>
+{% include 'include/socialactions.html' with prompt='Vous avez aimé ce projet?' twitter_title=project.title %}
 
 <div class="overline">
     <h4 class="red">Ajouter un commentaire</h4>

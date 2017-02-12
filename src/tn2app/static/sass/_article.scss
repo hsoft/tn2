@@ -20,23 +20,25 @@ div.article-preview {
     }
 }
 
+body.article-list,body.article {
+    p.metaline {
+        margin-top: 0;
+        margin-bottom: 30px;
+        color: #999999;
+
+        a {
+            color: inherit;
+            text-decoration: underline;
+        }
+    }
+}
+
 body.article-list {
     div.article-preview {
         margin-bottom: 60px;
 
         div.overline {
             margin-bottom: 5px;
-        }
-
-        p.metaline {
-            margin-top: 0;
-            margin-bottom: 30px;
-            color: #999999;
-
-            a {
-                color: inherit;
-                text-decoration: underline;
-            }
         }
     }
 
@@ -46,6 +48,39 @@ body.article-list {
 }
 
 body.article {
+    div.inner-content div.overline:first-of-type {
+        margin-bottom: 5px;
+    }
+
+    div.author-bio {
+        background-color: #eeeeee;
+        padding: 10px;
+        margin: 40px 0;
+
+        a {
+            color: #777777;
+            text-decoration: underline;
+        }
+
+        img {
+            float: left;
+            margin-right: 10px;
+        }
+
+        h5 {
+            margin-bottom: 6px;
+
+            a {
+                color: inherit;
+            }
+        }
+
+        p {
+            margin-top: 0;
+            margin-bottom: 6px;
+        }
+    }
+
     h3 {
         font-size: 18px;
         line-height: 22px;
