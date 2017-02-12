@@ -120,7 +120,7 @@ class ArticleManager(models.Manager):
         return self.annotate(search=sv)\
             .annotate(rank=SearchRank(sv, search_query))\
             .filter(search=search_query, status=Article.STATUS_PUBLISHED)\
-            .order_by('-rank')
+            .order_by('-rank', '-id')
 
 
 class PublishedArticleManager(models.Manager):
@@ -249,7 +249,7 @@ class DiscussionManager(models.Manager):
         return self.annotate(search=sv)\
             .annotate(rank=SearchRank(sv, search_query))\
             .filter(search=search_query, group__private=False)\
-            .order_by('-rank')
+            .order_by('-rank', '-id')
 
 
 class Discussion(CommentableMixin, models.Model):
@@ -314,10 +314,14 @@ class ProjectManager(models.Manager):
     def full_text_search(self, search_query):
         # Postgres full-text index for this search added in migration 0033
         sv = SearchVector('title', 'description', 'pattern_name', config='french')
-        return self.annotate(search=sv)\
+        # There's a weird situation here where our naive query ends up with a stray "GROUP BY"
+        # clause which makes our whole query go very slow. I haven't figured out why yet. However,
+        # proceeding through subqueries like we do here does the trick, so that's what we'll do.
+        subq = self.annotate(search=sv)\
+            .filter(search=search_query)
+        return self.filter(id__in=subq)\
             .annotate(num_likes=Count('likes'))\
-            .filter(search=search_query)\
-            .order_by('-num_likes')
+            .order_by('-num_likes', '-id')
 
     def popular_this_week(self):
         last_week = datetime.date.today() - datetime.timedelta(days=7)
