@@ -10,6 +10,9 @@
 
 {% include "include/project-list.html" with project_list=project_list only %}
 
-{% include "include/pagination.html" %}
+{% include "include/pagination.html" with rightalign=True %}
+<p>
+    Les projets figurant sur ce site sont © Tous droits réservés.
+</p>
 {% endblock %}
 

@@ -1,6 +1,7 @@
 body.user-profile {
     img.img-avatar-big {
         float: left;
+        margin-bottom: 30px;
     }
 
     div.username-title {
@@ -29,12 +30,13 @@ body.user-profile {
             width: 100%;
             overflow: hidden;
             padding: 0;
-            margin: 0;
+            margin: 10px 0;
 
             dt, dd {
                 float: left;
                 padding: 0;
                 margin: 0;
+                margin-bottom: 10px;
             }
 
             dt {
@@ -47,4 +49,26 @@ body.user-profile {
             }
         }
     }
+
+    ul.project-list {
+        margin-bottom: 20px;
+    }
+
+    div.pagination {
+        // same trick as in project-list
+        float: right;
+    }
+
+    div.stats ul {
+        li {
+            padding: 8px 6px;
+
+            span {
+                font-weight: bold;
+                display: inline-block;
+                width: 52px;
+            }
+        }
+    }
+
 }

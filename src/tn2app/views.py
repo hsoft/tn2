@@ -2,7 +2,6 @@ import datetime
 
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.contrib.auth import get_user_model
 from django.core.exceptions import PermissionDenied
 from django.db.models import Max, Count
 from django.http import Http404, HttpResponseRedirect
@@ -17,7 +16,7 @@ import account.views
 import account.forms
 
 from .models import (
-    UserProfile, Article, ArticleCategory, DiscussionGroup, Discussion, Project, ProjectVote,
+    User, UserProfile, Article, ArticleCategory, DiscussionGroup, Discussion, Project, ProjectVote,
     ProjectCategory, ArticleComment, DiscussionComment, ProjectComment
 )
 from .forms import (
@@ -274,7 +273,6 @@ class ArticlesByCategoryList(ArticleList):
 
 class UserViewMixin:
     def _get_shown_user(self):
-        User = get_user_model()
         try:
             return User.objects.get(username=self.kwargs['username'])
         except User.DoesNotExist:
@@ -289,7 +287,7 @@ class UserProfileView(UserViewMixin, ListView):
     template_name = 'user_profile.html'
     model = Project
     ordering = '-creation_time'
-    paginate_by = 15
+    paginate_by = 9
 
     def get_context_data(self, **kwargs):
         result = super().get_context_data(**kwargs)
@@ -305,7 +303,7 @@ class UserFavoritesView(UserViewMixin, ListView):
     template_name = 'user_favorites.html'
     model = ProjectVote
     ordering = '-date_liked'
-    paginate_by = 15
+    paginate_by = 9
 
     def breadcrumb(self):
         return super().breadcrumb() + [(None, "Favoris")]

@@ -1,4 +1,5 @@
 {% extends 'base_user_profile.html' %}
+{% load tn2 %}
 
 {% block class_for_message_link %}active{% endblock %}
 
@@ -6,6 +7,9 @@
 <div class="overline">
     <h2>Envoyer un message</h2>
 </div>
+
+{% page_contents 'userprofile-sendmessage' user %}
+
 {% if message_sent %}
 <p>Votre message a été envoyé!</p>
 {% else %}

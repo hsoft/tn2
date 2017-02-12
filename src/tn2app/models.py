@@ -45,6 +45,9 @@ class User(UserBase):
     class Meta:
         proxy = True
 
+    def favorite_projects(self):
+        return self.liked_projects.filter(projectvote__favorite=True)
+
 
 def get_user_avatar_path(instance, filename):
     root, ext = os.path.splitext(filename)
@@ -382,7 +385,7 @@ class Project(CommentableMixin, models.Model):
 
     likes = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
-        related_name='liked_by',
+        related_name='liked_projects',
         through='ProjectVote'
     )
 

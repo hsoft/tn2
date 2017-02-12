@@ -31,9 +31,9 @@
         <h4>A propos de moi</h4>
     </div>
     <div class="aproposdemoi">
-        <p class="bio">
+        <div class="bio">
             {{ shown_user.profile.description|safe }}
-        </p>
+        </div>
         <dl>
             <dt>Pseudo</dt><dd>{{ shown_user.profile.display_name|default:"-" }}</dd>
             <dt>Ville</dt><dd>{{ shown_user.profile.city|default:"-" }}</dd>
@@ -41,6 +41,24 @@
             <dt>Niveau</dt><dd>{{ shown_user.profile.skill_level|default:"-" }}</dd>
             <dt>MAC</dt><dd>{{ shown_user.profile.sewing_machine|default:"-" }}</dd>
         </dl>
+    </div>
+
+    <div class="overline">
+        <h4>Mes stats</h4>
+    </div>
+
+    <div class="stats">
+        <ul class="selector with-lines">
+            <li>
+                {% with count=shown_user.projects.count %}
+                <span>{{ count }}</span> projet{{ count|pluralize }} publié{{ count|pluralize }}
+                {% endwith %}
+            </li>
+            <li>
+                {% with count=shown_user.favorite_projects.count %}
+                <span>{{ count }}</span> projet{{ count|pluralize }} favori{{ count|pluralize }}
+                {% endwith %}
+            </li>
     </div>
 </div>
 {% endblock %}

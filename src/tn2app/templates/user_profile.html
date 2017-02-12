@@ -4,10 +4,13 @@
 
 {% block inner_content %}
 <div class="overline">
-    <h2>Projets ({{ page_obj.paginator.count }})</h2>
+    <h4 class="red">Mes projets ({{ page_obj.paginator.count }})</h4>
 </div>
 
 {% include "include/project-list.html" with project_list=project_list only %}
 
-{% include "include/pagination.html" %}
+{% include "include/pagination.html" with rightalign=True %}
+<p>
+    Les projets figurant sur ce site sont © Tous droits réservés.
+</p>
 {% endblock %}
