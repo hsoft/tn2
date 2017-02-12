@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 
 from account.models import EmailAddress
 
-from wordpress.models import WpV2Users, WpV2BpXprofileData
+from wordpress.models import WpV2Users, WpV2Usermeta, WpV2BpXprofileData
 from ...util import unescape_mysql
 
 class Command(BaseCommand):
@@ -61,4 +61,9 @@ class Command(BaseCommand):
             if len(user.profile.website) > 200:
                 print("Something's wrong with this URL: {}".format(user.profile.website))
                 user.profile.website = ''
+
+            wpdescription = WpV2Usermeta.objects.filter(user_id=wpuser.id, meta_key='description').last()
+            if wpdescription:
+                user.profile.description_for_articles = unescape_mysql(html.unescape(wpdescription.meta_value))
+
             user.profile.save()
