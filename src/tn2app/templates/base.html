@@ -20,7 +20,7 @@
                     <li><a href="{% url 'discussion_groups' %}">Les groupes</a></li>
                     {% if user.is_authenticated %}
                     <li class="right dropdown">
-                        <a href="#" class="dropbtn">{{ user }}</a>
+                        <a href="#" class="dropbtn">{{ user.profile.display_name }}</a>
                         <div class="dropdown-content">
                             <a href="{% url 'user_profile' username=user.username %}">Mon profil</a>
                             <a href="{% url 'project_create' username=user.username %}">Publier un projet</a>
@@ -98,7 +98,7 @@
                     <h4>Création</h4>
                     <ul>
                         <li><a href="{% url 'article_list' %}">Le blog thread&amp;needles</a></li>
-                        <li><a href="{% url 'article' slug='7771-les-trouvailles-de-la-semaine-le-sommaire' %}">Les trouvailles du net</a></li>
+                        <li><a href="{% url 'article' slug='7771-les-trouvailles-de-la-semaine-le-sommaire' %}">Les trouvailles de la semaine</a></li>
                         <li><a href="{% url 'project_list' %}">La galerie des projets</a></li>
                         <li><a href="{% url 'project_list' %}?type=populaires">Les projets populaires</a></li>
                     </ul>
