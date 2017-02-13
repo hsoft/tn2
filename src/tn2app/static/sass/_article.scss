@@ -48,8 +48,19 @@ body.article-list {
 }
 
 body.article {
-    div.inner-content div.overline:first-of-type {
-        margin-bottom: 5px;
+    div.inner-content {
+        div.overline:first-of-type {
+            margin-bottom: 5px;
+        }
+
+        p, li {
+            line-height: 18px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
     }
 
     div.author-bio {
