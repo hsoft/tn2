@@ -102,7 +102,7 @@
     <div class="project-info">
         <strong>Patron:</strong>
         {% if project.pattern_url %}
-        <a href="{{ project.pattern_url }}">{{ project.pattern_name }}</a>
+        <a href="{{ project.pattern_url }}" target="_blank">{{ project.pattern_name }}</a>
         {% else %}
         {{ project.pattern_name }}
         {% endif %}
