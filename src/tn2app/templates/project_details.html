@@ -126,7 +126,7 @@
         {% endfor %}
 
         <div class="voir_tout">
-            <a href="{% url 'project_list' %}">Voir tous les projets →</a>
+            <a href="{{ project.author.profile.get_absolute_url }}">Voir tous les projets →</a>
         </div>
     </div>
 

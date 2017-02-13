@@ -75,6 +75,10 @@ div.project-author {
 }
 
 body.project {
+    div.inner-content p {
+        text-align: justify;
+    }
+
     img.project-image-preview {
         cursor: pointer;
     }
@@ -110,6 +114,10 @@ body.project {
         img {
             margin: 8px;
         }
+    }
+
+    dl.comments {
+        margin-bottom: 80px;
     }
 }
 

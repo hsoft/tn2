@@ -185,6 +185,7 @@ CKEDITOR_CONFIGS = {
         ],
         'disableNativeSpellChecker': False,
         'width': '100%',
+        'height': '200',
     },
 }
 

@@ -81,8 +81,16 @@ class DiscussionAdmin(BaseModelAdmin):
     list_display = ('slug', 'title', 'group', 'creation_time', 'last_activity')
     list_filter = ('group', )
 
+
 admin.site.register(Discussion, DiscussionAdmin)
-admin.site.register(Project, BaseModelAdmin)
+
+class ProjectAdmin(BaseModelAdmin):
+    readonly_fields = ('author', )
+    exclude = ('featured_time', 'creation_time', 'legacy_like_count')
+
+
+admin.site.register(Project, ProjectAdmin)
+
 admin.site.register(PageContents, BaseModelAdmin)
 
 class WPUserMetaInline(admin.TabularInline):
