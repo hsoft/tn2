@@ -49,6 +49,23 @@ form.signupform {
         display: inline-block;
         width: 200px;
     }
+
+    input[name="username"], input[name="email"] {
+        width: 300px;
+    }
+
+    input[name="password"], input[name="password_confirm"], input[name="captcha"] {
+        width: 150px;
+    }
+
+    label[for="id_captcha_1"] {
+        width: auto;
+    }
+
+    img.captcha {
+        vertical-align: middle;
+        margin-bottom: 5px;
+    }
 }
 
 

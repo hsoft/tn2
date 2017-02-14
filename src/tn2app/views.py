@@ -27,6 +27,10 @@ from .forms import (
 class SignupView(account.views.SignupView):
     form_class = SignupForm
 
+    @staticmethod
+    def breadcrumb():
+        return [(None, "Inscription")]
+
 
 class LoginView(account.views.LoginView):
     form_class = account.forms.LoginEmailForm

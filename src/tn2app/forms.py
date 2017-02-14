@@ -11,7 +11,18 @@ from .util import dedupe_slug, sanitize_comment
 
 
 class SignupForm(account.forms.SignupForm):
-    captcha = CaptchaField()
+    field_order = ['username', 'email', 'password', 'password_confirm']
+
+    captcha = CaptchaField(
+        help_text="Pour confirmer que vous n'êtes pas un robot, entrez le texte que vous voyez dans l'image",
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['username'].label = "Votre pseudo"
+        self.fields['email'].label = "Votre adresse e-mail"
+        self.fields['password'].label = "Votre mot de passe"
+        self.fields['password_confirm'].label = "Confirmez le mot de passe"
 
 
 class BaseModelForm(forms.ModelForm):

@@ -1,13 +1,28 @@
 {% extends 'base.html' %}
+{% load tn2 staticfiles %}
+
+{% block bodyclasses %}signup{% endblock %}
 
 {% block main_contents %}
-<h1>Inscription</h1>
+<div class="floatright">
+    <h3>Pourquoi s'inscrire sur t&n ?</h3>
+    <img src="{% static 'images/lovecommunity2.jpg' %}">
+    {% page_contents 'signup-message' user %}
+    <h5><a href="{% url 'account_login' %}">Déjà inscrit ? Connectez-vous !</a></h5>
+</div>
+<h2 class="red">Créer un compte</h2>
 <form method="POST" class="signupform" action="{% url "account_signup" %}" autocapitalize="off">
     {% csrf_token %}
     {{ form.as_p }}
     {% if redirect_field_value %}
         <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
     {% endif %}
-    <button class="button" type="submit" class="btn btn-primary">S'inscrire</button>
+    <button class="button" type="submit" class="btn btn-primary">Je m'inscris !</button>
 </form>
+
+<p class="smallprint">
+En vous inscrivant, vous reconnaissez avoir lu et accepté les
+<a href="{% url 'page_cgu' %}">Conditions Générales d'Utilisation</a>
+du site.
+</p>
 {% endblock %}
