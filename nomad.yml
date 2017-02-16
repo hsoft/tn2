@@ -4,12 +4,18 @@ mode: pull
 privileged: true
 hostnames:
   - tn2.local
+
+users:
+  - name: tn2
+
 shell:
   user: tn2
   home: /opt/tn2
+
 shares:
   - source: .
     dest: /nomadshare
+
 provisioning:
   - type: ansible
     playbook: ansible/site.yml

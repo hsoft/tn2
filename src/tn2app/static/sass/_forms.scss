@@ -42,6 +42,10 @@ form.loginform {
         display: inline-block;
         width: 150px;
     }
+
+    input[type="email"], input[type="password"] {
+        width: 200px;
+    }
 }
 
 form.signupform {

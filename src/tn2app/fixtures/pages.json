@@ -110,5 +110,13 @@
         "key": "signup-message",
         "contents": "<p>Parce que le site vous propose <strong>de formidables outils de partage</strong> : vous pouvez cr&eacute;er votre propre galerie de projets couture, afin de recueillir avis et compliments sur vos cr&eacute;ations !</p>\r\n\r\n<p>Parce que vous pourrez <strong>prendre part aux discussions</strong> sur les articles du blog et dans les groupes d&#39;entraide : posez vos questions ou apportez votre point de vue.</p>\r\n\r\n<p>Parce que notre communaut&eacute; de membres a h&acirc;te d&#39;accueillir de nouvelles recrues pour <strong>organiser des rencontres</strong> et des sorties th&eacute;matiques !</p>"
     }
+},
+{
+    "model": "tn2app.pagecontents",
+    "pk": 15,
+    "fields": {
+        "key": "login-newsite-message",
+        "contents": "<p><em>La nouvelle mouture de Thread&amp;Needle est enfin lanc&eacute;e!</em> Cette r&eacute;-&eacute;criture donne une plus grande stabilit&eacute; au site et nous permettra d&#39;excitants nouveaux d&eacute;veloppements dans les mois &agrave; venir!</p>\r\n\r\n<p>Tous les utilisateurs, projets, messages dans les groupes, articles de blog et commentaires ont &eacute;t&eacute; gard&eacute;s tel quel. Si vous aviez d&eacute;j&agrave; un compte, vous pouvez vous connecter avec le m&ecirc;me mot de passe. &Agrave; part quelques petits changements, le fonctionnement du site est demeur&eacute; inchang&eacute; et vous ne devriez pas avoir de difficult&eacute; &agrave; vous y retrouver.</p>\r\n\r\n<p>Comme avec n&#39;importe quelle transition majeure, certains probl&egrave;mes ne sont pas &agrave; exclure. Si vous avez de la difficult&eacute; &agrave; vous connecter ou s&#39;il manque quelque chose &agrave; votre compte, <a href=\"/contact/\">contactez-nous</a> et il nous fera plaisir de vous aider.</p>"
+    }
 }
 ]

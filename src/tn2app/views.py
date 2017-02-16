@@ -35,6 +35,10 @@ class SignupView(account.views.SignupView):
 class LoginView(account.views.LoginView):
     form_class = account.forms.LoginEmailForm
 
+    @staticmethod
+    def breadcrumb():
+        return [(None, "Connexion")]
+
 
 class ViewWithCommentsMixin:
     def get_comment_form(self):

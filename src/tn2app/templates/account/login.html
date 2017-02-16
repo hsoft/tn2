@@ -1,7 +1,22 @@
 {% extends 'base.html' %}
+{% load tn2 %}
+
+{% block bodyclasses %}login{% endblock %}
 
 {% block main_contents %}
-<h1>Connexion</h1>
+<div class="floatright">
+    <h3>Pas encore inscrit ?</h3>
+    <p>
+        <a href="{% url 'account_signup' %}">Rejoignez-nous</a>, ça prend 5 minutes ;)
+    </p>
+    <p>
+        Découvrez <a href="{% url 'page_a-propos' %}">toutes les raisons</a> de devenir membre de Thread&amp;Needles
+    </a>
+
+    <h3>Bienvenue sur la nouvelle mouture T&amp;N!</h3>
+    {% page_contents 'login-newsite-message' user %}
+</div>
+<h2 class="red">Connexion</h2>
 <form method="POST" class="loginform" action="{% url "account_login" %}" autocapitalize="off">
     {% csrf_token %}
     {{ form.as_p }}
