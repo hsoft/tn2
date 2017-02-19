@@ -9,7 +9,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('tn2app', '0050_migrate_comments'),
+        ('tn2app', '0049_discussioncomment_projectcomment'),
     ]
 
     operations = [
