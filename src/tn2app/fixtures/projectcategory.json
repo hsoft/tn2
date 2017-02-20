@@ -1,0 +1,114 @@
+[
+{
+    "model": "tn2app.projectcategory",
+    "pk": 1,
+    "fields": {
+        "name": "Hauts",
+        "description": ""
+    }
+},
+{
+    "model": "tn2app.projectcategory",
+    "pk": 2,
+    "fields": {
+        "name": "Robes",
+        "description": ""
+    }
+},
+{
+    "model": "tn2app.projectcategory",
+    "pk": 3,
+    "fields": {
+        "name": "Jupes",
+        "description": ""
+    }
+},
+{
+    "model": "tn2app.projectcategory",
+    "pk": 4,
+    "fields": {
+        "name": "Pantalons/Shorts",
+        "description": ""
+    }
+},
+{
+    "model": "tn2app.projectcategory",
+    "pk": 5,
+    "fields": {
+        "name": "Vestes/Manteaux",
+        "description": ""
+    }
+},
+{
+    "model": "tn2app.projectcategory",
+    "pk": 6,
+    "fields": {
+        "name": "Combinaisons",
+        "description": ""
+    }
+},
+{
+    "model": "tn2app.projectcategory",
+    "pk": 7,
+    "fields": {
+        "name": "Ensembles",
+        "description": ""
+    }
+},
+{
+    "model": "tn2app.projectcategory",
+    "pk": 8,
+    "fields": {
+        "name": "Sacs/Accessoires",
+        "description": ""
+    }
+},
+{
+    "model": "tn2app.projectcategory",
+    "pk": 9,
+    "fields": {
+        "name": "Lingerie",
+        "description": ""
+    }
+},
+{
+    "model": "tn2app.projectcategory",
+    "pk": 10,
+    "fields": {
+        "name": "D\u00e9co/Maison",
+        "description": ""
+    }
+},
+{
+    "model": "tn2app.projectcategory",
+    "pk": 11,
+    "fields": {
+        "name": "Enfants",
+        "description": ""
+    }
+},
+{
+    "model": "tn2app.projectcategory",
+    "pk": 12,
+    "fields": {
+        "name": "Tricot/Crochet",
+        "description": ""
+    }
+},
+{
+    "model": "tn2app.projectcategory",
+    "pk": 13,
+    "fields": {
+        "name": "Hommes",
+        "description": ""
+    }
+},
+{
+    "model": "tn2app.projectcategory",
+    "pk": 14,
+    "fields": {
+        "name": "Broderie",
+        "description": "Broderie"
+    }
+}
+]

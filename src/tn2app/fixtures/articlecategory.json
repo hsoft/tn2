@@ -1,0 +1,191 @@
+[
+{
+    "model": "tn2app.articlecategory",
+    "pk": 1,
+    "fields": {
+        "slug": "actualite",
+        "title": "Actualit\u00e9",
+        "featured": false
+    }
+},
+{
+    "model": "tn2app.articlecategory",
+    "pk": 2,
+    "fields": {
+        "slug": "decouvertes",
+        "title": "D\u00e9couvertes",
+        "featured": true
+    }
+},
+{
+    "model": "tn2app.articlecategory",
+    "pk": 3,
+    "fields": {
+        "slug": "discussions",
+        "title": "Discussions",
+        "featured": true
+    }
+},
+{
+    "model": "tn2app.articlecategory",
+    "pk": 4,
+    "fields": {
+        "slug": "recits-et-temoignages",
+        "title": "R\u00e9cits et t\u00e9moignages",
+        "featured": true
+    }
+},
+{
+    "model": "tn2app.articlecategory",
+    "pk": 5,
+    "fields": {
+        "slug": "tutoriels-maison",
+        "title": "Tutoriels T&N",
+        "featured": false
+    }
+},
+{
+    "model": "tn2app.articlecategory",
+    "pk": 6,
+    "fields": {
+        "slug": "les-trouvailles",
+        "title": "Trouvailles de la semaine",
+        "featured": true
+    }
+},
+{
+    "model": "tn2app.articlecategory",
+    "pk": 7,
+    "fields": {
+        "slug": "techniques-tutos",
+        "title": "Techniques & tutos",
+        "featured": true
+    }
+},
+{
+    "model": "tn2app.articlecategory",
+    "pk": 8,
+    "fields": {
+        "slug": "techniques",
+        "title": "Techniques",
+        "featured": false
+    }
+},
+{
+    "model": "tn2app.articlecategory",
+    "pk": 9,
+    "fields": {
+        "slug": "needlenaute-du-mois",
+        "title": "Needlenaute du mois",
+        "featured": true
+    }
+},
+{
+    "model": "tn2app.articlecategory",
+    "pk": 10,
+    "fields": {
+        "slug": "revue-de-presse",
+        "title": "Revue de presse",
+        "featured": false
+    }
+},
+{
+    "model": "tn2app.articlecategory",
+    "pk": 11,
+    "fields": {
+        "slug": "style-mode",
+        "title": "Style & Mode",
+        "featured": true
+    }
+},
+{
+    "model": "tn2app.articlecategory",
+    "pk": 12,
+    "fields": {
+        "slug": "news-du-site",
+        "title": "News du site",
+        "featured": true
+    }
+},
+{
+    "model": "tn2app.articlecategory",
+    "pk": 13,
+    "fields": {
+        "slug": "artistes-createurs",
+        "title": "Artistes & Cr\u00e9ateurs",
+        "featured": false
+    }
+},
+{
+    "model": "tn2app.articlecategory",
+    "pk": 14,
+    "fields": {
+        "slug": "les-bonnes-adresses",
+        "title": "Les bonnes adresses",
+        "featured": false
+    }
+},
+{
+    "model": "tn2app.articlecategory",
+    "pk": 15,
+    "fields": {
+        "slug": "des-lectures",
+        "title": "Des lectures",
+        "featured": true
+    }
+},
+{
+    "model": "tn2app.articlecategory",
+    "pk": 16,
+    "fields": {
+        "slug": "livres-des-lectures",
+        "title": "Livres",
+        "featured": false
+    }
+},
+{
+    "model": "tn2app.articlecategory",
+    "pk": 17,
+    "fields": {
+        "slug": "les-aventures-de-wonder-needles",
+        "title": "Les aventures de Wonder Needles",
+        "featured": true
+    }
+},
+{
+    "model": "tn2app.articlecategory",
+    "pk": 18,
+    "fields": {
+        "slug": "wtf",
+        "title": "WTF",
+        "featured": true
+    }
+},
+{
+    "model": "tn2app.articlecategory",
+    "pk": 19,
+    "fields": {
+        "slug": "goodies",
+        "title": "Goodies",
+        "featured": true
+    }
+},
+{
+    "model": "tn2app.articlecategory",
+    "pk": 20,
+    "fields": {
+        "slug": "tuto-video",
+        "title": "Vid\u00e9os",
+        "featured": false
+    }
+},
+{
+    "model": "tn2app.articlecategory",
+    "pk": 21,
+    "fields": {
+        "slug": "interview",
+        "title": "Interviews",
+        "featured": false
+    }
+}
+]

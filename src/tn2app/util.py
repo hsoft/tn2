@@ -4,6 +4,8 @@ import re
 import unicodedata
 
 import bleach
+from bs4 import BeautifulSoup
+from django.conf import settings
 from django.utils.html import format_html
 
 def dedupe_slug(slug, queryset, slug_field_name='slug'):
@@ -100,4 +102,15 @@ def sanitize_comment(text):
         'a': ['href'],
     }
     return bleach.linkify(bleach.clean(text, tags=ALLOWED_TAGS, attributes=ALLOWED_ATTRS))
+
+def extract_media_paths(html_content):
+    """Returns a list of media paths references in `html_content`.
+
+    Those paths are relative to MEDIA_ROOT.
+    """
+    soup = BeautifulSoup(html_content)
+    for img in soup.find_all('img'):
+        src = img['src']
+        if src.startswith(settings.MEDIA_URL):
+            yield src[len(settings.MEDIA_URL):]
 

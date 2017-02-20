@@ -6,12 +6,10 @@
     django_deployment_type: symlink
     django_project_symlink_dest: "/nomadshare"
     # Because django_path is a symlink and it doesn't work.
-    django_uwsgi_touch_reload_path: "{{ django_src_path }}"
     django_touch_reload_path: "{{ django_src_path }}"
     django_domain_name: tn2.local
     django_debug: yes
     tn2_wp_dbname: tnwp
-    tn2_wp_dump_name: wpdump.sql.gz
     mariadb_root_password: whatever
 
   roles:

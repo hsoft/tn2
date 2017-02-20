@@ -5,7 +5,7 @@ avec [Django][django].
 
 ## Statut
 
-Presqu'à parité avec l'ancien. Le site en développement est hébergé à <https://tn2.hardcoded.net>.
+Presque prêt à déployer. Le site en développement est hébergé à <https://tn2.hardcoded.net>.
 
 ## Développement
 
@@ -33,6 +33,18 @@ Alternativement on peut rouler le serveur de développement de Django en faisant
     ./develop.sh
 
 Le site devient alors disponible sous <http://tn2.local:8080>.
+
+La routine d'initialisation importe automatiquement des données "exemples" qui sont tirées de la
+vraie base de donnée T&N (mais avec beaucoup, *beaucoup* moins de données). Les hash de mot de
+de passe et les adresses courriel ont été anonymisées, mais pour le reste, les données sont une
+copie des vraies. Ça nous permet de plus facilement travailler sur le site.
+
+### Se créer un utilisateur admin
+
+Pour se créer un utilisateur admin, faire:
+
+    nomad shell
+    ./manage.sh createsuperuser
 
 [tn]: http://www.threadandneedles.fr/
 [django]: https://www.djangoproject.com/
