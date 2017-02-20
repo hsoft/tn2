@@ -24,6 +24,8 @@ Le site est monté de façon à utiliser [LXD-Nomad][nomad] (comme [Vagrant][vag
 une fois que c'est fait, c'est la seule dépendance. On peut ensuite déployer le site localement
 en faisant:
 
+    git submodule init
+    git submodule update
     nomad up
 
 Une fois le provisioning complété, on peut accéder au site local par <http://tn2.local>.
