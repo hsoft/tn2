@@ -143,16 +143,16 @@ class Article(CommentableMixin, models.Model):
         limit_choices_to=Q(groups__name='Rédacteurs'),
     )
     slug = models.SlugField(max_length=255, unique=True)
-    status = models.SmallIntegerField(choices=STATUS_CHOICES, default=STATUS_DRAFT)
+    status = models.SmallIntegerField(choices=STATUS_CHOICES, default=STATUS_DRAFT, db_index=True)
     title = models.CharField(max_length=255)
     subtitle = models.TextField(blank=True)
     content = RichTextUploadingField()
     # TODO: Set blank to True when the import is over
     main_image = models.ImageField(upload_to='articles', blank=True)
     categories = models.ManyToManyField('ArticleCategory')
-    creation_time = models.DateTimeField(auto_now_add=True)
-    publish_time = models.DateTimeField(blank=True, null=True)
-    featured = models.BooleanField(default=False, verbose_name="À la une")
+    creation_time = models.DateTimeField(auto_now_add=True, db_index=True)
+    publish_time = models.DateTimeField(blank=True, null=True, db_index=True)
+    featured = models.BooleanField(default=False, verbose_name="À la une", db_index=True)
 
     objects = ArticleManager()
     published = PublishedArticleManager()
@@ -183,7 +183,7 @@ class ArticleComment(AbstractComment):
 class ArticleCategory(models.Model):
     slug = models.SlugField(max_length=255, unique=True)
     title = models.CharField(max_length=255)
-    featured = models.BooleanField(default=False)
+    featured = models.BooleanField(default=False, db_index=True)
 
     def __str__(self):
         return self.title
@@ -211,7 +211,7 @@ class DiscussionGroup(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
     description_short = models.TextField(blank=True)
-    group_type = models.SmallIntegerField(choices=TYPE_CHOICES, default=TYPE_NORMAL)
+    group_type = models.SmallIntegerField(choices=TYPE_CHOICES, default=TYPE_NORMAL, db_index=True)
     private = models.BooleanField(default=False, db_index=True)
     avatar = models.ImageField(
         upload_to=get_group_avatar_path,
@@ -255,7 +255,7 @@ class DiscussionManager(models.Manager):
 class Discussion(CommentableMixin, models.Model):
     group = models.ForeignKey(DiscussionGroup, related_name='discussions')
     author = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, related_name='+')
-    slug = models.SlugField(max_length=255)
+    slug = models.SlugField(max_length=255, db_index=True)
     title = models.CharField(max_length=255, verbose_name="Titre")
     content = RichTextField(config_name='restricted', verbose_name="Message")
     creation_time = models.DateTimeField(auto_now_add=True, db_index=True)
@@ -361,10 +361,10 @@ class Project(CommentableMixin, models.Model):
         blank=True,
         verbose_name="URL du produit dans votre boutique",
     )
-    creation_time = models.DateTimeField(auto_now_add=True)
+    creation_time = models.DateTimeField(auto_now_add=True, db_index=True)
 
     # Last time it had the "A la une" button clicked on
-    featured_time = models.DateTimeField(null=True)
+    featured_time = models.DateTimeField(null=True, db_index=True)
 
     # baaah, it's not worth the extra indirection to create a model for project images.
     # Let's go low-tech and have 4 fields.
