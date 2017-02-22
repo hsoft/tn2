@@ -62,7 +62,7 @@
             <h4>Nouveaux projets</h4>
         </div>
         <div class="popular">
-        {% for project in popular_projects.all|slice:":3" %}
+        {% for project in popular_projects %}
         <a href="{{ project.get_absolute_url }}">
             <img src="{{ project.image1|thumbnail_url:'project-list' }}"/>
         </a>
