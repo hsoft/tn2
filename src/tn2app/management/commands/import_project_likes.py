@@ -33,3 +33,4 @@ class Command(BaseCommand):
             ProjectVote.objects.bulk_create(votes)
             proj.legacy_like_count = legacy_vote_count
             proj.save()
+            proj.projectvote_set.update(date_liked=proj.creation_time)
