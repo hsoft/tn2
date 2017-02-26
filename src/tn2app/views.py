@@ -2,6 +2,7 @@ import datetime
 
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.syndication.views import Feed
 from django.core.exceptions import PermissionDenied
 from django.db.models import Max, Count
 from django.http import Http404, HttpResponseRedirect
@@ -265,7 +266,7 @@ class ArticleList(ArticleMixin, ListView):
     template_name = 'article_list.html'
     model = Article
     queryset = Article.published
-    ordering = '-creation_time'
+    ordering = '-publish_time'
     paginate_by = 5
 
 
@@ -303,6 +304,21 @@ class ArticlesByAuthorList(ArticleList):
             raise Http404()
         queryset = super().get_queryset()
         return queryset.filter(author=author)
+
+
+class ArticleFeed(Feed):
+    title = "Thread and needles"
+    link = "/feed/"
+    description = "Culture Couture"
+
+    def items(self):
+        return Article.published.all().order_by('-publish_time')[:10]
+
+    def item_title(self, item):
+        return item.title
+
+    def item_description(self, item):
+        return item.get_excerpt()
 
 
 class UserViewMixin:

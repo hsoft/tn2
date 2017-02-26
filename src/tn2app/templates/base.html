@@ -90,7 +90,7 @@
                         <a href="http://www.hellocoton.fr/mapage/threadandneedles" rel="nofollow" title="Notre page Hellocoton"><img src="{% static 'images/hellocoton.png' %}" /></a>&nbsp;
                         <a href="https://twitter.com/#!/threadneedlesfr" rel="nofollow" title="Suivez-nous sur twitter"><img src="{% static 'images/twitter.png' %}" /></a>&nbsp;
                         <a href="https://www.facebook.com/pages/ThreadNeedles/121145491299220" rel="nofollow" title="Rejoignez-nous sur Facebook"><img src="{% static 'images/facebook.png' %}" /></a>&nbsp;
-                        <a href="/feed/" target="_blank" title="Flux RSS du blog"><img src="{% static 'images/rss.png' %}" /></a>&nbsp;
+                        <a href="{% url 'blog_feed' %}" target="_blank" title="Flux RSS du blog"><img src="{% static 'images/rss.png' %}" /></a>&nbsp;
                         <a href="https://github.com/hsoft/tn2" target="_blank"><img src="{% static 'images/github.png' %}" /></a>
                     </p>
                 </div>

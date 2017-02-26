@@ -16,6 +16,7 @@ urlpatterns = [
         views.ArticlesByAuthorList.as_view(),
         name='blog_by_author'
     ),
+    url(r'^feed/', views.ArticleFeed(), name='blog_feed'),
     url(r'^projets-couture/$', views.ProjectList.as_view(), name='project_list'),
     url(
         r'^projets-couture/(?P<pk>\d+)-(?P<slug>[-\w]*)$',
