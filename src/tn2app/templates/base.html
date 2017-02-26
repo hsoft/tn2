@@ -5,10 +5,13 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="Description" content="Rejoignez la premi&eacute;re communaut&eacute; couture francophone ! Cr&eacute;ations, tutos, articles d'actualit&eacute;, &eacute;change... venez partager votre passion avec les autres needlenautes !">
+        <title>{% block doctitle %}thread&amp;needles - La communaut&eacute; couture{% endblock %}</title>
         <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css">
         <link href='https://fonts.googleapis.com/css?family=Puritan' rel='stylesheet' type='text/css'>
         {% stylesheet 'main' %}
         <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}"/>
+        <link rel="shortcut icon" href="{% static 'images/favicon.png' %}" type="image/x-icon" />
     </head>
     <body class="{% block bodyclasses %}{% endblock %}">
         <div class="header">
