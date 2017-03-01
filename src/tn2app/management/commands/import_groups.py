@@ -107,7 +107,7 @@ class Command(BaseCommand):
             discussion2wptopic[discussion] = wptopic
 
         for discussion, wptopic in discussion2wptopic.items():
-            discussion.comments.delete()
+            discussion.comments.all().delete()
             wpposts = WpV2BbPosts.objects.filter(
                 forum_id=wptopic.forum_id, topic_id=wptopic.topic_id, post_status=0,
             ).order_by('post_time')
