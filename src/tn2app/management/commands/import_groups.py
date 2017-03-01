@@ -107,7 +107,7 @@ class Command(BaseCommand):
             discussion2wptopic[discussion] = wptopic
 
         for discussion, wptopic in discussion2wptopic.items():
-            discussion.objects.all().delete()
+            discussion.comments.delete()
             wpposts = WpV2BbPosts.objects.filter(
                 forum_id=wptopic.forum_id, topic_id=wptopic.topic_id, post_status=0,
             ).order_by('post_time')
@@ -130,4 +130,6 @@ class Command(BaseCommand):
                 # auto_now_add can't be overriden during create().
                 comment.submit_date = wppost.post_time
                 comment.save()
+
+            discussion.update_last_activity()
 
