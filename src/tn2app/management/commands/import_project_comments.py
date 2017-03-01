@@ -20,9 +20,11 @@ class Command(BaseCommand):
                 except WpV2Users.DoesNotExist:
                     print("WP user id {} doesn't exist? strange...".format(wpcomment.user_id))
                     continue
-                proj.comments.create(
+                comment = proj.comments.create(
                     user=author,
                     comment=linebreaks(unescape_mysql(sanitize_comment(wpcomment.content))),
-                    submit_date=wpcomment.date_posted,
                 )
+                # auto_now_add can't be overriden during create().
+                comment.submit_date = wpcomment.date_posted
+                comment.save()
 
