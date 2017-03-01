@@ -107,24 +107,27 @@ class Command(BaseCommand):
             discussion2wptopic[discussion] = wptopic
 
         for discussion, wptopic in discussion2wptopic.items():
+            discussion.objects.all().delete()
             wpposts = WpV2BbPosts.objects.filter(
                 forum_id=wptopic.forum_id, topic_id=wptopic.topic_id, post_status=0,
             ).order_by('post_time')
-            existing_comment_count = discussion.comments.count()
-            add_count = wpposts.count() - existing_comment_count - 1
+            add_count = wpposts.count() - 1
             if add_count > 0:
                 print("Adding {} comments to discussion {}".format(add_count, discussion.slug))
             else:
                 continue
-            for wppost in wpposts[existing_comment_count+1:]:
+            for wppost in wpposts[1:]:
                 try:
                     author = User.objects.get_from_wpuser_id(wppost.poster_id)
                 except WpV2Users.DoesNotExist:
                     print("WP user id {} doesn't exist? strange...".format(wppost.poster_id))
                     continue
-                discussion.comments.create(
+                comment = discussion.comments.create(
                     user=author,
                     comment=linebreaks(sanitize_comment(wppost.post_text)),
                     submit_date=wppost.post_time,
                 )
+                # auto_now_add can't be overriden during create().
+                comment.submit_date = wppost.post_time
+                comment.save()
 
