@@ -37,6 +37,5 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        # Temporairement hors-service. On ne veut pas bugger la mise en production initiale.
-        # migrations.RunPython(load_initial_data)
+        migrations.RunPython(load_initial_data)
     ]
