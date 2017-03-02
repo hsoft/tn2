@@ -102,13 +102,13 @@
     <div class="project-info">
         <strong>Patron:</strong>
         {% if project.pattern_url %}
-        <a href="{{ project.pattern_url }}" target="_blank">{{ project.pattern_name }}</a>
+        <a href="{{ project.pattern_url|fixurl }}" target="_blank">{{ project.pattern_name }}</a>
         {% else %}
         {{ project.pattern_name }}
         {% endif %}
         <br>
         {% if project.blog_post_url %}
-        <a class="blog-url" href="{{ project.blog_post_url }}" target="_blank">Retrouvez ce projet sur mon blog</a>
+        <a class="blog-url" href="{{ project.blog_post_url|fixurl }}" target="_blank">Retrouvez ce projet sur mon blog</a>
         <br>
         {% endif %}
         © Tous droits réservés

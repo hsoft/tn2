@@ -63,6 +63,14 @@ def user_link(user):
     else:
         return str(user)
 
+@register.filter
+def fixurl(url):
+    if not url:
+        return url
+    if not url.startswith('http'):
+        url = 'http://{}'.format(url)
+    return url
+
 @register.simple_tag()
 def page_contents(keyname, user):
     try:
