@@ -21,7 +21,7 @@ from .models import (
     ProjectCategory, ArticleComment, DiscussionComment, ProjectComment
 )
 from .forms import (
-    UserProfileForm, NewDiscussionForm, EditDiscussionForm, CommentForm, NewProjectForm,
+    UserProfileForm, NewDiscussionForm, EditDiscussionForm, CommentForm, ProjectForm,
     SignupForm, ContactForm, UserSendMessageForm
 )
 
@@ -369,21 +369,27 @@ class UserFavoritesView(UserViewMixin, ListView):
         return queryset.filter(user=self._get_shown_user(), favorite=True)
 
 
-class UserProfileEdit(UserViewMixin, UserPassesTestMixin, UpdateView):
+class BelongsToUserMixin(UserPassesTestMixin):
+    USER_ATTR = None
+    SUPERUSER_PERM = None
+    raise_exception = True
+
+    def test_func(self):
+        u = self.request.user
+        return u == getattr(self.get_object(), self.USER_ATTR) or u.has_perm(self.SUPERUSER_PERM)
+
+
+class UserProfileEdit(UserViewMixin, BelongsToUserMixin, UpdateView):
+    USER_ATTR = 'user'
+    SUPERUSER_PERM = 'tn2app.change_userprofile'
+
     template_name = 'user_profile_edit.html'
     model = UserProfile
     form_class = UserProfileForm
     context_object_name = 'profile'
 
-    # for UserPassesTestMixin
-    raise_exception = True
-
     def breadcrumb(self):
         return super().breadcrumb() + [(None, "Modifier")]
-
-    def test_func(self):
-        u = self.request.user
-        return u == self.get_object().user or u.has_perm('tn2app.change_userprofile')
 
     def get_object(self, queryset=None):
         if queryset is None:
@@ -509,9 +515,37 @@ class ProjectDetails(ViewWithCommentsMixin, DetailView):
             return list(q1.all()[:2]) + [current]
 
 
-class ProjectCreate(LoginRequiredMixin, CreateView):
+class ProjectEdit(BelongsToUserMixin, UpdateView):
+    USER_ATTR = 'author'
+    SUPERUSER_PERM = 'tn2app.change_project'
+
+    template_name = 'project_edit.html'
+    form_class = ProjectForm
+    model = Project
+
+    def breadcrumb(self):
+        project = self.get_object()
+        return ProjectList.breadcrumb() + [
+            (project.get_absolute_url(), project.title),
+            (None, "Modifier"),
+        ]
+
+    def post(self, request, *args, **kwargs):
+        if 'delete' in request.POST:
+            project = self.get_object()
+            success_url = project.author.profile.get_absolute_url()
+            project.delete()
+            return HttpResponseRedirect(success_url)
+        else:
+            return super().post(request, *args, **kwargs)
+
+
+class ProjectCreate(LoginRequiredMixin, UserViewMixin, CreateView):
     template_name = 'project_create.html'
-    form_class = NewProjectForm
+    form_class = ProjectForm
+
+    def breadcrumb(self):
+        return super().breadcrumb() + [(None, "Publier un projet")]
 
     def get_form_kwargs(self):
         result = super().get_form_kwargs()
@@ -619,16 +653,12 @@ class CommentAdd(LoginRequiredMixin, CommentViewMixin, View):
         return HttpResponseRedirect(target.get_absolute_url())
 
 
-class CommentEdit(UserPassesTestMixin, CommentViewMixin, FormView):
+class CommentEdit(BelongsToUserMixin, CommentViewMixin, FormView):
+    USER_ATTR = 'user'
+    SUPERUSER_PERM = 'tn2app.change_articlecomment'
+
     template_name = 'comment_edit.html'
     form_class = CommentForm
-
-    # for UserPassesTestMixin
-    raise_exception = True
-
-    def test_func(self):
-        u = self.request.user
-        return u == self.get_object().user or u.has_perm('tn2app.change_articlecomment')
 
     def get_object(self):
         model = self.get_model()

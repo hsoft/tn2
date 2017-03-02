@@ -24,6 +24,11 @@ urlpatterns = [
         name='project_details'
     ),
     url(
+        r'^projets-couture/(?P<pk>\d+)-(?P<slug>[-\w]*)/edit/$',
+        views.ProjectEdit.as_view(),
+        name='project_edit'
+    ),
+    url(
         r'^projets-couture/(?P<pk>\d+)-(?P<slug>[-\w]*)/jaime/$',
         views.ProjectLike.as_view(),
         name='project_like'

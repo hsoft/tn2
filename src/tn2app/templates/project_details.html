@@ -9,6 +9,9 @@
     <a class="button" href="{% url 'admin:tn2app_project_change' project.id %}">Administrer</a>
     <a class="button" href="{% url 'project_feature' pk=project.pk slug=project.get_slug %}">Mettre à la une</a>
     {% endif %}
+    {% if project.author == user %}
+    <a class="button" href="{% url 'project_edit' pk=project.pk slug=project.get_slug %}">Modifier</a>
+    {% endif %}
 {% endblock %}
 
 {% block main_contents %}

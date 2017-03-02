@@ -94,7 +94,7 @@ class CommentForm(forms.Form):
         return sanitize_comment(self.cleaned_data['comment'])
 
 
-class NewProjectForm(BaseModelForm):
+class ProjectForm(BaseModelForm):
     class Meta:
         model = Project
         fields = [
@@ -110,13 +110,14 @@ class NewProjectForm(BaseModelForm):
             'store_url': "Indiquez l'adresse de la page correspondant à ce projet dans votre boutique Etsy, Dawanda, ALittleMarket...",
         }
 
-    def __init__(self, author, **kwargs):
+    def __init__(self, **kwargs):
+        self.author = kwargs.pop('author', None)
         super().__init__(**kwargs)
-        self.author = author
 
     def save(self, commit=True):
         instance = super().save(commit=False)
-        instance.author = self.author
+        if self.author:
+            instance.author = self.author
 
         if commit:
             instance.save()

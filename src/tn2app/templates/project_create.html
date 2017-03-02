@@ -1,11 +1,6 @@
 {% extends 'base.html' %}
 
 {% block main_contents %}
-<p>
-    <a href="{% url 'homepage' %}">Accueil</a>&nbsp;&gt;&nbsp;
-    <a href="{% url 'user_profile' username=user.username %}">{{ user }}</a>&nbsp;&gt;&nbsp;
-    Publier un projet
-</p>
 <h1>Publier un projet</h1>
 <form class="newproject" action="{% url 'project_create' username=user.username %}" method="POST" enctype="multipart/form-data">
     {% csrf_token %}

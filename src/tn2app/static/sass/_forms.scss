@@ -25,7 +25,7 @@ form.userprofile {
     }
 }
 
-form.newproject {
+form.newproject, form.editproject {
     input[type="text"], input[type="url"] {
         width: 80%;
     }

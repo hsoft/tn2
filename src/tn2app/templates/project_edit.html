@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block main_contents %}
+<h1>Modifier un projet</h1>
+<form class="editproject" action="{% url 'project_edit' pk=project.pk slug=project.slug %}" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input class="button" type="submit" value="Modifier" />
+    <a href="{{ project.get_absolute_url }}">Retour</a>
+    <input class="button delete-button" type="submit" name="delete" value="Supprimer" />
+</form>
+{% endblock %}
+
+{% block bottom_js %}
+{% include 'include/ckjs.html' %}
+{% endblock %}
+
