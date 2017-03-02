@@ -70,17 +70,6 @@ def homepage(request):
         .filter(featured_time__isnull=False)\
         .order_by('-featured_time')
 
-    # This code below to get projects ordered by a num_likes might seem needlessly complicated, but
-    # it's an optimisation! The naive query, a Project annotate() of Count('likes') is very slow
-    # because (I think) of the join. Directly counting on ProjectVote without joining cuts time
-    # in half.
-    popular_projects_values = ProjectVote.objects.values('project')\
-        .annotate(num_likes=Count('*'))\
-        .order_by('-num_likes').all()[:3]
-    popular_projects_ids = [d['project'] for d in popular_projects_values]
-    popular_projects_bulk = Project.objects.in_bulk(popular_projects_ids)
-    popular_projects = [popular_projects_bulk[pid] for pid in popular_projects_ids]
-
     latest_projects = Project.objects
     recent_discussions = Discussion.objects\
         .filter(group__private=False)\
@@ -88,7 +77,7 @@ def homepage(request):
     context = {
         'articles': articles,
         'featured_projects': featured_projects,
-        'popular_projects': popular_projects,
+        'popular_projects': Project.objects.popular_this_week(),
         'latest_projects': latest_projects,
         'recent_discussions': recent_discussions,
     }

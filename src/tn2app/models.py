@@ -323,11 +323,19 @@ class ProjectManager(models.Manager):
             .annotate(num_likes=Count('likes'))\
             .order_by('-num_likes', '-id')
 
-    def popular_this_week(self):
+    def popular_this_week(self, count=3):
+        # This code below to get projects ordered by a num_likes might seem needlessly complicated, but
+        # it's an optimisation! The naive query, a Project annotate() of Count('likes') is very slow
+        # because (I think) of the join. Directly counting on ProjectVote without joining cuts time
+        # in half.
         last_week = datetime.date.today() - datetime.timedelta(days=7)
-        return self.filter(projectvote__date_liked__gt=last_week)\
-            .annotate(num_likes=Count('projectvote'))\
-            .order_by('-num_likes')
+        popular_projects_values = ProjectVote.objects.filter(date_liked__gt=last_week)\
+            .values('project')\
+            .annotate(num_likes=Count('*'))\
+            .order_by('-num_likes').all()[:count]
+        popular_projects_ids = [d['project'] for d in popular_projects_values]
+        popular_projects_bulk = Project.objects.in_bulk(popular_projects_ids)
+        return [popular_projects_bulk[pid] for pid in popular_projects_ids]
 
 
 class Project(CommentableMixin, models.Model):

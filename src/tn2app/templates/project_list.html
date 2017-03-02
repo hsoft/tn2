@@ -11,7 +11,7 @@
     <h3>Populaires cette semaine</h3>
 </div>
 
-{% include "include/project-list.html" with project_list=view.popular_this_week|slice:":3" only %}
+{% include "include/project-list.html" with project_list=view.popular_this_week only %}
 {% endif %}
 
 <div class="overline">
