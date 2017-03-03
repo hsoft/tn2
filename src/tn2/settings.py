@@ -1,10 +1,6 @@
 import os
 
 import local_settings
-try:
-    import wpdb_settings
-except ImportError:
-    wpdb_settings = None
 
 ADMINS = [("Virgil Dupras", 'hsoft@hardcoded.net')]
 
@@ -40,7 +36,6 @@ INSTALLED_APPS = [
     'pipeline',
     'captcha',
 
-    'wordpress',
     'tn2app.apps.Tn2AppConfig',
 ]
 
@@ -91,10 +86,6 @@ else:
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
 DATABASES = local_settings.DATABASES
-if wpdb_settings:
-    DATABASES.update(wpdb_settings.DATABASES)
-
-DATABASE_ROUTERS = ('wordpress.routers.WordPressRouter',)
 
 PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.PBKDF2PasswordHasher',

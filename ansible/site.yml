@@ -9,13 +9,10 @@
     django_touch_reload_path: "{{ django_src_path }}"
     django_domain_name: tn2.local
     django_debug: yes
-    tn2_wp_dbname: tnwp
-    mariadb_root_password: whatever
 
   roles:
     - common
     - postgres-install
-    - mariadb-install # for the WP db
     - nginx
     - django
     - django-deploy

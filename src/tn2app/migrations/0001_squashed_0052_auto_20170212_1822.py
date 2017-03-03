@@ -110,9 +110,6 @@ class Migration(migrations.Migration):
                 'proxy': True,
             },
             bases=('auth.user',),
-            managers=[
-                ('objects', tn2app.models.UserManager()),
-            ],
         ),
         migrations.AlterField(
             model_name='discussiongroup',

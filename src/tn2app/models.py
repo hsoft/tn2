@@ -4,8 +4,7 @@ import os.path
 from functools import partial
 
 from django.conf import settings
-from django.contrib.auth.models import User as UserBase, UserManager as UserManagerBase
-from django.contrib.auth.hashers import get_hasher
+from django.contrib.auth.models import User as UserBase
 from django.contrib.postgres.search import SearchVector, SearchRank
 from django.db import models
 from django.db.models import Max, Q, Count
@@ -18,30 +17,9 @@ from PIL import Image
 from ckeditor.fields import RichTextField
 from ckeditor_uploader.fields import RichTextUploadingField
 
-from wordpress.models import WpV2Users
-
 from .util import nonone, fa_str, embed_videos, sanitize_comment
 
-class UserManager(UserManagerBase):
-    def get_from_wpuser_id(self, wpuser_id):
-        try:
-            return self.get(profile__wpdb_id=wpuser_id)
-        except self.model.DoesNotExist:
-            pass
-        wpuser = WpV2Users.objects.get(id=wpuser_id)
-        hasher = get_hasher('phpass')
-        user = self.create(
-            username=wpuser.user_login,
-            email=wpuser.user_email,
-            password=hasher.from_orig(wpuser.user_pass),
-            is_active=True,
-        )
-        UserProfile.objects.create(user=user, wpdb_id=wpuser.id)
-        return user
-
 class User(UserBase):
-    objects = UserManager()
-
     class Meta:
         proxy = True
 

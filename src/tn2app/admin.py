@@ -6,7 +6,6 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin
 from django.utils.text import slugify
 
-from wordpress.models import WpV2Users, WpV2Usermeta, WpV2BpXprofileData
 from .models import (
     Article, ArticleCategory, DiscussionGroup, Discussion, UserProfile, Project, PageContents
 )
@@ -92,18 +91,6 @@ class ProjectAdmin(BaseModelAdmin):
 admin.site.register(Project, ProjectAdmin)
 
 admin.site.register(PageContents, BaseModelAdmin)
-
-class WPUserMetaInline(admin.TabularInline):
-    model = WpV2Usermeta
-
-class WPUserBPProfileInline(admin.TabularInline):
-    model = WpV2BpXprofileData
-
-class WPUserAdmin(admin.ModelAdmin):
-    inlines = [WPUserMetaInline, WPUserBPProfileInline]
-    search_fields = ['user_login', 'user_email']
-
-admin.site.register(WpV2Users, WPUserAdmin)
 
 class UserProfileInline(admin.StackedInline):
     model = UserProfile

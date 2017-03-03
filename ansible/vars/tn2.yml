@@ -1,8 +1,5 @@
 ---
 common_extra_packages:
-  # for python-mysql
-  - libmysqlclient-dev
-
   # for pillow + django-simple-captcha
   - libz-dev
   - libjpeg-dev

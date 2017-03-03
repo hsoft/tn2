@@ -1,6 +1,6 @@
 name: tn2
 image: debian/jessie
-mode: pull
+# privileged containers are necessary with debian/jessie images
 privileged: true
 hostnames:
   - tn2.local
