@@ -1,7 +1,7 @@
 appdirs==1.4.2
 beautifulsoup4==4.5.3
 bleach==1.5.0
-Django==1.10.5
+Django==1.10.6
 django-appconf==1.0.2
 django-ckeditor==5.2.1
 django-hashers-passlib==0.3
@@ -18,7 +18,7 @@ olefile==0.44
 packaging==16.8
 passlib==1.7.1
 Pillow==4.0.0
-psycopg2==2.6.2
+psycopg2==2.7
 pyparsing==2.1.10
 pytz==2016.10
 six==1.10.0
