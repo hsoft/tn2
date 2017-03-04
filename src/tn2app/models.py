@@ -103,7 +103,10 @@ class ArticleManager(models.Manager):
 
 class PublishedArticleManager(models.Manager):
     def get_queryset(self):
-        return super().get_queryset().filter(status=Article.STATUS_PUBLISHED)
+        return super().get_queryset().filter(
+            status=Article.STATUS_PUBLISHED,
+            publish_time__lt=datetime.datetime.now(),
+        )
 
 class Article(CommentableMixin, models.Model):
     STATUS_DRAFT = 0
