@@ -156,6 +156,7 @@ CKEDITOR_CONFIGS = {
         'toolbar_Custom': [
             ['Format'],
             ['Bold', 'Italic', 'Underline', 'Strike', '-', 'Undo', 'Redo'],
+            ['JustifyLeft', 'JustifyCenter', 'JustifyRight'],
             ['NumberedList', 'BulletedList'],
             ['Link', 'Unlink', 'Anchor'],
             ['Image', 'Smiley', 'SpecialChar'],
@@ -164,6 +165,7 @@ CKEDITOR_CONFIGS = {
         'format_tags': 'p;h2;h3;h4;h5;h6;pre',
         'disableNativeSpellChecker': False,
         'width': '100%',
+        'extraPlugins': 'justify',
     },
     'restricted': {
         'toolbar': 'Custom',
