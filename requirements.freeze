@@ -1,6 +1,6 @@
-appdirs==1.4.2
+appdirs==1.4.3
 beautifulsoup4==4.5.3
-bleach==1.5.0
+bleach==2.0.0
 Django==1.10.6
 django-appconf==1.0.2
 django-ckeditor==5.2.1
@@ -11,14 +11,15 @@ django-simple-captcha==0.5.3
 django-user-accounts==2.0.0
 easy-thumbnails==2.3
 futures==3.0.5
-html5lib==0.9999999
-jsonfield==1.0.3
+html5lib==0.999999999
+jsonfield==2.0.1
 libsass==0.12.3
 olefile==0.44
 packaging==16.8
 passlib==1.7.1
 Pillow==4.0.0
 psycopg2==2.7
-pyparsing==2.1.10
+pyparsing==2.2.0
 pytz==2016.10
 six==1.10.0
+webencodings==0.5

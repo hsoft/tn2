@@ -1,9 +1,12 @@
+from functools import partial
 import hashlib
 import itertools
 import re
 import unicodedata
 
-import bleach
+from bleach.callbacks import nofollow, target_blank
+from bleach.linkifier import LinkifyFilter
+from bleach.sanitizer import Cleaner
 from bs4 import BeautifulSoup
 from django.conf import settings
 from django.utils.html import format_html
@@ -101,7 +104,12 @@ def sanitize_comment(text):
         'img': ['alt', 'src', 'width', 'height'],
         'a': ['href'],
     }
-    return bleach.linkify(bleach.clean(text, tags=ALLOWED_TAGS, attributes=ALLOWED_ATTRS))
+    cleaner = Cleaner(
+        tags=ALLOWED_TAGS,
+        attributes=ALLOWED_ATTRS,
+        filters=[partial(LinkifyFilter, callbacks=[nofollow, target_blank])]
+    )
+    return cleaner.clean(text)
 
 def extract_media_paths(html_content):
     """Returns a list of media paths references in `html_content`.
