@@ -194,6 +194,7 @@ class DiscussionGroup(models.Model):
     description_short = models.TextField(blank=True)
     group_type = models.SmallIntegerField(choices=TYPE_CHOICES, default=TYPE_NORMAL, db_index=True)
     private = models.BooleanField(default=False, db_index=True)
+    restrict_access_to = models.ForeignKey('auth.Group', null=True, blank=True)
     avatar = models.ImageField(
         upload_to=get_group_avatar_path,
         blank=True,
@@ -211,6 +212,13 @@ class DiscussionGroup(models.Model):
 
     def get_absolute_url(self):
         return reverse('discussion_group', args=[self.slug])
+
+    def can_be_seen_by_user(self, user):
+        if not self.private:
+            return True
+        if not user.has_perm('tn2app.access_private_groups'):
+            return False
+        return self.restrict_access_to in user.groups.all()
 
     def last_activity(self):
         return nonone(self.discussions.aggregate(Max('last_activity'))['last_activity__max'], '-')

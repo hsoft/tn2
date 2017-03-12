@@ -4,7 +4,7 @@ from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.syndication.views import Feed
 from django.core.exceptions import PermissionDenied
-from django.db.models import Max, Count
+from django.db.models import Max, Count, Q
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
@@ -112,6 +112,10 @@ class DiscussionGroupListView(ListView):
         queryset = queryset.filter(group_type=DiscussionGroup.TYPE_NORMAL)
         if not self.request.user.has_perm('tn2app.access_private_groups'):
             queryset = queryset.filter(private=False)
+        else:
+            queryset = queryset.filter(
+                Q(private=False) | Q(restrict_access_to__in=self.request.user.groups.all())
+            )
         queryset = queryset.annotate(latest_activity=Max('discussions__last_activity'))\
             .order_by('-latest_activity')
         return queryset
@@ -129,7 +133,7 @@ class DiscussionGroupDetailView(SingleObjectMixin, ListView):
 
     def get(self, request, *args, **kwargs):
         group = self.get_object(queryset=DiscussionGroup.objects.all())
-        if group.private and not request.user.has_perm('tn2app.access_private_groups'):
+        if not group.can_be_seen_by_user(request.user):
             raise PermissionDenied()
         self.object = group
         return super().get(request, *args, **kwargs)
