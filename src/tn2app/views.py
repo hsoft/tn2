@@ -41,6 +41,17 @@ class LoginView(account.views.LoginView):
         return [(None, "Connexion")]
 
 
+class ChangePasswordView(account.views.ChangePasswordView):
+    def get_context_data(self, **kwargs):
+        result = super().get_context_data(**kwargs)
+        result['shown_user'] = self.get_user()
+        return result
+
+    @staticmethod
+    def breadcrumb():
+        return [(None, "Modifier mon mot de passe")]
+
+
 class ViewWithCommentsMixin:
     def get_comment_form(self):
         return CommentForm()

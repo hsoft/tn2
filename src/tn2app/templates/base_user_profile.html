@@ -20,6 +20,9 @@
     <li><a class="{% block class_for_profile_link %}{% endblock %}" href="{% url 'user_profile' username=shown_user.username %}">Projets</a></li>
     <li><a class="{% block class_for_favorite_link %}{% endblock %}" href="{% url 'user_favorites' username=shown_user.username %}">Favoris</a></li>
     <li><a class="{% block class_for_message_link %}{% endblock %}" href="{% url 'user_sendmessage' username=shown_user.username %}">Contacter</a></li>
+    {% if shown_user == user %}
+        <li><a class="{% block class_for_password_link %}{% endblock %}" href="{% url 'account_password' %}">Mot de passe</a></li>
+    {% endif %}
 </ul>
 
 {% block inner_content %}

@@ -17,6 +17,7 @@ urlpatterns = [
     url(r'^account/confirm_email/(?P<key>\w+)/$', account_views.ConfirmEmailView.as_view(), name='account_confirm_email'),
     url(r'^account/login/$', tn2_views.LoginView.as_view(), name='account_login'),
     url(r'^account/logout/$', auth_views.logout, name='account_logout'),
+    url(r'^account/password/$', tn2_views.ChangePasswordView.as_view(), name='account_password'),
     url(r'^account/password/reset/$', account_views.PasswordResetView.as_view(), name='account_password_reset'),
     url(
         r'^password/reset/(?P<uidb36>[0-9A-Za-z]+)-(?P<token>.+)/$',
