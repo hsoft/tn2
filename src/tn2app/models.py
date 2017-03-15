@@ -408,11 +408,16 @@ class Project(CommentableMixin, models.Model):
         return "{} - {} - {}".format(self.id, self.author, self.title)
 
     def save(self, *args, **kwargs):
+        # http://stackoverflow.com/a/15776267
+        if self.pk is None:
+            saved_images = [self.image1, self.image2, self.image3, self.image4]
+            self.image1 = self.image2 = self.image3 = self.image4 = None
+            super().save(*args, **kwargs)
+            self.image1, self.image2, self.image3, self.image4 = saved_images
+
         super().save(*args, **kwargs)
 
         for image_field in self.get_images():
-            if not image_field:
-                continue
             try:
                 with Image.open(image_field.path) as image:
                     w, h = image.size
