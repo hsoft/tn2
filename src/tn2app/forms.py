@@ -126,6 +126,8 @@ class ProjectForm(BaseModelForm):
                 "Impossible de lire l'image. Veuillez contacter les administrateurs de T&N"
             )
 
+        if not image_uploaded_file:
+            return image_uploaded_file
         result_bytes = io.BytesIO()
         try:
             with Image.open(image_uploaded_file) as image:
