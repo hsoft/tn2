@@ -1,7 +1,11 @@
+import io
+
 from django import forms
 from django.conf import settings
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.utils.text import slugify
 
+from PIL import Image, ImageFile
 from ckeditor.widgets import CKEditorWidget
 from captcha.fields import CaptchaField
 import account.forms
@@ -9,6 +13,8 @@ import account.forms
 from .models import UserProfile, Discussion, Project
 from .util import dedupe_slug, sanitize_comment
 
+# http://stackoverflow.com/a/23575424
+ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 class SignupForm(account.forms.SignupForm):
     field_order = ['username', 'email', 'password', 'password_confirm']
@@ -113,6 +119,52 @@ class ProjectForm(BaseModelForm):
     def __init__(self, **kwargs):
         self.author = kwargs.pop('author', None)
         super().__init__(**kwargs)
+
+    def validate_and_resize_image(self, image_uploaded_file):
+        def cant_read():
+            raise forms.ValidationError(
+                "Impossible de lire l'image. Veuillez contacter les administrateurs de T&N"
+            )
+
+        result_bytes = io.BytesIO()
+        try:
+            with Image.open(image_uploaded_file) as image:
+                w, h = image.size
+                if w <= 630 and h <= 630:
+                    return image_uploaded_file
+                image.thumbnail((630, 630))
+                try:
+                    image.save(result_bytes, format=image.format)
+                except OSError:
+                    # could be a "cannot write mode P as JPEG" situation.
+                    # let's try http://stackoverflow.com/a/21669827
+                    try:
+                        image.convert('RGB').save(result_bytes, format=image.format)
+                    except OSError:
+                        # Oh, screw that.
+                        cant_read()
+        except (FileNotFoundError, OSError):
+            # Can't read the image, unset it
+            cant_read()
+
+        return SimpleUploadedFile(
+            name=image_uploaded_file.name,
+            content=result_bytes.getvalue(),
+            content_type=image_uploaded_file.content_type,
+        )
+
+
+    def clean_image1(self):
+        return self.validate_and_resize_image(self.cleaned_data['image1'])
+
+    def clean_image2(self):
+        return self.validate_and_resize_image(self.cleaned_data['image2'])
+
+    def clean_image3(self):
+        return self.validate_and_resize_image(self.cleaned_data['image3'])
+
+    def clean_image4(self):
+        return self.validate_and_resize_image(self.cleaned_data['image4'])
 
     def save(self, commit=True):
         instance = super().save(commit=False)

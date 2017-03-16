@@ -13,7 +13,6 @@ from django.urls import reverse
 from django.utils.html import format_html
 from django.utils.text import slugify
 
-from PIL import Image
 from ckeditor.fields import RichTextField
 from ckeditor_uploader.fields import RichTextUploadingField
 
@@ -416,26 +415,6 @@ class Project(CommentableMixin, models.Model):
             self.image1, self.image2, self.image3, self.image4 = saved_images
 
         super().save(*args, **kwargs)
-
-        for image_field in self.get_images():
-            try:
-                with Image.open(image_field.path) as image:
-                    w, h = image.size
-                    if w > 630 or h > 630:
-                        image.thumbnail((630, 630))
-                        try:
-                            image.save(image_field.path)
-                        except OSError:
-                            # could be a "cannot write mode P as JPEG" situation.
-                            # let's try http://stackoverflow.com/a/21669827
-                            try:
-                                image.convert('RGB').save(image_field.path)
-                            except OSError:
-                                # Oh, screw that.
-                                image_field.delete()
-            except (FileNotFoundError, OSError):
-                # Can't read the image, unset it
-                image_field.delete()
 
     def get_absolute_url(self):
         return reverse('project_details', args=[self.id, self.get_slug()])
