@@ -132,9 +132,8 @@ class ProjectForm(BaseModelForm):
         try:
             with Image.open(image_uploaded_file) as image:
                 w, h = image.size
-                if w <= 630 and h <= 630:
-                    return image_uploaded_file
-                image.thumbnail((630, 630))
+                if w > 630 or h > 630:
+                    image.thumbnail((630, 630))
                 try:
                     image.save(result_bytes, format=image.format)
                 except OSError:
