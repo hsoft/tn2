@@ -2,7 +2,7 @@ import io
 
 from django import forms
 from django.conf import settings
-from django.core.files.uploadedfile import SimpleUploadedFile
+from django.core.files.uploadedfile import UploadedFile, SimpleUploadedFile
 from django.utils.text import slugify
 
 from PIL import Image, ImageFile
@@ -126,7 +126,7 @@ class ProjectForm(BaseModelForm):
                 "Impossible de lire l'image. Veuillez contacter les administrateurs de T&N"
             )
 
-        if not image_uploaded_file:
+        if not isinstance(image_uploaded_file, UploadedFile):
             return image_uploaded_file
         result_bytes = io.BytesIO()
         try:
