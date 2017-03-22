@@ -28,14 +28,17 @@ Une fois le provisioning complété, on peut accéder au site local par <http://
 Alternativement on peut rouler le serveur de développement de Django en faisant:
 
     lxdock shell
+    ./manage.sh load_initial_data
     ./develop.sh
 
 Le site devient alors disponible sous <http://tn2.local:8080>.
 
-La routine d'initialisation importe automatiquement des données "exemples" qui sont tirées de la
-vraie base de donnée T&N (mais avec beaucoup, *beaucoup* moins de données). Les hash de mot de
-de passe et les adresses courriel ont été anonymisées, mais pour le reste, les données sont une
-copie des vraies. Ça nous permet de plus facilement travailler sur le site.
+À noter que la partie `./manage.sh load_initial_data` n'est nécessaire que lorsque vous venez tout
+juste de créer un environnement neuf. C'est la routine d'initialisation qui importe automatiquement
+des données "exemples" qui sont tirées de la vraie base de donnée T&N (mais avec beaucoup,
+*beaucoup* moins de données). Les hash de mot de de passe et les adresses courriel ont été
+anonymisées, mais pour le reste, les données sont une copie des vraies. Ça nous permet de plus
+facilement travailler sur le site.
 
 ### Se créer un utilisateur admin
 
