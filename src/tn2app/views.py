@@ -6,9 +6,9 @@ from django.contrib.syndication.views import Feed
 from django.core.exceptions import PermissionDenied
 from django.db.models import Max, Count, Q
 from django.http import Http404, HttpResponseRedirect
-from django.shortcuts import render
 from django.urls import reverse
 from django.views.generic import ListView, TemplateView, DetailView, RedirectView, FormView, View
+from django.views.generic.base import ContextMixin
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.detail import SingleObjectMixin
 
@@ -18,7 +18,7 @@ import account.forms
 
 from .models import (
     User, UserProfile, Article, ArticleCategory, DiscussionGroup, Discussion, Project, ProjectVote,
-    ProjectCategory, ArticleComment, DiscussionComment, ProjectComment
+    ProjectCategory, ArticleComment, DiscussionComment, ProjectComment, Notification
 )
 from .forms import (
     UserProfileForm, NewDiscussionForm, EditDiscussionForm, CommentForm, ProjectForm,
@@ -57,42 +57,46 @@ class ViewWithCommentsMixin:
         return CommentForm()
 
 
-def homepage(request):
-    # Affichage des trois articles de la page d'accueil:
-    # En règle générale, on veut les derniers articles en ordre de parution.
-    # ... sauf pour le 2e spot, qui est réservé aux trouvailles.
-    # Le 3e spot, il est pour le dernier article "featured", mais ça se peut que
-    # cet article n'existe pas.
-    articles = Article.published\
-        .exclude(categories__slug='les-trouvailles')\
-        .order_by('-publish_time')
-    trouvailles = Article.published\
-        .filter(categories__slug='les-trouvailles')\
-        .order_by('-publish_time').first()
-    # Les trouvailles ont toujours le même titre sur la page d'accueil
-    trouvailles.title = "Les trouvailles de la semaine"
-    featured_articles = Article.published.filter(featured=True)
-    if featured_articles.exists():
-        featured_article = featured_articles.order_by('-publish_time').first()
-        articles = [articles[0], trouvailles, featured_article]
-    else:
-        articles = [articles[0], trouvailles, articles[1]]
-    featured_projects = Project.objects\
-        .filter(featured_time__isnull=False)\
-        .order_by('-featured_time')
+class Homepage(TemplateView):
+    template_name = 'homepage.html'
 
-    latest_projects = Project.objects
-    recent_discussions = Discussion.objects\
-        .filter(group__private=False)\
-        .order_by('-last_activity')[:4]
-    context = {
-        'articles': articles,
-        'featured_projects': featured_projects,
-        'popular_projects': Project.objects.popular_this_week(),
-        'latest_projects': latest_projects,
-        'recent_discussions': recent_discussions,
-    }
-    return render(request, 'homepage.html', context)
+    def get_context_data(self, **kwargs):
+        result = super().get_context_data(**kwargs)
+        # Affichage des trois articles de la page d'accueil:
+        # En règle générale, on veut les derniers articles en ordre de parution.
+        # ... sauf pour le 2e spot, qui est réservé aux trouvailles.
+        # Le 3e spot, il est pour le dernier article "featured", mais ça se peut que
+        # cet article n'existe pas.
+        articles = Article.published\
+            .exclude(categories__slug='les-trouvailles')\
+            .order_by('-publish_time')
+        trouvailles = Article.published\
+            .filter(categories__slug='les-trouvailles')\
+            .order_by('-publish_time').first()
+        # Les trouvailles ont toujours le même titre sur la page d'accueil
+        trouvailles.title = "Les trouvailles de la semaine"
+        featured_articles = Article.published.filter(featured=True)
+        if featured_articles.exists():
+            featured_article = featured_articles.order_by('-publish_time').first()
+            articles = [articles[0], trouvailles, featured_article]
+        else:
+            articles = [articles[0], trouvailles, articles[1]]
+        featured_projects = Project.objects\
+            .filter(featured_time__isnull=False)\
+            .order_by('-featured_time')
+
+        latest_projects = Project.objects
+        recent_discussions = Discussion.objects\
+            .filter(group__private=False)\
+            .order_by('-last_activity')[:4]
+        result.update({
+            'articles': articles,
+            'featured_projects': featured_projects,
+            'popular_projects': Project.objects.popular_this_week(),
+            'latest_projects': latest_projects,
+            'recent_discussions': recent_discussions,
+        })
+        return result
 
 class DiscussionGroupListView(ListView):
     model = DiscussionGroup
@@ -325,7 +329,7 @@ class ArticleFeed(Feed):
         return item.get_excerpt()
 
 
-class UserViewMixin:
+class UserViewMixin(ContextMixin):
     def _get_shown_user(self):
         try:
             return User.objects.get(username=self.kwargs['username'])
@@ -336,17 +340,17 @@ class UserViewMixin:
         u = self._get_shown_user()
         return [(reverse('user_profile', args=(u.username, )), u.profile.display_name)]
 
+    def get_context_data(self, **kwargs):
+        result = super().get_context_data(**kwargs)
+        result['shown_user'] = self._get_shown_user()
+        return result
+
 
 class UserProfileView(UserViewMixin, ListView):
     template_name = 'user_profile.html'
     model = Project
     ordering = '-creation_time'
     paginate_by = 9
-
-    def get_context_data(self, **kwargs):
-        result = super().get_context_data(**kwargs)
-        result['shown_user'] = self._get_shown_user()
-        return result
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -364,7 +368,6 @@ class UserFavoritesView(UserViewMixin, ListView):
 
     def get_context_data(self, **kwargs):
         result = super().get_context_data(**kwargs)
-        result['shown_user'] = self._get_shown_user()
         result['project_list'] = [vote.project for vote in result['projectvote_list']]
         return result
 
@@ -408,11 +411,6 @@ class UserSendMessageView(UserViewMixin, LoginRequiredMixin, FormView):
     def breadcrumb(self):
         return super().breadcrumb() + [(None, "Contacter")]
 
-    def get_context_data(self, **kwargs):
-        result = super().get_context_data(**kwargs)
-        result['shown_user'] = self._get_shown_user()
-        return result
-
     def form_valid(self, form):
         to = self._get_shown_user()
         from_ = self.request.user
@@ -428,6 +426,27 @@ class UserSendMessageView(UserViewMixin, LoginRequiredMixin, FormView):
             },
         )
         return self.render_to_response(self.get_context_data(message_sent=True))
+
+
+class UserNotificationsView(UserViewMixin, LoginRequiredMixin, ListView):
+    template_name = 'user_notifications.html'
+    model = Notification
+
+    def _get_shown_user(self):
+        return self.request.user
+
+    def breadcrumb(self):
+        return super().breadcrumb() + [(None, "Notifications")]
+
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        if user.profile.has_notifications:
+            user.profile.has_notifications = False
+            user.profile.save()
+        return super().get(request, *args, **kwargs)
+
+    def get_queryset(self):
+        return self._get_shown_user().notifications.all()
 
 
 class ProjectList(ListView):

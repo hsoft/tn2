@@ -33,6 +33,15 @@
                             <a href="{% url 'account_logout' %}">Déconnexion</a>
                         </div>
                     </li>
+                    {% if user.profile.has_notifications %}
+                    <li class="right">
+                        <a
+                            class="notification fa fa-exclamation-circle"
+                            title="Vous avez de nouvelles notifications"
+                            href="{% url 'user_notifications' %}">
+                        </a>
+                    </li>
+                    {% endif %}
                     {% else %}
                     <li class="right"><a href="{% url 'account_signup' %}">Inscription</a></li>
                     <li class="right"><a href="{% url 'account_login' %}">Connexion</a></li>

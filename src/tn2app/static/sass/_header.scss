@@ -27,6 +27,11 @@ div.header {
         }
     }
 
+    .notification {
+        font-size: 16px;
+        background-color: $text_color_pink;
+    }
+
     .dropdown-content {
         display: none;
         position: absolute;

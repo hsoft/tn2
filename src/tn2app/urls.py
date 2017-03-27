@@ -3,7 +3,7 @@ from django.conf.urls import url
 from . import views
 
 urlpatterns = [
-    url(r'^$', views.homepage, name='homepage'),
+    url(r'^$', views.Homepage.as_view(), name='homepage'),
     url(r'^blog/$', views.ArticleList.as_view(), name='article_list'),
     url(r'^blog/(?P<slug>[-%’\w]+)/$', views.ArticleDetailView.as_view(), name='article'),
     url(
@@ -87,6 +87,11 @@ urlpatterns = [
         r'^membres/(?P<username>[-\w]+)/contacter/$',
         views.UserSendMessageView.as_view(),
         name='user_sendmessage'
+    ),
+    url(
+        r'^notifications/$',
+        views.UserNotificationsView.as_view(),
+        name='user_notifications',
     ),
     url(
         r'^search/$',

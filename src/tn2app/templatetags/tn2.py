@@ -1,7 +1,7 @@
 from django import template
 from django.templatetags.static import static
 from django.urls import reverse
-from django.utils.html import escape, format_html
+from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 
 from easy_thumbnails.files import get_thumbnailer
@@ -56,10 +56,7 @@ def user_link(user):
     if not user:
         return ''
     elif user.profile:
-        return mark_safe('<a href="{}">{}</a>'.format(
-            user.profile.get_absolute_url(),
-            escape(user.profile.display_name)
-        ))
+        return user.profile.link()
     else:
         return str(user)
 

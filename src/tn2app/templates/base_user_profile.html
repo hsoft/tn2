@@ -22,6 +22,7 @@
     <li><a class="{% block class_for_message_link %}{% endblock %}" href="{% url 'user_sendmessage' username=shown_user.username %}">Contacter</a></li>
     {% if shown_user == user %}
         <li><a class="{% block class_for_password_link %}{% endblock %}" href="{% url 'account_password' %}">Mot de passe</a></li>
+        <li><a class="{% block class_for_notification_link %}{% endblock %}" href="{% url 'user_notifications' %}">Notifications</a></li>
     {% endif %}
 </ul>
 

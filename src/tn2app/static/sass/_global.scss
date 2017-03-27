@@ -112,10 +112,14 @@ p.breadcrumb {
     }
 }
 
-ul.selector {
+ul.base {
     list-style: none outside none;
     margin: 0 0 10px 0;
     padding: 0;
+}
+
+ul.selector {
+    @extend ul.base;
 
     li {
         padding: 4px 0;

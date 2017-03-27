@@ -71,4 +71,25 @@ body.user-profile {
         }
     }
 
+    ul.notification-list {
+        @extend ul.base;
+        @extend ul.with-lines;
+
+        img.avatar {
+            float: left;
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+        }
+
+        li {
+            padding-top: 4px;
+            padding-bottom: 4px;
+
+            p {
+                margin: 0;
+                margin-top: 4px;
+            }
+        }
+    }
 }

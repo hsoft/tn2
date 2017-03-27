@@ -1,0 +1,19 @@
+{% extends 'base_user_profile.html' %}
+{% load tn2 %}
+
+{% block class_for_notification_link %}active{% endblock %}
+
+{% block inner_content %}
+<div class="overline">
+    <h2>Notifications</h2>
+</div>
+
+<ul class="notification-list">
+    {% for notification in notification_list %}
+    <li>
+        <img class="avatar" src="{{ notification.other|avatar_url }}">
+        <p>{{ notification.get_message }}</p>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

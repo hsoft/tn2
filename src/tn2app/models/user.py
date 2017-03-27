@@ -4,6 +4,8 @@ from django.conf import settings
 from django.contrib.auth.models import User as UserBase
 from django.db import models
 from django.urls import reverse
+from django.utils.html import escape
+from django.utils.safestring import mark_safe
 
 from ckeditor.fields import RichTextField
 
@@ -60,6 +62,13 @@ class UserProfile(models.Model):
     )
     sewing_machine = models.TextField(blank=True, verbose_name="MAC")
     description_for_articles = models.TextField(blank=True, verbose_name="Description Rédacteur")
+    has_notifications = models.BooleanField(default=False)
 
     def get_absolute_url(self):
         return reverse('user_profile', args=[self.user.username])
+
+    def link(self):
+        return mark_safe('<a href="{}">{}</a>'.format(
+            self.get_absolute_url(),
+            escape(self.display_name)
+        ))
