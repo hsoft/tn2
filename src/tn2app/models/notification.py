@@ -1,4 +1,7 @@
 from django.conf import settings
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.humanize.templatetags.humanize import naturaltime
 from django.db import models
 from django.utils.safestring import mark_safe
 
@@ -23,6 +26,7 @@ class NotificationManager(models.Manager):
                 other_id=comment.user_id,
                 type=Notification.TYPE_REPLY,
                 path=discussion.get_absolute_url(),
+                target=comment,
             )
             for participant_id in participant_ids
         ])
@@ -44,13 +48,20 @@ class Notification(models.Model):
     time = models.DateTimeField(auto_now_add=True, db_index=True)
     type = models.PositiveSmallIntegerField(choices=TYPE_CHOICES, db_index=True)
     path = models.TextField()
+    target_content_type = models.ForeignKey(ContentType, null=True)
+    target_object_id = models.PositiveIntegerField(null=True)
+    target = GenericForeignKey('target_content_type', 'target_object_id')
 
     objects = NotificationManager()
 
     def get_message(self):
-        target_name = 'discussion'
-        msg = "{user} a répondu à une {target} à laquelle vous avez participé."
+        if self.target:
+            target_name = "\"{}\"".format(self.target.target.title)
+        else:
+            target_name = "une discussion à laquelle vous avez participé"
+        msg = "{user} a répondu à {target} {time}."
         return mark_safe(msg.format(
             user=self.other.profile.link(),
             target=href(self.path, target_name),
+            time=naturaltime(self.time),
         ))
