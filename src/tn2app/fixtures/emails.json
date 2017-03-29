@@ -53,7 +53,7 @@
         "created": "2017-01-06T02:42:18.125",
         "last_updated": "2017-01-06T02:42:18.125",
         "subject": "Message T&N de {{ name }}: {{ subject }}",
-        "content": "{{ message }}",
+        "content": "{{ message|safe }}",
         "html_content": "",
         "language": "",
         "default_template": null
@@ -68,7 +68,7 @@
         "created": "2017-01-06T16:29:17.333",
         "last_updated": "2017-01-06T16:32:01.724",
         "subject": "Message priv\u00e9 du membre T&N \"{{ from.profile.display_name }}\"",
-        "content": "Ceci est un message priv\u00e9 envoy\u00e9 par le membre \"{{ from.profile.display_name }}\" de Thread & needles. Pour r\u00e9pondre \u00e0 cet utilisateur, faites simplement r\u00e9pondre \u00e0 ce courriel. L'\u00e9change se poursuivra alors enti\u00e8rement par courriel, hors de T&N. Si ce message est abusif, veuillez contacter l'\u00e9quipe de T&N pour nous aviser. Voici le message:\r\n\r\n{{ message }}",
+        "content": "Ceci est un message priv\u00e9 envoy\u00e9 par le membre \"{{ from.profile.display_name }}\" de Thread & needles. Pour r\u00e9pondre \u00e0 cet utilisateur, faites simplement r\u00e9pondre \u00e0 ce courriel. L'\u00e9change se poursuivra alors enti\u00e8rement par courriel, hors de T&N. Si ce message est abusif, veuillez contacter l'\u00e9quipe de T&N pour nous aviser. Voici le message:\r\n\r\n{{ message|safe }}",
         "html_content": "",
         "language": "",
         "default_template": null
