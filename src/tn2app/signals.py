@@ -13,7 +13,7 @@ def user_was_saved(sender, instance, created, **kwargs):
         instance.profile.display_name = instance.username
         instance.profile.save()
 
-@receiver(post_save, sender=DiscussionComment)
+@receiver(post_save, sender=DiscussionComment, dispatch_uid='discussioncomment_was_saved')
 def discussioncomment_was_saved(sender, instance, created, **kwargs):
     if created:
         Notification.objects.notify_of_discussion_reply(instance)
