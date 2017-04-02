@@ -9,6 +9,8 @@ from bleach.linkifier import LinkifyFilter
 from bleach.sanitizer import Cleaner
 from bs4 import BeautifulSoup
 from django.conf import settings
+from django.core.validators import URLValidator
+from django.db.models.fields import URLField
 from django.utils.html import format_html
 
 def dedupe_slug(slug, queryset, slug_field_name='slug'):
@@ -124,4 +126,22 @@ def extract_media_paths(html_content):
         src = img['src']
         if src.startswith(settings.MEDIA_URL):
             yield src[len(settings.MEDIA_URL):]
+
+# Low-tech approach to work around the too strict URLValidator.
+# Context: https://code.djangoproject.com/ticket/20264
+# replace() isn't super elegant, but I prefer this to having to copy/paste the whole big regexp
+# soup from URLValidator so that I can add one underscore...
+class PermissiveURLValidator(URLValidator):
+    def __call__(self, value):
+        value = value.replace('_', '-')
+        return super().__call__(value)
+
+
+class PermissiveURLField(URLField):
+    default_validators = [PermissiveURLValidator()]
+
+    def formfield(self, **kwargs):
+        result = super().formfield(**kwargs)
+        result.validators = [PermissiveURLValidator()]
+        return result
 

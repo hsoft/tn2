@@ -11,6 +11,7 @@ from django.utils.text import slugify
 
 from ckeditor.fields import RichTextField
 
+from ..util import PermissiveURLField
 from .comment import CommentableMixin, AbstractComment
 
 
@@ -82,17 +83,17 @@ class Project(CommentableMixin, models.Model):
         blank=True,
         verbose_name="Patron ou tutoriel utilisé",
     )
-    pattern_url = models.URLField(
+    pattern_url = PermissiveURLField(
         max_length=250,
         blank=True,
         verbose_name="URL du patron ou tutoriel",
     )
-    blog_post_url = models.URLField(
+    blog_post_url = PermissiveURLField(
         max_length=250,
         blank=True,
         verbose_name="Article sur mon blog",
     )
-    store_url = models.URLField(
+    store_url = PermissiveURLField(
         max_length=250,
         blank=True,
         verbose_name="URL du produit dans votre boutique",
