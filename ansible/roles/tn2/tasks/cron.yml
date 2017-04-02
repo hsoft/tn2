@@ -1,0 +1,15 @@
+---
+- name: Configure cron job for django-post-office
+  cron:
+    name: tn2 post-office
+    minute: "*/3"
+    user: "{{ django_user }}"
+    job: "{{ django_env }}/bin/python {{ django_src_path }}/manage.py send_queued_mail"
+
+- name: Install cron for notif purge job
+  cron:
+    name: purge notifications
+    user: "{{ django_user }}"
+    job: "{{ django_path }}/manage.sh purge_notifications"
+    hour: 1
+    minute: 0

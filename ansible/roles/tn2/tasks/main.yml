@@ -1,9 +1,3 @@
 ---
 - include: tools.yml
-
-- name: Configure cron job for django-post-office
-  cron:
-    name: tn2 post-office
-    minute: "*/3"
-    user: "{{ django_user }}"
-    job: "{{ django_env }}/bin/python {{ django_src_path }}/manage.py send_queued_mail"
+- include: cron.yml
