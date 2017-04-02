@@ -1,4 +1,5 @@
 from django.conf.urls import url
+from django.views.generic.base import RedirectView
 
 from . import views
 
@@ -67,6 +68,11 @@ urlpatterns = [
         r'^membres/(?P<username>[-\w]+)/profil/$',
         views.UserProfileView.as_view(),
         name='user_profile'
+    ),
+    url(
+        r'^membres/(?P<username>[-\w]+)/$',
+        RedirectView.as_view(pattern_name='user_profile'),
+        name='user_profile_redirect'
     ),
     url(
         r'^membres/(?P<username>[-\w]+)/profil/edit/$',
