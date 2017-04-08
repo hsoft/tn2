@@ -213,3 +213,7 @@ PIPELINE = {
     'JAVASCRIPT': {
     },
 }
+
+# Others
+
+DISCUSSION_PAGINATE_BY = 15

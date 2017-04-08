@@ -127,3 +127,8 @@ class Discussion(CommentableMixin, models.Model):
 class DiscussionComment(AbstractComment):
     target = models.ForeignKey(Discussion, related_name='comments')
 
+    def get_absolute_url(self):
+        prior_comments_count = self.target.comments.filter(id__lt=self.id).count()
+        pageno = (prior_comments_count // settings.DISCUSSION_PAGINATE_BY) + 1
+        return self.target.get_absolute_url() + '?page={}#c{}'.format(pageno, self.id)
+

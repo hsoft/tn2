@@ -13,6 +13,9 @@ class AbstractComment(models.Model):
     submit_date = models.DateTimeField(auto_now_add=True, db_index=True)
     comment = models.TextField(max_length=settings.COMMENT_MAX_LENGTH)
 
+    def get_absolute_url(self):
+        return self.target.get_absolute_url() + '#c{}'.format(self.id)
+
     def get_edit_url(self):
         model_name = self.target._meta.model_name
         return reverse('comment_edit', kwargs={'model': model_name, 'comment_pk': self.id})

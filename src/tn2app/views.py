@@ -158,7 +158,7 @@ class DiscussionGroupDetailView(SingleObjectMixin, ListView):
 
 class DiscussionDetailView(SingleObjectMixin, ViewWithCommentsMixin, ListView):
     slug_url_kwarg = 'discussion_slug'
-    paginate_by = 15
+    paginate_by = settings.DISCUSSION_PAGINATE_BY
     template_name = 'discussion.html'
 
     def breadcrumb(self):
@@ -667,12 +667,13 @@ class CommentAdd(LoginRequiredMixin, CommentViewMixin, View):
                 if from_same_user.last().comment == form.cleaned_data['comment']:
                     duplicate = True
             if not duplicate:
-                target.comments.create(
+                new_comment = target.comments.create(
                     user=request.user,
                     comment=form.cleaned_data['comment'],
                 )
                 if hasattr(target, 'update_last_activity'):
                     target.update_last_activity()
+                return HttpResponseRedirect(new_comment.get_absolute_url())
         return HttpResponseRedirect(target.get_absolute_url())
 
 
@@ -692,19 +693,20 @@ class CommentEdit(BelongsToUserMixin, CommentViewMixin, FormView):
 
     def post(self, request, *args, **kwargs):
         comment = self.get_object()
-        success_url = comment.target.get_absolute_url()
         if 'delete' in request.POST:
             parent_obj = comment.target
+            success_url = parent_obj.get_absolute_url()
             comment.delete()
             if hasattr(parent_obj, 'update_last_activity'):
                 parent_obj.update_last_activity()
+            return HttpResponseRedirect(success_url)
         else:
             form = CommentForm(request.POST)
             if form.is_valid():
                 comment = self.get_object()
                 comment.comment = form.cleaned_data['comment']
                 comment.save()
-        return HttpResponseRedirect(success_url)
+            return HttpResponseRedirect(comment.get_absolute_url())
 
 
 # Full-Text search is a bit intensive, resource-wise. To minimize the risk of the server being
