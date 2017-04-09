@@ -25,7 +25,6 @@ class NotificationManager(models.Manager):
                 user_id=participant_id,
                 other_id=comment.user_id,
                 type=Notification.TYPE_REPLY,
-                path=discussion.get_absolute_url(),
                 target=comment,
             )
             for participant_id in participant_ids
@@ -47,7 +46,6 @@ class Notification(models.Model):
     other = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='+')
     time = models.DateTimeField(auto_now_add=True, db_index=True)
     type = models.PositiveSmallIntegerField(choices=TYPE_CHOICES, db_index=True)
-    path = models.TextField()
     target_content_type = models.ForeignKey(ContentType, null=True)
     target_object_id = models.PositiveIntegerField(null=True)
     target = GenericForeignKey('target_content_type', 'target_object_id')
@@ -62,6 +60,6 @@ class Notification(models.Model):
         msg = "{user} a répondu à {target} {time}."
         return mark_safe(msg.format(
             user=self.other.profile.link(),
-            target=href(self.path, target_name),
+            target=href(self.target.get_absolute_url(), target_name),
             time=naturaltime(self.time),
         ))
