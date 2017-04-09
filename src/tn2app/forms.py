@@ -8,6 +8,7 @@ from django.utils.text import slugify
 from PIL import Image, ImageFile
 from ckeditor.widgets import CKEditorWidget
 from captcha.fields import CaptchaField
+from easy_thumbnails.utils import exif_orientation
 import account.forms
 
 from .models import UserProfile, Discussion, Project
@@ -131,16 +132,19 @@ class ProjectForm(BaseModelForm):
         result_bytes = io.BytesIO()
         try:
             with Image.open(image_uploaded_file) as image:
-                w, h = image.size
+                # Ensure that our image has the proper orientation according to its EXIF data. For
+                # this, we piggy-back on easy_thumbnails's own utility functions.
+                new_image = exif_orientation(image)
+                w, h = new_image.size
                 if w > 630 or h > 630:
-                    image.thumbnail((630, 630))
+                    new_image.thumbnail((630, 630))
                 try:
-                    image.save(result_bytes, format=image.format)
+                    new_image.save(result_bytes, format=image.format)
                 except OSError:
                     # could be a "cannot write mode P as JPEG" situation.
                     # let's try http://stackoverflow.com/a/21669827
                     try:
-                        image.convert('RGB').save(result_bytes, format=image.format)
+                        new_image.convert('RGB').save(result_bytes, format=image.format)
                     except OSError:
                         # Oh, screw that.
                         cant_read()
