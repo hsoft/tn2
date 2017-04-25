@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load thumbnail humanize tn2 %}
+{% load thumbnail humanize tn2 staticfiles %}
 
 {% block bodyclasses %}homepage{% endblock %}
 
@@ -31,20 +31,9 @@
     </div>
 
     <div class="col_right">
-        <div class="overline">
-            <h4>En un clic...</h4>
-        </div>
-        <ul class="acces_rapide">
-            <li>
-                <a href="{% url 'category' slug='techniques-tutos' %}">Tous les tutos en images</a>
-            </li>
-            <li>
-                <a href="{% url 'category' slug='tuto-video' %}">Toutes les vidéos</a>
-            </li>
-            <li>
-                <a href="{% url 'category' slug='interview' %}">Toutes les interviews</a>
-            </li>
-        </ul>
+        <a href="{% url 'page_sponsors' %}">
+            <img class="sponsor" src="{% static 'images/annoncez-270px.jpg' %}">
+        </a>
     </div>
 
     <div class="break"/></div>
