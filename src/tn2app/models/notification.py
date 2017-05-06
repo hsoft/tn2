@@ -55,11 +55,12 @@ class Notification(models.Model):
     def get_message(self):
         if self.target:
             target_name = "\"{}\"".format(self.target.target.title)
+            target = href(self.target.get_absolute_url(), target_name)
         else:
-            target_name = "une discussion à laquelle vous avez participé"
+            target = "une discussion qui a été supprimée"
         msg = "{user} a répondu à {target} {time}."
         return mark_safe(msg.format(
             user=self.other.profile.link(),
-            target=href(self.target.get_absolute_url(), target_name),
+            target=target,
             time=naturaltime(self.time),
         ))
