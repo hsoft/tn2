@@ -1,4 +1,4 @@
-django>=1.10,<1.10.9999
+django>=1.11,<1.11.9999
 django-ckeditor>=5.2
 bleach>=2.0
 Pillow>=4.1

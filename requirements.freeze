@@ -1,7 +1,7 @@
 appdirs==1.4.3
-beautifulsoup4==4.5.3
+beautifulsoup4==4.6.0
 bleach==2.0.0
-Django==1.10.7
+Django==1.11.1
 django-appconf==1.0.2
 django-ckeditor==5.2.2
 django-hashers-passlib==0.3
