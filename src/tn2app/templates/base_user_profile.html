@@ -41,7 +41,16 @@
         <dl>
             <dt>Pseudo</dt><dd>{{ shown_user.profile.display_name|default:"-" }}</dd>
             <dt>Ville</dt><dd>{{ shown_user.profile.city|default:"-" }}</dd>
-            <dt>Site web</dt><dd>{{ shown_user.profile.website|urlize|default:"-" }}</dd>
+            <dt>Site web</dt>
+            <dd>
+            {% with shown_user.profile.website as w %}
+            {% if w %}
+            <a href="{{ w }}" target="_blank">{{ w }}</a>
+            {% else %}
+            -
+            {% endif %}
+            {% endwith %}
+            </dd>
             <dt>Niveau</dt><dd>{{ shown_user.profile.skill_level|default:"-" }}</dd>
             <dt>MAC</dt><dd>{{ shown_user.profile.sewing_machine|default:"-" }}</dd>
         </dl>
