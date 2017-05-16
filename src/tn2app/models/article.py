@@ -17,21 +17,25 @@ from .comment import CommentableMixin, AbstractComment
 __all__ = ['Article', 'ArticleCategory', 'ArticleComment']
 
 class ArticleManager(models.Manager):
-    def full_text_search(self, search_query):
-        # Postgres full-text index for this search added in migration 0031
-        sv = SearchVector('title', 'content', config='french')
-        return self.annotate(search=sv)\
-            .annotate(rank=SearchRank(sv, search_query))\
-            .filter(search=search_query, status=Article.STATUS_PUBLISHED)\
-            .order_by('-rank', '-id')
-
-
-class PublishedArticleManager(models.Manager):
-    def get_queryset(self):
-        return super().get_queryset().filter(
+    def filter_by_published(self, qs):
+        return qs.filter(
             status=Article.STATUS_PUBLISHED,
             publish_time__lt=datetime.datetime.now(),
         )
+
+    def full_text_search(self, search_query):
+        # Postgres full-text index for this search added in migration 0031
+        sv = SearchVector('title', 'content', config='french')
+        qs = self.annotate(search=sv).annotate(rank=SearchRank(sv, search_query))
+        qs = self.filter_by_published(qs)
+        qs = qs.filter(search=search_query)
+        return qs.order_by('-rank', '-id')
+
+
+class PublishedArticleManager(ArticleManager):
+    def get_queryset(self):
+        return self.filter_by_published(super().get_queryset())
+
 
 class Article(CommentableMixin, models.Model):
     class Meta:
