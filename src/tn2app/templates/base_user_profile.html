@@ -45,7 +45,7 @@
             <dd>
             {% with shown_user.profile.website as w %}
             {% if w %}
-            <a href="{{ w }}" target="_blank">{{ w }}</a>
+            <a href="{{ w }}" rel="nofollow" target="_blank">{{ w }}</a>
             {% else %}
             -
             {% endif %}

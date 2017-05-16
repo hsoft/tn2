@@ -59,6 +59,9 @@ class UserProfileForm(BaseModelForm):
                 raise forms.ValidationError("Un autre utilisateur utilise déjà ce pseudo.")
         return display_name
 
+    def clean_description(self):
+        return sanitize_comment(self.cleaned_data['description'])
+
 
 class NewDiscussionForm(BaseModelForm):
     class Meta:
