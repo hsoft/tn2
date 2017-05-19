@@ -109,7 +109,7 @@ class ProjectForm(BaseModelForm):
         model = Project
         fields = [
             'title', 'category', 'description', 'pattern_name', 'pattern_url', 'blog_post_url',
-            'image1', 'image2', 'image3', 'image4', 'store_url'
+            'image1', 'image2', 'image3', 'image4'
         ]
         help_texts = {
             'title': "Choisissez un titre concis et explicite",
@@ -117,7 +117,6 @@ class ProjectForm(BaseModelForm):
             'pattern_name': "Si vous avez utilisé un patron ou un tutoriel pour réaliser votre projet, indiquez son nom ici.",
             'pattern_url': "Si le patron ou tutoriel utilisé est disponible sur un site internet, merci d'en indiquer l'adresse.",
             'blog_post_url': "Si vous avez publié ce projet sur votre blog, collez ici le lien direct vers l'article.",
-            'store_url': "Indiquez l'adresse de la page correspondant à ce projet dans votre boutique Etsy, Dawanda, ALittleMarket...",
         }
 
     def __init__(self, **kwargs):
