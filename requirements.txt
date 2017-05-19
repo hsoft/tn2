@@ -13,3 +13,6 @@ beautifulsoup4>=4.5
 
 # to support WP password hashes
 django-hashers-passlib>=0.3
+
+# for captchas
+num2words>=0.5.4

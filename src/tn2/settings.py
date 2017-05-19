@@ -217,3 +217,5 @@ PIPELINE = {
 # Others
 
 DISCUSSION_PAGINATE_BY = 15
+
+CAPTCHA_CHALLENGE_FUNCT = 'tn2app.captcha.numerical_string_challenge'

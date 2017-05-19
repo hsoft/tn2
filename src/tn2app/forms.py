@@ -21,7 +21,7 @@ class SignupForm(account.forms.SignupForm):
     field_order = ['username', 'email', 'password', 'password_confirm']
 
     captcha = CaptchaField(
-        help_text="Pour confirmer que vous n'êtes pas un robot, entrez le texte que vous voyez dans l'image",
+        help_text="Pour confirmer que vous n'êtes pas un robot, entrez le <b>chiffre</b> (ex: 123) que vous voyez dans l'image",
     )
 
     def __init__(self, *args, **kwargs):
