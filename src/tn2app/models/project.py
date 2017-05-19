@@ -33,7 +33,7 @@ def get_project_image_path(instance, filename, slot):
     ext = ext.lower()
     if ext not in ('.jpg', '.jpeg', '.png'):
         ext = '.jpg'
-    return 'projects/{}/img{}{}'.format(instance.id, slot, ext)
+    return 'user/{}/project/{}/img{}{}'.format(instance.author.id, instance.id, slot, ext)
 
 class ProjectManager(models.Manager):
     def full_text_search(self, search_query):
