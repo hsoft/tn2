@@ -9,12 +9,18 @@ django_name: tn2
 
 django_requirements_file: "{{ django_project_path }}/requirements.freeze"
 
-django_env_settings_extra: |
-  {% if tn2_smtp is defined %}
-  EMAIL_HOST = '{{ tn2_smtp.host }}'
-  EMAIL_PORT = {{ tn2_smtp.port }}
-  EMAIL_HOST_USER = '{{ tn2_smtp.email }}'
-  EMAIL_HOST_PASSWORD = '{{ tn2_smtp.password }}'
-  EMAIL_USE_TLS = True
-  {% endif %}
-  
+django_settings_pattern: jsonsettings
+
+django_env_variables:
+  TN2_CONF_PATH: "{{ django_path }}/.env.json"
+
+django_jsonsettings_properties:
+  project_root: "{{ django_path }}"
+  debug: "{{ django_debug }}"
+  secret_key: "{{ django_secret_key }}"
+  database:
+    NAME: "{{ django_dbname }}"
+    USER: "{{ django_dbuser }}"
+    PASSWORD: "{{ django_dbpass }}"
+  allowed_hosts: "['{{ django_domain_name }}', ] + {{ django_extra_domain_names|default([]) }}"
+  email: "{% if tn2_smtp is defined %}{{ tn2_smtp }}{% endif %}"

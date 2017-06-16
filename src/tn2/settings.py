@@ -1,21 +1,49 @@
 import os
+from pathlib import Path
+import json
 
-import local_settings
+HERE = Path(__file__).parent
+SRC_ROOT = HERE.parent
+PROJECT_ROOT = SRC_ROOT.parent
+if 'TN2_CONF_PATH' in os.environ:
+    CONF_PATH = Path(os.environ['TN2_CONF_PATH'])
+else:
+    CONF_PATH = PROJECT_ROOT.joinpath('conf.json')
+
+# Start with parsing the conf.json file
+
+with CONF_PATH.open('rt') as fp:
+    json_conf = json.load(fp)
+
+if json_conf.get('project_root'):
+    PROJECT_ROOT = Path(json_conf['project_root'])
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+    },
+}
+DATABASES['default'].update(json_conf['database'])
+SECRET_KEY = json_conf['secret_key']
+DEBUG = json_conf.get('debug', False)
+ALLOWED_HOSTS = json_conf.get('allowed_hosts', [])
+
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+else:
+    EMAIL_BACKEND = 'post_office.EmailBackend'
+    if json_conf.get('email'):
+        EMAIL_HOST = json_conf['email']['HOST']
+        EMAIL_PORT = json_conf['email']['PORT']
+        EMAIL_HOST_USER = json_conf['email']['HOST_USER']
+        EMAIL_HOST_PASSWORD = json_conf['email']['HOST_PASSWORD']
+        EMAIL_USE_TLS = json_conf['email']['USE_TLS']
+
+# And now, let's define the rest of our settings
+
+PROJECT_ENVPATH = PROJECT_ROOT.joinpath('env')
 
 ADMINS = [("Virgil Dupras", 'hsoft@hardcoded.net')]
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = local_settings.SECRET_KEY
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = local_settings.DEBUG
-
-ALLOWED_HOSTS = local_settings.ALLOWED_HOSTS
-
-# Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -70,22 +98,6 @@ TEMPLATES = [
     },
 ]
 
-if DEBUG:
-    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-else:
-    EMAIL_BACKEND = 'post_office.EmailBackend'
-    if getattr(local_settings, 'EMAIL_HOST'):
-        EMAIL_HOST = local_settings.EMAIL_HOST
-        EMAIL_PORT = local_settings.EMAIL_PORT
-        EMAIL_HOST_USER = local_settings.EMAIL_HOST_USER
-        EMAIL_HOST_PASSWORD = local_settings.EMAIL_HOST_PASSWORD
-        EMAIL_USE_TLS = local_settings.EMAIL_USE_TLS
-
-
-# Database
-# https://docs.djangoproject.com/en/1.10/ref/settings/#databases
-
-DATABASES = local_settings.DATABASES
 
 PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.PBKDF2PasswordHasher',
@@ -141,10 +153,10 @@ STATICFILES_FINDERS = (
     'pipeline.finders.PipelineFinder',
 )
 
-STATIC_ROOT = os.path.join(local_settings.PROJECT_ROOT, 'static')
+STATIC_ROOT = str(PROJECT_ROOT.joinpath('static'))
 STATIC_URL = '/static/'
 
-MEDIA_ROOT = os.path.join(local_settings.PROJECT_ROOT, 'media')
+MEDIA_ROOT = str(PROJECT_ROOT.joinpath('media'))
 MEDIA_URL = '/media/'
 
 CKEDITOR_JQUERY_URL = 'https://code.jquery.com/jquery-2.2.4.min.js'
@@ -201,7 +213,7 @@ PIPELINE = {
     'COMPILERS': [
         'pipeline.compilers.sass.SASSCompiler',
     ],
-    'SASS_BINARY': '/usr/bin/env {}'.format(os.path.join(local_settings.PROJECT_ENVPATH, 'bin', 'sassc')),
+    'SASS_BINARY': '/usr/bin/env {}'.format(str(PROJECT_ENVPATH.joinpath('bin', 'sassc'))),
     'STYLESHEETS': {
         'main': {
             'source_filenames': [

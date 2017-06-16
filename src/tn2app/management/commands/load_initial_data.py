@@ -22,6 +22,7 @@ class Command(BaseCommand):
         fixture_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../fixtures'))
         srcpath = os.path.join(fixture_dir, 'media')
         destpath = settings.MEDIA_ROOT
-        shutil.rmtree(destpath)
+        if os.path.exists(destpath):
+            shutil.rmtree(destpath)
         shutil.copytree(srcpath, destpath)
 
