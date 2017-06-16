@@ -9,10 +9,8 @@ django_name: tn2
 
 django_requirements_file: "{{ django_project_path }}/requirements.freeze"
 
-django_settings_pattern: jsonsettings
-
 django_env_variables:
-  TN2_CONF_PATH: "{{ django_path }}/.env.json"
+  TN2_CONF_PATH: "{{ django_jsonsettings_path }}"
 
 django_jsonsettings_properties:
   project_root: "{{ django_path }}"

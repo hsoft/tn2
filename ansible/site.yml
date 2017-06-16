@@ -9,9 +9,10 @@
     django_touch_reload_path: "{{ django_src_path }}"
     django_domain_name: tn2.local
     django_debug: yes
+    django_secret_key: whatever
 
   environment:
-    TN2_CONF_PATH: /opt/tn2/.env.json
+    TN2_CONF_PATH: /opt/tn2/conf.json
 
   roles:
     - common
