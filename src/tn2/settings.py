@@ -4,11 +4,7 @@ import json
 
 HERE = Path(__file__).parent
 SRC_ROOT = HERE.parent
-PROJECT_ROOT = SRC_ROOT.parent
-if 'TN2_CONF_PATH' in os.environ:
-    CONF_PATH = Path(os.environ['TN2_CONF_PATH'])
-else:
-    CONF_PATH = PROJECT_ROOT.joinpath('conf.json')
+CONF_PATH = Path(os.environ['TN2_CONF_PATH'])
 
 # Start with parsing the conf.json file
 
@@ -17,6 +13,8 @@ with CONF_PATH.open('rt') as fp:
 
 if json_conf.get('project_root'):
     PROJECT_ROOT = Path(json_conf['project_root'])
+else:
+    PROJECT_ROOT = SRC_ROOT.parent
 
 DATABASES = {
     'default': {

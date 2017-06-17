@@ -1,8 +1,8 @@
 {
     "database": {
         "NAME": "tn2",
-        "USER": "postgres",
+        "USER": "postgres"
     },
     "secret_key": "verysecret",
-    "debug": true,
+    "debug": true
 }

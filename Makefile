@@ -1,9 +1,10 @@
 PYTHON ?= python3
 REQ_PYTHON_MINOR_VERSION = 4
+CONF_PATH ?= ./conf.json
 
 .PHONY: reqs
 
-all: conf.json | env
+all: manage.sh | env
 
 env : | reqs
 	@echo "Creating our virtualenv"
@@ -19,5 +20,9 @@ reqs :
 	@${PYTHON} -m venv -h > /dev/null || \
 		echo "Creation of our virtualenv failed. If you're on Ubuntu, you probably need python3-venv."
 
-conf.json:
-	$(error conf.json file needed at project root. Copy it from install/conf.json.example)
+manage.sh: $(CONF_PATH)
+	sed -e "s#%CONF_PATH%#$(CONF_PATH)#g" install/manage.sh.template > $@ || (rm $@; exit 1)
+	chmod +x $@
+
+$(CONF_PATH):
+	$(error $(CONF_PATH) file needed. Copy it from install/conf.json.example)

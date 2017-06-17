@@ -1,3 +1,4 @@
 #!/bin/bash
 
+export TN2_CONF_PATH="%CONF_PATH%"
 ./env/bin/python src/manage.py $@
