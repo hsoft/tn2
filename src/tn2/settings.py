@@ -31,11 +31,11 @@ if DEBUG:
 else:
     EMAIL_BACKEND = 'post_office.EmailBackend'
     if json_conf.get('email'):
-        EMAIL_HOST = json_conf['email']['HOST']
-        EMAIL_PORT = json_conf['email']['PORT']
-        EMAIL_HOST_USER = json_conf['email']['HOST_USER']
-        EMAIL_HOST_PASSWORD = json_conf['email']['HOST_PASSWORD']
-        EMAIL_USE_TLS = json_conf['email']['USE_TLS']
+        EMAIL_HOST = json_conf['email']['host']
+        EMAIL_PORT = json_conf['email']['port']
+        EMAIL_HOST_USER = json_conf['email']['email']
+        EMAIL_HOST_PASSWORD = json_conf['email']['password']
+        EMAIL_USE_TLS = True
 
 # And now, let's define the rest of our settings
 

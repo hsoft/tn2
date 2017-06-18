@@ -4,5 +4,5 @@
     path: "{{ django_project_path }}"
     state: link
     src: "{{ django_project_symlink_dest }}"
-  when: django_project_symlink_dest != ""
+  when: django_project_symlink_dest is defined
 
