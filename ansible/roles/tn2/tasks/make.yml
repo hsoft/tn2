@@ -1,4 +1,9 @@
 ---
+- name: Does our virtualenv already exists?
+  stat:
+    path: "{{ django_path }}/env"
+  register: venv_stat_before_make
+
 - name: Run make
   make:
     chdir: "{{ django_project_path }}"
@@ -8,3 +13,10 @@
   become: yes
   become_user: "{{ django_user }}"
 
+# If we've freshly created our venv, that means that our uwsgi instance is broken. We have to
+# restart it.
+- name: Restart uWSGI if needed
+  service:
+    name: tn2-wsgi
+    state: restarted
+  when: not venv_stat_before_make.stat.exists
