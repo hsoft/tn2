@@ -1,3 +1,5 @@
 ---
+- include: symlink.yml
+- include: make.yml
 - include: tools.yml
 - include: cron.yml

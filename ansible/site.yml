@@ -3,7 +3,6 @@
     - vars/tn2.yml
 
   vars:
-    django_deployment_type: symlink
     django_project_symlink_dest: "/nomadshare"
     # Because django_path is a symlink and it doesn't work.
     django_touch_reload_path: "{{ django_src_path }}"
@@ -11,13 +10,10 @@
     django_debug: yes
     django_secret_key: whatever
 
-  environment:
-    TN2_CONF_PATH: /opt/tn2/conf.json
-
   roles:
     - common
     - postgres-install
     - nginx
     - django
-    - django-deploy
     - tn2
+

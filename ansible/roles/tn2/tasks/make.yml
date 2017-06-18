@@ -1,0 +1,10 @@
+---
+- name: Run make
+  make:
+    chdir: "{{ django_project_path }}"
+    params:
+      ENV_PATH: "{{ django_path }}/env"
+      CONF_PATH: "{{ django_jsonsettings_path }}"
+  become: yes
+  become_user: "{{ django_user }}"
+

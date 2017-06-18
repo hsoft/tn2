@@ -10,6 +10,3 @@
 [submodule "ansible/roles/nginx"]
 	path = ansible/roles/nginx
 	url = https://github.com/savoirfairelinux/ansible-nginx.git
-[submodule "ansible/roles/django-deploy"]
-	path = ansible/roles/django-deploy
-	url = https://github.com/hsoft/ansible-django-deploy.git
