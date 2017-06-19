@@ -10,6 +10,9 @@
     params:
       ENV_PATH: "{{ django_path }}/env"
       CONF_PATH: "{{ django_jsonsettings_path }}"
+      VENV_ARGS: "--system-site-packages"
+      REQUIREMENTS_PATH: "requirements.freeze"
+      MANAGE_PATH: "{{ django_path }}/manage.sh"
   become: yes
   become_user: "{{ django_user }}"
 

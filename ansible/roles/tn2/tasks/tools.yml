@@ -6,7 +6,6 @@
     mode: u=rwx,g=,o=
     owner: "{{ django_user }}"
   with_items:
-    - "manage.sh"
     - "develop.sh"
     - "updatedeps.sh"
 

@@ -1,13 +1,12 @@
 ---
 common_extra_packages:
+  - python3-psycopg2
   # for pillow + django-simple-captcha
   - libz-dev
   - libjpeg-dev
   - libfreetype6-dev
 
 django_name: tn2
-
-django_requirements_file: "{{ django_project_path }}/requirements.freeze"
 
 django_env_variables:
   TN2_CONF_PATH: "{{ django_jsonsettings_path }}"

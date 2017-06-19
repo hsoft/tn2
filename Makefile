@@ -1,7 +1,11 @@
 PYTHON ?= python3
 REQ_PYTHON_MINOR_VERSION = 4
-CONF_PATH ?= ./conf.json
-ENV_PATH ?= env
+CONF_PATH ?= $(abspath conf.json)
+ENV_PATH ?= $(abspath env)
+VENV_ARGS ?=
+REQUIREMENTS_PATH ?= requirements.txt
+MANAGE_PATH ?= ./manage.sh
+SRCDIR_PATH = $(abspath src)
 
 .PHONY: reqs migrate collectstatic
 
@@ -9,8 +13,8 @@ all: $(ENV_PATH) | migrate collectstatic
 
 $(ENV_PATH) : | reqs
 	@echo "Creating our virtualenv"
-	${PYTHON} -m venv $(ENV_PATH) --system-site-packages
-	$(ENV_PATH)/bin/python -m pip install -r requirements.freeze
+	${PYTHON} -m venv $(ENV_PATH) $(VENV_ARGS)
+	$(ENV_PATH)/bin/python -m pip install -r $(REQUIREMENTS_PATH)
 
 reqs :
 	@ret=`${PYTHON} -c "import sys; print(int(sys.version_info[:2] >= (3, ${REQ_PYTHON_MINOR_VERSION})))"`; \
@@ -21,14 +25,17 @@ reqs :
 	@${PYTHON} -m venv -h > /dev/null || \
 		echo "Creation of our virtualenv failed. If you're on Ubuntu, you probably need python3-venv."
 
-migrate: manage.sh
-	./manage.sh migrate
+migrate: $(MANAGE_PATH)
+	$(MANAGE_PATH) migrate
 
-collectstatic: manage.sh
-	./manage.sh collectstatic --no-input
+collectstatic: $(MANAGE_PATH)
+	$(MANAGE_PATH) collectstatic --no-input
 
-manage.sh: $(CONF_PATH)
-	sed -e "s#%CONF_PATH%#$(CONF_PATH)#g" -e "s#%ENV_PATH%#$(ENV_PATH)#g" install/manage.sh.template > $@ || (rm $@; exit 1)
+$(MANAGE_PATH): $(CONF_PATH)
+	sed -e "s#%CONF_PATH%#$(CONF_PATH)#g" \
+		-e "s#%ENV_PATH%#$(ENV_PATH)#g" \
+		-e "s#%SRCDIR_PATH%#$(SRCDIR_PATH)#g" \
+		install/manage.sh.template > $@ || (rm $@; exit 1)
 	chmod +x $@
 
 $(CONF_PATH):
