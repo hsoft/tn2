@@ -31,15 +31,27 @@ class NotificationManager(models.Manager):
         ])
         self.set_notification_flag(participant_ids)
 
+    def notify_of_project_vote(self, vote):
+        Notification.objects.create(
+            user=vote.project.author,
+            other=vote.user,
+            type=Notification.TYPE_PROJECT_VOTE,
+            target=vote.project,
+        )
+        self.set_notification_flag([vote.project.author.id])
+
+
 class Notification(models.Model):
     class Meta:
         ordering = ('-time', )
         app_label = 'tn2app'
 
     TYPE_REPLY = 1
+    TYPE_PROJECT_VOTE = 2
 
     TYPE_CHOICES = (
         (TYPE_REPLY, "Réponse dans une discussion"),
+        (TYPE_PROJECT_VOTE, "Vote pour un projet"),
     )
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='notifications')
@@ -54,11 +66,21 @@ class Notification(models.Model):
 
     def get_message(self):
         if self.target:
-            target_name = "\"{}\"".format(self.target.target.title)
+            if self.type == self.TYPE_PROJECT_VOTE:
+                target_name = "\"{}\"".format(self.target.title)
+            else:
+                target_name = "\"{}\"".format(self.target.target.title)
             target = href(self.target.get_absolute_url(), target_name)
         else:
-            target = "une discussion qui a été supprimée"
-        msg = "{user} a répondu à {target} {time}."
+            if self.type == self.TYPE_PROJECT_VOTE:
+                target = "un projet qui a été supprimé"
+            else:
+                target = "une discussion qui a été supprimée"
+
+        if self.type == self.TYPE_PROJECT_VOTE:
+            msg = "{user} a aimé le projet {target} {time}."
+        else:
+            msg = "{user} a répondu à {target} {time}."
         return mark_safe(msg.format(
             user=self.other.profile.link(),
             target=target,

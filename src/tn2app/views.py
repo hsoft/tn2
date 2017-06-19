@@ -597,7 +597,8 @@ class ProjectLike(LoginRequiredMixin, ProjectAction):
         try:
             ProjectVote.objects.get(user=self.request.user, project=project).delete()
         except ProjectVote.DoesNotExist:
-            ProjectVote.objects.create(user=self.request.user, project=project)
+            vote = ProjectVote.objects.create(user=self.request.user, project=project)
+            Notification.objects.notify_of_project_vote(vote)
 
 
 class ProjectFavorite(LoginRequiredMixin, ProjectAction):
