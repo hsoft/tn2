@@ -49,4 +49,16 @@
 <p>
     <a href="{% url 'search_discussion' %}?q={{ search_query }}">Voir les {{ discussion_qs.count }} discussions</a>
 </p>
+
+<div class="overline">
+    <h5>Utilisateurs</h5>
+</div>
+
+<div class="userlist">
+    {% for profile in user_qs|slice:":60" %}
+        <a href="{{ profile.get_absolute_url }}">
+            <img class="avatar" src="{{ profile.user|avatar_big_url }}" alt="{{ profile.display_name }}">
+        </a>
+    {% endfor %}
+</div>
 {% endblock %}

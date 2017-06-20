@@ -20,6 +20,11 @@ class User(UserBase):
         return self.liked_projects.filter(projectvote__favorite=True)
 
 
+class UserProfileManager(models.Manager):
+    def full_text_search(self, search_query):
+        return self.filter(display_name__icontains=search_query)
+
+
 def get_user_avatar_path(instance, filename):
     root, ext = os.path.splitext(filename)
     return 'avatars/{}{}'.format(instance.user.username, ext)
@@ -63,6 +68,8 @@ class UserProfile(models.Model):
     sewing_machine = models.TextField(blank=True, verbose_name="MAC")
     description_for_articles = models.TextField(blank=True, verbose_name="Description Rédacteur")
     has_notifications = models.BooleanField(default=False)
+
+    objects = UserProfileManager()
 
     def get_absolute_url(self):
         return reverse('user_profile', args=[self.user.username])

@@ -763,13 +763,16 @@ class CompoundSearchView(LoginRequiredMixin, TemplateView):
             article_qs = Article.objects.full_text_search(q)
             project_qs = Project.objects.full_text_search(q)
             discussion_qs = Discussion.objects.full_text_search(q)
+            user_qs = UserProfile.objects.full_text_search(q)
         else:
             article_qs = Article.objects.none()
             project_qs = Project.objects.none()
             discussion_qs = Discussion.objects.none()
+            user_qs = UserProfile.objects.none()
         result['search_query'] = q
         result['article_qs'] = article_qs
         result['project_qs'] = project_qs
         result['discussion_qs'] = discussion_qs
+        result['user_qs'] = user_qs
         return result
 
