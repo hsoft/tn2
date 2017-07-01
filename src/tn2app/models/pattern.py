@@ -10,8 +10,9 @@ class PatternCreator(models.Model):
         app_label = 'tn2app'
         verbose_name = "Créateur de patrons"
         verbose_name_plural = "Créateurs de patrons"
+        ordering = ['name']
 
-    name = models.CharField(max_length=100, verbose_name="Nom")
+    name = models.CharField(max_length=100, db_index=True, verbose_name="Nom")
     url = PermissiveURLField(
         blank=True,
         verbose_name="Site web"
@@ -25,9 +26,10 @@ class Pattern(models.Model):
     class Meta:
         app_label = 'tn2app'
         verbose_name = "Patron"
+        ordering = ['name']
 
     creator = models.ForeignKey(PatternCreator)
-    name = models.CharField(max_length=100, verbose_name="Nom")
+    name = models.CharField(max_length=100, db_index=True, verbose_name="Nom")
     url = PermissiveURLField(
         blank=True,
         verbose_name="Page web"
