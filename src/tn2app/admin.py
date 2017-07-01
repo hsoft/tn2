@@ -7,7 +7,8 @@ from django.contrib.auth.admin import UserAdmin
 from django.utils.text import slugify
 
 from .models import (
-    Article, ArticleCategory, DiscussionGroup, Discussion, UserProfile, Project, PageContents
+    Article, ArticleCategory, DiscussionGroup, Discussion, UserProfile, Project, PageContents,
+    PatternCreator, Pattern
 )
 from .util import dedupe_slug
 
@@ -91,6 +92,12 @@ class ProjectAdmin(BaseModelAdmin):
 admin.site.register(Project, ProjectAdmin)
 
 admin.site.register(PageContents, BaseModelAdmin)
+admin.site.register(PatternCreator, BaseModelAdmin)
+
+class PatternAdmin(BaseModelAdmin):
+    list_display = ('name', 'creator', 'is_free')
+
+admin.site.register(Pattern, PatternAdmin)
 
 class UserProfileInline(admin.StackedInline):
     model = UserProfile
