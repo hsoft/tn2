@@ -9,6 +9,8 @@ from django.utils.safestring import mark_safe
 
 from ckeditor.fields import RichTextField
 
+from ..util import PermissiveURLField
+
 
 __all__ = ['User', 'UserProfile', 'get_user_avatar_path']
 
@@ -58,7 +60,7 @@ class UserProfile(models.Model):
     display_name = models.CharField(max_length=60, db_index=True, verbose_name="Pseudo")
     description = RichTextField(config_name='restricted', blank=True, verbose_name="Qui suis-je?")
     city = models.TextField(blank=True, verbose_name="Ville")
-    website = models.URLField(blank=True, verbose_name="Site web")
+    website = PermissiveURLField(blank=True, verbose_name="Site web")
     skill_level = models.CharField(
         max_length=20,
         blank=True,
