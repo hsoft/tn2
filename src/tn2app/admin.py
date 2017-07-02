@@ -8,7 +8,7 @@ from django.utils.text import slugify
 
 from .models import (
     Article, ArticleCategory, DiscussionGroup, Discussion, UserProfile, Project, PageContents,
-    PatternCreator, Pattern
+    PatternCreator, PatternCategory, Pattern
 )
 from .util import dedupe_slug
 
@@ -93,9 +93,11 @@ admin.site.register(Project, ProjectAdmin)
 
 admin.site.register(PageContents, BaseModelAdmin)
 admin.site.register(PatternCreator, BaseModelAdmin)
+admin.site.register(PatternCategory, BaseModelAdmin)
 
 class PatternAdmin(BaseModelAdmin):
-    list_display = ('name', 'creator', 'is_free')
+    list_display = ('name', 'creator', 'target', 'domain', 'category', 'is_free')
+    list_filter = ('creator', 'target', 'domain', 'category', 'is_free')
 
 admin.site.register(Pattern, PatternAdmin)
 
