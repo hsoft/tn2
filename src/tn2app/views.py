@@ -135,6 +135,9 @@ class DiscussionGroupDetailView(SingleObjectMixin, ListView):
         result = DiscussionGroupListView.breadcrumb()
         return result + [(None, self.object.title_display)]
 
+    def user_can_admin(self):
+        return self.request.user.has_perm('tn2app.change_discussiongroup')
+
     def get(self, request, *args, **kwargs):
         group = self.get_object(queryset=DiscussionGroup.objects.all())
         if not group.can_be_seen_by_user(request.user):
@@ -169,6 +172,9 @@ class DiscussionDetailView(SingleObjectMixin, ViewWithCommentsMixin, ListView):
             (reverse('discussion_group', args=(group.slug, )), group.title_display()),
             (None, discussion.title),
         ]
+
+    def user_can_admin(self):
+        return self.request.user.has_perm('tn2app.change_discussion')
 
     def get(self, request, *args, **kwargs):
         discussion = self.get_object(queryset=Discussion.objects.filter(group__slug=kwargs['group_slug']))
@@ -269,6 +275,9 @@ class ArticleDetailView(ArticleMixin, ViewWithCommentsMixin, DetailView):
     def breadcrumb(self):
         return super().breadcrumb() + [(None, self.get_object().title)]
 
+    def user_can_admin(self):
+        return self.request.user.has_perm('tn2app.change_article')
+
 
 class ArticleList(ArticleMixin, ListView):
     template_name = 'article_list.html'
@@ -355,6 +364,9 @@ class UserProfileView(UserViewMixin, ListView):
     def get_queryset(self):
         queryset = super().get_queryset()
         return queryset.filter(author=self._get_shown_user())
+
+    def user_can_admin(self):
+        return self.request.user.has_perm('tn2app.change_userprofile')
 
 
 class UserFavoritesView(UserViewMixin, ListView):
@@ -507,6 +519,9 @@ class ProjectDetails(ViewWithCommentsMixin, DetailView):
 
     def breadcrumb(self):
         return ProjectList.breadcrumb() + [(None, self.get_object().title)]
+
+    def user_can_admin(self):
+        return self.request.user.has_perm('tn2app.change_project')
 
     def is_liked(self):
         return self.get_object().likes.filter(pk=self.request.user.id).exists()

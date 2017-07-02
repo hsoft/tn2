@@ -72,7 +72,7 @@ def fixurl(url):
 def page_contents(keyname, user):
     try:
         page_contents = PageContents.objects.get(key=keyname)
-        if user.is_staff:
+        if user.has_perm('tn2app.change_pagecontents'):
             edit_link = reverse('admin:tn2app_pagecontents_change', args=(page_contents.id, ))
             return format_html(
                 '<a class="page-edit-link" href="{}"><span class="fa fa-edit"></span></a>{}',

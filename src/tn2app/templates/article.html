@@ -5,7 +5,7 @@
 
 {% block breadcrumb %}
     {{ block.super }}
-    {% if user.is_staff %}
+    {% if view.user_can_admin %}
     <a class="button" href="{% url 'admin:tn2app_article_change' article.id %}">Administrer</a>
     {% endif %}
 {% endblock %}

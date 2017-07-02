@@ -5,7 +5,7 @@
 
 {% block breadcrumb %}
     {{ block.super }}
-    {% if user.is_staff %}
+    {% if view.user_can_admin %}
     <a class="button" href="{% url 'admin:tn2app_discussion_change' discussion.id %}">Administrer</a>
     {% endif %}
 {% endblock %}
@@ -22,7 +22,7 @@
         <img class="avatar" src="{{ discussion.author|avatar_big_url }}" />
         <div class="title">
             {{ discussion.author|user_link }} ({{ discussion.creation_time|naturaltime }})
-            {% if discussion.author == user or user.is_staff %}
+            {% if discussion.author == user or view.user_can_admin %}
             <a class="fa fa-edit" href="{% url 'discussion_edit' group_slug=discussion.group.slug discussion_slug=discussion.slug %}"></a>
             {% endif %}
         </div>

@@ -5,7 +5,7 @@
 
 {% block breadcrumb %}
     {{ block.super }}
-    {% if shown_user == user or user.is_staff %}
+    {% if shown_user == user or view.user_can_admin %}
         <a class="button" href="{% url 'user_profile_edit' username=shown_user.username %}">Modifier</a>
     {% endif %}
 {% endblock %}
