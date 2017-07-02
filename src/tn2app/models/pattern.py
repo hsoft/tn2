@@ -67,7 +67,11 @@ class Pattern(models.Model):
         (NONE, "Aucun"),
     ]
 
-    creator = models.ForeignKey(PatternCreator, verbose_name="Créateur")
+    creator = models.ForeignKey(
+        PatternCreator,
+        on_delete=models.PROTECT,
+        verbose_name="Créateur",
+    )
     name = models.CharField(max_length=100, db_index=True, verbose_name="Nom")
     url = PermissiveURLField(
         blank=True,
@@ -88,6 +92,7 @@ class Pattern(models.Model):
     category = models.ForeignKey(
         PatternCategory,
         null=True,
+        on_delete=models.PROTECT,
         verbose_name="Categorie",
     )
     is_free = models.BooleanField(default=False, db_index=True, verbose_name="Gratuit")
