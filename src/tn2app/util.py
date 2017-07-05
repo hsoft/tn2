@@ -55,8 +55,12 @@ def gravatar_url(email, size=None, default_image=None):
 def fa_str(fa_name):
     return format_html('<span class="fa fa-{}"></span>', fa_name)
 
-def href(url, label):
-    return '<a href="{}">{}</a>'.format(url, label)
+def href(url, label, newwindow=False):
+    if newwindow:
+        fmt = '<a href="{}" target="_blank">{}</a>'
+    else:
+        fmt = '<a href="{}">{}</a>'
+    return format_html(fmt, url, label)
 
 def embed_videos(html, width=630, strip=False):
     """Replaces youtube and vimeo links by proper embed iframes

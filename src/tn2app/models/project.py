@@ -13,6 +13,7 @@ from ckeditor.fields import RichTextField
 
 from ..util import PermissiveURLField
 from .comment import CommentableMixin, AbstractComment
+from .pattern import Pattern
 
 
 __all__ = ['Project', 'ProjectCategory', 'ProjectComment', 'ProjectVote', 'get_project_image_path']
@@ -76,7 +77,15 @@ class Project(CommentableMixin, models.Model):
     description = RichTextField(config_name='restricted')
     category = models.ForeignKey(
         ProjectCategory,
+        null=True,
+        blank=True,
         verbose_name="Catégorie",
+    )
+    pattern = models.ForeignKey(
+        Pattern,
+        null=True,
+        blank=True,
+        verbose_name="Patron",
     )
     pattern_name = models.CharField(
         max_length=250,

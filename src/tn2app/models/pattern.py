@@ -100,3 +100,17 @@ class Pattern(models.Model):
     def __str__(self):
         return self.name
 
+    def get_legacy_category_id(self):
+        if self.target == self.TARGET_MAN:
+            return 13
+        elif self.target == self.TARGET_CHILD:
+            return 11
+        elif self.domain in {self.DOMAIN_KNITTING, self.DOMAIN_CROCHET}:
+            return 12
+        elif self.domain == self.DOMAIN_NEEDLEWORK:
+            return 14
+        elif self.category.id <= 10:
+            return self.category.id
+        else:
+            return 0
+

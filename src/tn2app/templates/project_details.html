@@ -82,7 +82,7 @@
         <img class="img-avatar-big" src="{{ project.author|avatar_big_url }}"/>
         Par {{ project.author|user_link }} <span>({{ project.creation_time|date:'d/m/Y' }})</span>
         <br>
-        <span>dans <a href="{% url 'project_list' %}?category={{ project.category.id }}">{{ project.category }}</a></span>
+        <span>dans {{ view.category_link }}</span>
     </div>
     {% if project.get_images|length > 1 %}
     <div class="overline clear">
@@ -104,11 +104,7 @@
     </div>
     <div class="project-info">
         <strong>Patron:</strong>
-        {% if project.pattern_url %}
-        <a href="{{ project.pattern_url|fixurl }}" target="_blank">{{ project.pattern_name }}</a>
-        {% else %}
-        {{ project.pattern_name }}
-        {% endif %}
+        {{ view.pattern_link }}
         <br>
         {% if project.blog_post_url %}
         <a class="blog-url" href="{{ project.blog_post_url|fixurl }}" target="_blank">Retrouvez ce projet sur mon blog</a>

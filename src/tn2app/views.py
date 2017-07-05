@@ -18,12 +18,13 @@ import account.forms
 
 from .models import (
     User, UserProfile, Article, ArticleCategory, DiscussionGroup, Discussion, Project, ProjectVote,
-    ProjectCategory, ArticleComment, DiscussionComment, ProjectComment, Notification
+    ProjectCategory, ArticleComment, DiscussionComment, ProjectComment, Notification, Pattern
 )
 from .forms import (
     UserProfileForm, NewDiscussionForm, EditDiscussionForm, CommentForm, ProjectForm,
     SignupForm, ContactForm, UserSendMessageForm
 )
+from .util import href
 
 class SignupView(account.views.SignupView):
     form_class = SignupForm
@@ -503,7 +504,20 @@ class ProjectList(ListView):
         queryset = super().get_queryset()
         category = self.active_category()
         if category:
-            queryset = queryset.filter(category=category)
+            catid = category.id
+            if catid == 13:
+                pattern_query = Q(pattern__target=Pattern.TARGET_MAN)
+            elif catid == 11:
+                pattern_query = Q(pattern__target=Pattern.TARGET_CHILD)
+            elif catid == 12:
+                pattern_query = Q(
+                    pattern__domain__in={Pattern.DOMAIN_KNITTING, Pattern.DOMAIN_CROCHET}
+                )
+            elif catid == 14:
+                pattern_query = Q(pattern__domain=Pattern.DOMAIN_NEEDLEWORK)
+            else:
+                pattern_query = Q(pattern__category=catid)
+            queryset = queryset.filter(Q(category=category) | pattern_query)
         order = self.active_order()
         if order == 'popular':
             queryset = queryset.annotate(num_likes=Count('likes'))
@@ -537,6 +551,39 @@ class ProjectDetails(ViewWithCommentsMixin, DetailView):
     def myprojects(self):
         current = self.get_object()
         return current.author.projects.exclude(id=current.id)
+
+    def category_link(self):
+        project = self.get_object()
+        if project.pattern:
+            category_id = project.pattern.get_legacy_category_id()
+            if category_id:
+                category = ProjectCategory.objects.get(id=category_id)
+            else:
+                # It's a new category and we can't filter by it yet. Show the name, but not a link.
+                return project.pattern.category.name
+        elif project.category:
+            category = project.category
+        else:
+            return ''
+        return href(
+            '{}?category={}'.format(reverse('project_list'), category.id),
+            category.name
+        )
+
+    def pattern_link(self):
+        project = self.get_object()
+        if project.pattern:
+            name = project.pattern.name
+            url = project.pattern.url
+        else:
+            name = project.pattern_name
+            url = project.pattern_url
+            if url and not url.startswith('http'):
+                url = 'http://{}'.format(url)
+        if url:
+            return href(url, name, newwindow=True)
+        else:
+            return name
 
     def allprojects(self):
         # it's a really strange query that is made in the old app: it's 3 items with, in the middle,

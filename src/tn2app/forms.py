@@ -11,8 +11,9 @@ from captcha.fields import CaptchaField
 from easy_thumbnails.utils import exif_orientation
 import account.forms
 
-from .models import UserProfile, Discussion, Project
+from .models import UserProfile, Discussion, Project, Pattern
 from .util import dedupe_slug, sanitize_comment
+from .widgets import PatternSelect
 
 # http://stackoverflow.com/a/23575424
 ImageFile.LOAD_TRUNCATED_IMAGES = True
@@ -108,8 +109,8 @@ class ProjectForm(BaseModelForm):
     class Meta:
         model = Project
         fields = [
-            'title', 'category', 'description', 'pattern_name', 'pattern_url', 'blog_post_url',
-            'image1', 'image2', 'image3', 'image4'
+            'title', 'pattern', 'category', 'pattern_name', 'pattern_url', 'description',
+            'blog_post_url', 'image1', 'image2', 'image3', 'image4'
         ]
         help_texts = {
             'title': "Choisissez un titre concis et explicite",
@@ -118,6 +119,14 @@ class ProjectForm(BaseModelForm):
             'pattern_url': "Si le patron ou tutoriel utilisé est disponible sur un site internet, merci d'en indiquer l'adresse.",
             'blog_post_url': "Si vous avez publié ce projet sur votre blog, collez ici le lien direct vers l'article.",
         }
+
+    pattern = forms.ModelChoiceField(
+        queryset=Pattern.objects.all(),
+        required=False,
+        widget=PatternSelect,
+        empty_label="Patron non répertorié",
+        help_text="Si vous choisissez un patron répertorié, il n'est pas nécessaire de remplir les 3 champs qui suivent.",
+    )
 
     def __init__(self, **kwargs):
         self.author = kwargs.pop('author', None)
@@ -172,6 +181,14 @@ class ProjectForm(BaseModelForm):
 
     def clean_image4(self):
         return self.validate_and_resize_image(self.cleaned_data['image4'])
+
+    def clean(self):
+        cleaned_data = super().clean()
+        if not (cleaned_data.get('pattern') or cleaned_data.get('category')):
+            raise forms.ValidationError(
+                "Une catégorie est nécessaire lorsque le patron n'est pas répertorié"
+            )
+        return cleaned_data
 
     def save(self, commit=True):
         instance = super().save(commit=False)
