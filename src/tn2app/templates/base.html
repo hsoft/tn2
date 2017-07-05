@@ -12,6 +12,7 @@
         {% stylesheet 'main' %}
         <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}"/>
         <link rel="shortcut icon" href="{% static 'images/favicon.png' %}" type="image/x-icon" />
+        {% block extra_head %}{% endblock %}
     </head>
     <body class="{% block bodyclasses %}{% endblock %}">
         <div class="header">

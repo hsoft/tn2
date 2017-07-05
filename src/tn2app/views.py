@@ -5,7 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.syndication.views import Feed
 from django.core.exceptions import PermissionDenied
 from django.db.models import Max, Count, Q
-from django.http import Http404, HttpResponseRedirect
+from django.http import Http404, HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.views.generic import ListView, TemplateView, DetailView, RedirectView, FormView, View
 from django.views.generic.base import ContextMixin
@@ -838,3 +838,11 @@ class CompoundSearchView(LoginRequiredMixin, TemplateView):
         result['user_qs'] = user_qs
         return result
 
+# AJAX
+
+class PatternListJSON(View):
+    def get(self, request, *args, **kwargs):
+        qs = Pattern.objects.filter(creator_id=kwargs['creator_id'])
+        return JsonResponse({
+            'objects': list(qs.values_list('id', 'name')),
+        })

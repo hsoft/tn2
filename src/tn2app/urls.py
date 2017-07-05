@@ -121,6 +121,8 @@ urlpatterns = [
     ),
 
     url(r'^contact/$', views.ContactView.as_view(), name='page_contact'),
+
+    url(r'^ajax/patterns/(?P<creator_id>\d+)/$', views.PatternListJSON.as_view(), name='ajax_patterns'),
 ]
 
 PAGES = [

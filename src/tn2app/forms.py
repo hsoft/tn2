@@ -121,9 +121,10 @@ class ProjectForm(BaseModelForm):
         }
 
     pattern = forms.ModelChoiceField(
-        queryset=Pattern.objects.all(),
+        queryset=Pattern.objects.none(),
         required=False,
         widget=PatternSelect,
+        label="Patron",
         empty_label="Patron non répertorié",
         help_text="Si vous choisissez un patron répertorié, il n'est pas nécessaire de remplir les 3 champs qui suivent.",
     )
