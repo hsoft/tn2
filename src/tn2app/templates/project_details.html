@@ -106,6 +106,11 @@
         <strong>Patron:</strong>
         {{ view.pattern_link }}
         <br>
+        {% if project.pattern %}
+        <strong>Créateur:</strong>
+        {{ view.creator_link }}
+        <br>
+        {% endif %}
         {% if project.blog_post_url %}
         <a class="blog-url" href="{{ project.blog_post_url|fixurl }}" target="_blank">Retrouvez ce projet sur mon blog</a>
         <br>

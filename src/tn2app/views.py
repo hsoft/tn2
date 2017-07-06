@@ -585,6 +585,16 @@ class ProjectDetails(ViewWithCommentsMixin, DetailView):
         else:
             return name
 
+    def creator_link(self):
+        project = self.get_object()
+        if project.pattern:
+            creator = project.pattern.creator
+            if creator:
+                if creator.url:
+                    return href(creator.url, creator.name, newwindow=True)
+                else:
+                    return creator.name
+
     def allprojects(self):
         # it's a really strange query that is made in the old app: it's 3 items with, in the middle,
         # the current project. Then, on the left, the project created just before it, and on the
