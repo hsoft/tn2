@@ -29,6 +29,12 @@ form.newproject, form.editproject {
     input[type="text"], input[type="url"] {
         width: 80%;
     }
+    #id_pattern {
+        width: 25%;
+    }
+    #id_pattern_creator {
+        width: 30%;
+    }
 }
 
 form.discussion {
