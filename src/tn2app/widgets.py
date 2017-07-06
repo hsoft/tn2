@@ -5,13 +5,14 @@ from .models import PatternCreator, Pattern
 
 class PatternSelect(Select):
     def render(self, name, value, attrs=None, renderer=None):
+        nr = [(0, "Patron non répertorié")]
         if value:
             pattern = Pattern.objects.get(id=value)
             creator_id = pattern.creator_id
             self.choices = [(value, pattern.name)]
         else:
             creator_id = 0
-        nr = [(0, "Patron non répertorié")]
+            self.choices = nr
         creator_qs = PatternCreator.objects\
             .annotate(pattern_count=Count('pattern'))\
             .filter(pattern_count__gt=0)

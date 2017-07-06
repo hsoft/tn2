@@ -121,7 +121,7 @@ class ProjectForm(BaseModelForm):
         }
 
     pattern = forms.ModelChoiceField(
-        queryset=Pattern.objects.none(),
+        queryset=Pattern.objects.all(),
         required=False,
         widget=PatternSelect,
         label="Patron",

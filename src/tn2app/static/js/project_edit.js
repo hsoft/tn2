@@ -34,15 +34,19 @@ var tn2_project_edit = {
                 url: '/ajax/patterns/' + creator_id + '/',
                 dataType: 'json',
             }).done(function (data) {
+                var $selected_option = null;
+                $pattern_selector.prop('disabled', false);
                 $.each(data.objects, function (index, value) {
                     var $option = $('<option/>')
                         .prop('value', value[0])
                         .text(value[1]);
+                    if ((index == 0) || (value[0] == pattern_id)) {
+                        $selected_option = $option;
+                    }
                     $pattern_selector.append($option);
                 });
+                $selected_option.prop('selected', true);
                 $pattern_selector.change();
-                $pattern_selector.prop('disabled', false);
-                $pattern_selector.val(pattern_id);
             });
         } else {
             var $option = $('<option/>')
