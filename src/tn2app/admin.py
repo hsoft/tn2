@@ -96,8 +96,9 @@ admin.site.register(PatternCreator, BaseModelAdmin)
 admin.site.register(PatternCategory, BaseModelAdmin)
 
 class PatternAdmin(BaseModelAdmin):
-    list_display = ('name', 'creator', 'target', 'domain', 'category', 'is_free')
-    list_filter = ('creator', 'target', 'domain', 'category', 'is_free')
+    list_display = ('name', 'creator', 'target', 'domain', 'category', 'is_free', 'is_jersey')
+    list_filter = ('creator', 'target', 'domain', 'category', 'is_free', 'is_jersey')
+    search_fields = ('name',)
 
 admin.site.register(Pattern, PatternAdmin)
 

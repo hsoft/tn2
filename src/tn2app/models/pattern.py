@@ -89,6 +89,7 @@ class Pattern(models.Model):
         verbose_name="Categorie",
     )
     is_free = models.BooleanField(default=False, db_index=True, verbose_name="Gratuit")
+    is_jersey = models.BooleanField(default=False, db_index=True, verbose_name="Maille")
 
     def __str__(self):
         return self.name
