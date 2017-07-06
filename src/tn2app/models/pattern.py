@@ -41,8 +41,6 @@ class Pattern(models.Model):
         verbose_name = "Patron"
         ordering = ['name']
 
-    NONE = 0
-
     TARGET_WOMAN = 1
     TARGET_MAN = 2
     TARGET_CHILD = 3
@@ -52,7 +50,6 @@ class Pattern(models.Model):
         (TARGET_MAN, "Homme"),
         (TARGET_CHILD, "Enfant"),
         (TARGET_OTHER, "Accessoire"),
-        (NONE, "Aucun"),
     ]
 
     DOMAIN_SEWING = 1
@@ -64,7 +61,6 @@ class Pattern(models.Model):
         (DOMAIN_KNITTING, "Tricot"),
         (DOMAIN_CROCHET, "Crochet"),
         (DOMAIN_NEEDLEWORK, "Broderie"),
-        (NONE, "Aucun"),
     ]
 
     creator = models.ForeignKey(
@@ -79,19 +75,16 @@ class Pattern(models.Model):
     )
     target = models.PositiveSmallIntegerField(
         db_index=True,
-        default=NONE,
         choices=TARGET_CHOICES,
         verbose_name="Destinataire",
     )
     domain = models.PositiveSmallIntegerField(
         db_index=True,
-        default=NONE,
         choices=DOMAIN_CHOICES,
         verbose_name="Domaine",
     )
     category = models.ForeignKey(
         PatternCategory,
-        null=True,
         on_delete=models.PROTECT,
         verbose_name="Categorie",
     )
