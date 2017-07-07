@@ -49,7 +49,7 @@ class Pattern(models.Model):
         (TARGET_WOMAN, "Femme"),
         (TARGET_MAN, "Homme"),
         (TARGET_CHILD, "Enfant"),
-        (TARGET_OTHER, "Accessoire"),
+        (TARGET_OTHER, "Autre"),
     ]
 
     DOMAIN_SEWING = 1

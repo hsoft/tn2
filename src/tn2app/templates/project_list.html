@@ -52,29 +52,17 @@
         </li>
     </ul>
 
+    {% include 'include/title.html' with text="Trier par destinataire" %}
+
+    {{ view.target_selector }}
+
+    {% include 'include/title.html' with text="Trier par domaine" %}
+
+    {{ view.domain_selector }}
+
     {% include 'include/title.html' with text="Trier par catégorie" %}
 
-    {% with active_category=view.active_category %}
-    <ul class="selector with-lines two-columns">
-        <li>
-            <a
-                {% if not active_category %}class="active"{% endif %}
-                href="{% add_get category='' page=1 %}">
-                Tous les projets
-            </a>
-        </li>
-        <li>&nbsp;</li>
-        {% for cat in view.categories.all %}
-        <li>
-            <a
-                {% if active_category == cat %}class="active"{% endif %}
-                href="{% add_get category=cat.id page=1 %}">
-                {{ cat.name }}
-            </a>
-        </li>
-        {% endfor %}
-    </ul>
-    {% endwith %}
+    {{ view.category_selector }}
 </div>
 {% endblock %}
 

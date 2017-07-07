@@ -18,13 +18,15 @@ import account.forms
 
 from .models import (
     User, UserProfile, Article, ArticleCategory, DiscussionGroup, Discussion, Project, ProjectVote,
-    ProjectCategory, ArticleComment, DiscussionComment, ProjectComment, Notification, Pattern
+    ProjectCategory, ArticleComment, DiscussionComment, ProjectComment, Notification, Pattern,
+    PatternCategory
 )
 from .forms import (
     UserProfileForm, NewDiscussionForm, EditDiscussionForm, CommentForm, ProjectForm,
     SignupForm, ContactForm, UserSendMessageForm
 )
 from .util import href
+from .widgets import UnrolledTwoColsSelect
 
 class SignupView(account.views.SignupView):
     form_class = SignupForm
@@ -467,22 +469,32 @@ class ProjectList(ListView):
     model = Project
     paginate_by = 15
 
-    categories = ProjectCategory.objects
-
     def active_order(self):
         result = self.request.GET.get('order')
         if result not in {'latest', 'popular', 'random'}:
             result = 'latest'
         return result
 
-    def active_category(self):
-        catid = self.request.GET.get('category')
-        if not catid:
-            return None
-        try:
-            return ProjectCategory.objects.get(id=catid)
-        except ProjectCategory.DoesNotExist:
-            return None
+    def target_selector(self):
+        return UnrolledTwoColsSelect(
+            self.request,
+            Pattern.TARGET_CHOICES,
+            'target',
+        ).render()
+
+    def domain_selector(self):
+        return UnrolledTwoColsSelect(
+            self.request,
+            Pattern.DOMAIN_CHOICES,
+            'domain',
+        ).render()
+
+    def category_selector(self):
+        return UnrolledTwoColsSelect(
+            self.request,
+            PatternCategory.objects.values_list('id', 'name'),
+            'category',
+        ).render()
 
     def popular_this_week(self):
         return Project.objects.popular_this_week()
@@ -501,23 +513,48 @@ class ProjectList(ListView):
             return '-creation_time'
 
     def get_queryset(self):
+
+        def get(argname):
+            try:
+                return int(self.request.GET.get(argname))
+            except (ValueError, TypeError):
+                return None
+
         queryset = super().get_queryset()
-        category = self.active_category()
-        if category:
-            catid = category.id
-            if catid == 13:
-                pattern_query = Q(pattern__target=Pattern.TARGET_MAN)
-            elif catid == 11:
-                pattern_query = Q(pattern__target=Pattern.TARGET_CHILD)
-            elif catid == 12:
-                pattern_query = Q(
-                    pattern__domain__in={Pattern.DOMAIN_KNITTING, Pattern.DOMAIN_CROCHET}
-                )
-            elif catid == 14:
-                pattern_query = Q(pattern__domain=Pattern.DOMAIN_NEEDLEWORK)
+        catid = get('category')
+        if catid:
+            q = Q(pattern__category_id=catid)
+            # Legacy catids that make sense are catids from 1-10. Ignore the rest.
+            if catid <= 10:
+                q |= Q(category_id=catid)
+            queryset = queryset.filter(q)
+        domainid = get('domain')
+        if domainid:
+            q = Q(pattern__domain=domainid)
+            if domainid in {Pattern.DOMAIN_KNITTING, Pattern.DOMAIN_CROCHET}:
+                legacy_catids = {12}
+            elif domainid == Pattern.DOMAIN_NEEDLEWORK:
+                legacy_catids = {14}
             else:
-                pattern_query = Q(pattern__category=catid)
-            queryset = queryset.filter(Q(category=category) | pattern_query)
+                # All "normal" categories
+                legacy_catids = set(range(1, 11))
+            queryset = queryset.filter(
+                Q(pattern__domain=domainid) | Q(category_id__in=legacy_catids)
+            )
+        targetid = get('target')
+        if targetid:
+            if targetid == Pattern.TARGET_MAN:
+                legacy_catids = {13}
+            elif targetid == Pattern.TARGET_CHILD:
+                legacy_catids = {11}
+            elif targetid == Pattern.TARGET_OTHER:
+                legacy_catids = {8, 10}
+            else:
+                # All "normal" categories
+                legacy_catids = set(range(1, 11))
+            queryset = queryset.filter(
+                Q(pattern__target=targetid) | Q(category_id__in=legacy_catids)
+            )
         order = self.active_order()
         if order == 'popular':
             queryset = queryset.annotate(num_likes=Count('likes'))

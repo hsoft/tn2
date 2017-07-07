@@ -1,0 +1,19 @@
+{% load add_get_parameter %}
+<ul class="selector with-lines two-columns">
+    <li>
+        <a
+            {% if not widget.selected_value %}class="active"{% endif %}
+            href="{{ widget.get_neutral_href }}">
+            Tous
+        </a>
+    </li>
+    <li>&nbsp;</li>
+    {% for label, active, href in widget.get_options %}
+    <li>
+        <a {% if active %}class="active"{% endif %} href="{{ href }}">
+            {{ label }}
+        </a>
+    </li>
+    {% endfor %}
+</ul>
+
