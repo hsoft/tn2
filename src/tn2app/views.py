@@ -592,19 +592,23 @@ class ProjectDetails(ViewWithCommentsMixin, DetailView):
     def category_link(self):
         project = self.get_object()
         if project.pattern:
-            category_id = project.pattern.get_legacy_category_id()
-            if category_id:
-                category = ProjectCategory.objects.get(id=category_id)
-            else:
-                # It's a new category and we can't filter by it yet. Show the name, but not a link.
-                return project.pattern.category.name
+            argname, arg, name = 'category', project.pattern.category.id, project.pattern.category.name
         elif project.category:
-            category = project.category
+            catid = project.category.id
+            if catid == 11:
+                argname, arg, name = 'target', Pattern.TARGET_CHILD, "Enfants"
+            elif catid == 12:
+                argname, arg, name = 'domain', Pattern.DOMAIN_KNITTING, "Tricot"
+            elif catid == 13:
+                argname, arg, name = 'target', Pattern.TARGET_MAN, "Hommes"
+            elif catid == 14:
+                argname, arg, name = 'domain', Pattern.DOMAIN_NEEDLEWORK, "Broderie"
+            else:
+                argname, arg, name = 'category', catid, project.category.name
         else:
             return ''
         return href(
-            '{}?category={}'.format(reverse('project_list'), category.id),
-            category.name
+            '{}?{}={}'.format(reverse('project_list'), argname, arg), name
         )
 
     def pattern_link(self):
