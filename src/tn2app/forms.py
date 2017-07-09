@@ -114,7 +114,7 @@ class ProjectForm(BaseModelForm):
         ]
         help_texts = {
             'title': "Choisissez un titre concis et explicite",
-            'category': "Note : Toutes les réalisations à destination d'enfants appartiennent à la catégorie \"Enfants\". Nous n'acceptons plus de photos de mineurs de moins de 13 ans.",
+            'target': "Note sur le destinataire \"Enfant\" : Nous n'acceptons plus de photos de mineurs de moins de 13 ans.",
             'pattern_name': "Si vous avez utilisé un patron ou un tutoriel pour réaliser votre projet, indiquez son nom ici.",
             'pattern_url': "Si le patron ou tutoriel utilisé est disponible sur un site internet, merci d'en indiquer l'adresse.",
             'blog_post_url': "Si vous avez publié ce projet sur votre blog, collez ici le lien direct vers l'article.",
