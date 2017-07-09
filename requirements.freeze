@@ -1,12 +1,13 @@
-Django==1.11.2
-Pillow==4.1.1
+Django==1.11.3
+Pillow==4.2.1
 beautifulsoup4==4.6.0
 bleach==2.0.0
 django-appconf==1.0.2
-django-ckeditor==5.2.2
+django-ckeditor==5.3.0
 django-hashers-passlib==0.3
+django-js-asset==0.1.1
 django-pipeline==1.6.13
-django-post-office==2.0.8
+django-post-office==3.0.0
 django-simple-captcha==0.5.5
 django-user-accounts==2.0.3
 easy-thumbnails==2.4.1
