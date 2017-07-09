@@ -109,8 +109,8 @@ class ProjectForm(BaseModelForm):
     class Meta:
         model = Project
         fields = [
-            'title', 'pattern', 'category', 'pattern_name', 'pattern_url', 'description',
-            'blog_post_url', 'image1', 'image2', 'image3', 'image4'
+            'title', 'pattern', 'target', 'domain', 'category', 'pattern_name', 'pattern_url',
+            'description', 'blog_post_url', 'image1', 'image2', 'image3', 'image4'
         ]
         help_texts = {
             'title': "Choisissez un titre concis et explicite",
@@ -183,12 +183,26 @@ class ProjectForm(BaseModelForm):
     def clean_image4(self):
         return self.validate_and_resize_image(self.cleaned_data['image4'])
 
+    def clean_target(self):
+        result = self.cleaned_data['target']
+        if not result:
+            result = None
+        return result
+
+    def clean_domain(self):
+        result = self.cleaned_data['domain']
+        if not result:
+            result = None
+        return result
+
     def clean(self):
         cleaned_data = super().clean()
-        if not (cleaned_data.get('pattern') or cleaned_data.get('category')):
-            raise forms.ValidationError(
-                "Une catégorie est nécessaire lorsque le patron n'est pas répertorié"
-            )
+        if not cleaned_data.get('pattern'):
+            if not all(cleaned_data.get(attr) for attr in {'target', 'domain', 'category'}):
+                raise forms.ValidationError(
+                    "Les champs Destinataire, Domaine et Catégorie sont nécessaires lorsque le "
+                    "patron n'est pas répertorié"
+                )
         return cleaned_data
 
     def save(self, commit=True):

@@ -523,37 +523,18 @@ class ProjectList(ListView):
         queryset = super().get_queryset()
         catid = get('category')
         if catid:
-            q = Q(pattern__category_id=catid)
-            # Legacy catids that make sense are catids from 1-10. Ignore the rest.
-            if catid <= 10:
-                q |= Q(category_id=catid)
-            queryset = queryset.filter(q)
+            queryset = queryset.filter(
+                Q(pattern__category_id=catid) | Q(category_id=catid)
+            )
         domainid = get('domain')
         if domainid:
-            q = Q(pattern__domain=domainid)
-            if domainid in {Pattern.DOMAIN_KNITTING, Pattern.DOMAIN_CROCHET}:
-                legacy_catids = {12}
-            elif domainid == Pattern.DOMAIN_NEEDLEWORK:
-                legacy_catids = {14}
-            else:
-                # All "normal" categories
-                legacy_catids = set(range(1, 11))
             queryset = queryset.filter(
-                Q(pattern__domain=domainid) | Q(category_id__in=legacy_catids)
+                Q(pattern__domain=domainid) | Q(domain=domainid)
             )
         targetid = get('target')
         if targetid:
-            if targetid == Pattern.TARGET_MAN:
-                legacy_catids = {13}
-            elif targetid == Pattern.TARGET_CHILD:
-                legacy_catids = {11}
-            elif targetid == Pattern.TARGET_OTHER:
-                legacy_catids = {8, 10}
-            else:
-                # All "normal" categories
-                legacy_catids = set(range(1, 11))
             queryset = queryset.filter(
-                Q(pattern__target=targetid) | Q(category_id__in=legacy_catids)
+                Q(pattern__target=targetid) | Q(target=targetid)
             )
         order = self.active_order()
         if order == 'popular':
@@ -594,17 +575,11 @@ class ProjectDetails(ViewWithCommentsMixin, DetailView):
         if project.pattern:
             argname, arg, name = 'category', project.pattern.category.id, project.pattern.category.name
         elif project.category:
-            catid = project.category.id
-            if catid == 11:
-                argname, arg, name = 'target', Pattern.TARGET_CHILD, "Enfants"
-            elif catid == 12:
-                argname, arg, name = 'domain', Pattern.DOMAIN_KNITTING, "Tricot"
-            elif catid == 13:
-                argname, arg, name = 'target', Pattern.TARGET_MAN, "Hommes"
-            elif catid == 14:
-                argname, arg, name = 'domain', Pattern.DOMAIN_NEEDLEWORK, "Broderie"
-            else:
-                argname, arg, name = 'category', catid, project.category.name
+            argname, arg, name = 'category', project.category.id, project.category.name
+        elif project.target > 1:
+            argname, arg, name = 'target', project.target, project.get_target_display()
+        elif project.domain > 1:
+            argname, arg, name = 'domain', project.domain, project.get_domain_display()
         else:
             return ''
         return href(

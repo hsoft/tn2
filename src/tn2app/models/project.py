@@ -75,10 +75,25 @@ class Project(CommentableMixin, models.Model):
         verbose_name="Titre du projet",
     )
     description = RichTextField(config_name='restricted')
+    target = models.PositiveSmallIntegerField(
+        db_index=True,
+        choices=Pattern.TARGET_CHOICES,
+        null=True,
+        blank=True,
+        verbose_name="Destinataire",
+    )
+    domain = models.PositiveSmallIntegerField(
+        db_index=True,
+        choices=Pattern.DOMAIN_CHOICES,
+        null=True,
+        blank=True,
+        verbose_name="Domaine",
+    )
     category = models.ForeignKey(
         ProjectCategory,
         null=True,
         blank=True,
+        limit_choices_to={'id__lte': 10},
         verbose_name="Catégorie",
     )
     pattern = models.ForeignKey(

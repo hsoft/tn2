@@ -14,7 +14,7 @@ var tn2_project_edit = {
     },
 
     enable_freeform_pattern_fields: function(enabled) {
-        var names = ['category', 'pattern_name', 'pattern_url'];
+        var names = ['target', 'domain', 'category', 'pattern_name', 'pattern_url'];
         $.each(names, function(index, value) {
             $('*[name="' + value + '"]').prop('disabled', !enabled);
         });
