@@ -15,6 +15,7 @@ class Command(BaseCommand):
             'emails',
             'articlecategory',
             'projectcategory',
+            'patterncategory',
             'sample_data',
         ]
         for fixture in FIXTURES:

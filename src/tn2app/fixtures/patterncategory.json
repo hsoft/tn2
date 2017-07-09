@@ -1,0 +1,100 @@
+[
+{
+    "model": "tn2app.patterncategory",
+    "pk": 1,
+    "fields": {
+        "name": "Hauts"
+    }
+},
+{
+    "model": "tn2app.patterncategory",
+    "pk": 2,
+    "fields": {
+        "name": "Robes"
+    }
+},
+{
+    "model": "tn2app.patterncategory",
+    "pk": 3,
+    "fields": {
+        "name": "Jupes"
+    }
+},
+{
+    "model": "tn2app.patterncategory",
+    "pk": 4,
+    "fields": {
+        "name": "Pantalons/Shorts"
+    }
+},
+{
+    "model": "tn2app.patterncategory",
+    "pk": 5,
+    "fields": {
+        "name": "Vestes/Manteaux"
+    }
+},
+{
+    "model": "tn2app.patterncategory",
+    "pk": 6,
+    "fields": {
+        "name": "Combinaisons"
+    }
+},
+{
+    "model": "tn2app.patterncategory",
+    "pk": 7,
+    "fields": {
+        "name": "Ensembles"
+    }
+},
+{
+    "model": "tn2app.patterncategory",
+    "pk": 8,
+    "fields": {
+        "name": "Sacs/Accessoires"
+    }
+},
+{
+    "model": "tn2app.patterncategory",
+    "pk": 9,
+    "fields": {
+        "name": "Lingerie"
+    }
+},
+{
+    "model": "tn2app.patterncategory",
+    "pk": 10,
+    "fields": {
+        "name": "D\u00e9co/Maison"
+    }
+},
+{
+    "model": "tn2app.patterncategory",
+    "pk": 11,
+    "fields": {
+        "name": "Pyjamas"
+    }
+},
+{
+    "model": "tn2app.patterncategory",
+    "pk": 12,
+    "fields": {
+        "name": "D\u00e9guisements"
+    }
+},
+{
+    "model": "tn2app.patterncategory",
+    "pk": 13,
+    "fields": {
+        "name": "Chemises"
+    }
+},
+{
+    "model": "tn2app.patterncategory",
+    "pk": 14,
+    "fields": {
+        "name": "Pulls/Gilets"
+    }
+}
+]
