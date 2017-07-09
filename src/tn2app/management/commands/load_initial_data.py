@@ -14,7 +14,6 @@ class Command(BaseCommand):
             'pages',
             'emails',
             'articlecategory',
-            'projectcategory',
             'patterncategory',
             'sample_data',
         ]

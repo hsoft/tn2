@@ -18,8 +18,7 @@ import account.forms
 
 from .models import (
     User, UserProfile, Article, ArticleCategory, DiscussionGroup, Discussion, Project, ProjectVote,
-    ProjectCategory, ArticleComment, DiscussionComment, ProjectComment, Notification, Pattern,
-    PatternCategory
+    ArticleComment, DiscussionComment, ProjectComment, Notification, Pattern, PatternCategory
 )
 from .forms import (
     UserProfileForm, NewDiscussionForm, EditDiscussionForm, CommentForm, ProjectForm,

@@ -13,21 +13,10 @@ from ckeditor.fields import RichTextField
 
 from ..util import PermissiveURLField
 from .comment import CommentableMixin, AbstractComment
-from .pattern import Pattern
+from .pattern import Pattern, PatternCategory
 
 
-__all__ = ['Project', 'ProjectCategory', 'ProjectComment', 'ProjectVote', 'get_project_image_path']
-
-class ProjectCategory(models.Model):
-    class Meta:
-        app_label = 'tn2app'
-
-    name = models.CharField(max_length=100)
-    description = models.TextField()
-
-    def __str__(self):
-        return self.name
-
+__all__ = ['Project', 'ProjectComment', 'ProjectVote', 'get_project_image_path']
 
 def get_project_image_path(instance, filename, slot):
     root, ext = os.path.splitext(filename)
@@ -90,10 +79,10 @@ class Project(CommentableMixin, models.Model):
         verbose_name="Domaine",
     )
     category = models.ForeignKey(
-        ProjectCategory,
+        PatternCategory,
         null=True,
         blank=True,
-        limit_choices_to={'id__lte': 10},
+        on_delete=models.PROTECT,
         verbose_name="Catégorie",
     )
     pattern = models.ForeignKey(
