@@ -126,7 +126,7 @@ class ProjectForm(BaseModelForm):
         widget=PatternSelect,
         label="Patron",
         empty_label="Patron non répertorié",
-        help_text="Si vous choisissez un patron répertorié, il n'est pas nécessaire de remplir les 3 champs qui suivent.",
+        help_text="Si vous choisissez un patron répertorié, il n'est pas nécessaire de remplir les 5 champs qui suivent.",
     )
 
     def __init__(self, **kwargs):
