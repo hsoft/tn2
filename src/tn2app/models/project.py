@@ -68,20 +68,17 @@ class Project(CommentableMixin, models.Model):
         db_index=True,
         choices=Pattern.TARGET_CHOICES,
         null=True,
-        blank=True,
         verbose_name="Destinataire",
     )
     domain = models.PositiveSmallIntegerField(
         db_index=True,
         choices=Pattern.DOMAIN_CHOICES,
         null=True,
-        blank=True,
         verbose_name="Domaine",
     )
     category = models.ForeignKey(
         PatternCategory,
         null=True,
-        blank=True,
         on_delete=models.PROTECT,
         verbose_name="Catégorie",
     )

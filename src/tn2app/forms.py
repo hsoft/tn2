@@ -109,12 +109,12 @@ class ProjectForm(BaseModelForm):
     class Meta:
         model = Project
         fields = [
-            'title', 'pattern', 'target', 'domain', 'category', 'pattern_name', 'pattern_url',
+            'title', 'pattern', 'pattern_name', 'pattern_url', 'target', 'domain', 'category',
             'description', 'blog_post_url', 'image1', 'image2', 'image3', 'image4'
         ]
         help_texts = {
             'title': "Choisissez un titre concis et explicite",
-            'target': "Note sur le destinataire \"Enfant\" : Nous n'acceptons plus de photos de mineurs de moins de 13 ans.",
+            'target': "Note sur le destinataire \"Enfant\" : Nous n'acceptons pas de photos de mineurs de moins de 13 ans.",
             'pattern_name': "Si vous avez utilisé un patron ou un tutoriel pour réaliser votre projet, indiquez son nom ici.",
             'pattern_url': "Si le patron ou tutoriel utilisé est disponible sur un site internet, merci d'en indiquer l'adresse.",
             'blog_post_url': "Si vous avez publié ce projet sur votre blog, collez ici le lien direct vers l'article.",
@@ -126,7 +126,10 @@ class ProjectForm(BaseModelForm):
         widget=PatternSelect,
         label="Patron",
         empty_label="Patron non répertorié",
-        help_text="Si vous choisissez un patron répertorié, il n'est pas nécessaire de remplir les 5 champs qui suivent.",
+        help_text="Si vous choisissez un patron répertorié, il n'est pas nécessaire de remplir " \
+            "les 2 champs qui suivent. Les champs Destinataire, Domaine et Catégorie sont " \
+            "automatiquement mis à jour selon le patron choisi, mais vous pouvez quand même " \
+            "modifier ces champs si nécessaire.",
     )
 
     def __init__(self, **kwargs):
@@ -188,22 +191,6 @@ class ProjectForm(BaseModelForm):
         if not result:
             result = None
         return result
-
-    def clean_domain(self):
-        result = self.cleaned_data['domain']
-        if not result:
-            result = None
-        return result
-
-    def clean(self):
-        cleaned_data = super().clean()
-        if not cleaned_data.get('pattern'):
-            if not all(cleaned_data.get(attr) for attr in {'target', 'domain', 'category'}):
-                raise forms.ValidationError(
-                    "Les champs Destinataire, Domaine et Catégorie sont nécessaires lorsque le "
-                    "patron n'est pas répertorié"
-                )
-        return cleaned_data
 
     def save(self, commit=True):
         instance = super().save(commit=False)

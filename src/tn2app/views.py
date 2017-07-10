@@ -522,19 +522,13 @@ class ProjectList(ListView):
         queryset = super().get_queryset()
         catid = get('category')
         if catid:
-            queryset = queryset.filter(
-                Q(pattern__category_id=catid) | Q(category_id=catid)
-            )
+            queryset = queryset.filter(category_id=catid)
         domainid = get('domain')
         if domainid:
-            queryset = queryset.filter(
-                Q(pattern__domain=domainid) | Q(domain=domainid)
-            )
+            queryset = queryset.filter(domain=domainid)
         targetid = get('target')
         if targetid:
-            queryset = queryset.filter(
-                Q(pattern__target=targetid) | Q(target=targetid)
-            )
+            queryset = queryset.filter(target=targetid)
         order = self.active_order()
         if order == 'popular':
             queryset = queryset.annotate(num_likes=Count('likes'))
@@ -571,9 +565,7 @@ class ProjectDetails(ViewWithCommentsMixin, DetailView):
 
     def category_link(self):
         project = self.get_object()
-        if project.pattern:
-            argname, arg, name = 'category', project.pattern.category.id, project.pattern.category.name
-        elif project.category:
+        if project.category:
             argname, arg, name = 'category', project.category.id, project.category.name
         elif project.target > 1:
             argname, arg, name = 'target', project.target, project.get_target_display()
@@ -869,5 +861,5 @@ class PatternListJSON(View):
     def get(self, request, *args, **kwargs):
         qs = Pattern.objects.filter(creator_id=kwargs['creator_id'])
         return JsonResponse({
-            'objects': list(qs.values_list('id', 'name')),
+            'objects': list(qs.values_list('id', 'name', 'target', 'domain', 'category_id')),
         })

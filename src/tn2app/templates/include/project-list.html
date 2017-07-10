@@ -10,9 +10,7 @@
             <span class="subtext">
                 par {{ project.author.profile.display_name }}
                 <br>
-                {% if project.pattern %}
-                dans {{ project.pattern.category.name }}
-                {% elif project.category %}
+                {% if project.category %}
                 dans {{ project.category }}
                 {% endif %}
             </span>
