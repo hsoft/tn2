@@ -99,6 +99,7 @@ class PatternAdmin(BaseModelAdmin):
     list_display = ('name', 'creator', 'target', 'domain', 'category', 'is_free', 'is_jersey')
     list_filter = ('creator', 'target', 'domain', 'category', 'is_free', 'is_jersey')
     search_fields = ('name',)
+    save_as = True
 
 admin.site.register(Pattern, PatternAdmin)
 

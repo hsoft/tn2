@@ -12,7 +12,7 @@ class PatternCreator(models.Model):
         verbose_name_plural = "Créateurs de patrons"
         ordering = ['name']
 
-    name = models.CharField(max_length=100, db_index=True, verbose_name="Nom")
+    name = models.CharField(max_length=100, unique=True, verbose_name="Nom")
     url = PermissiveURLField(
         blank=True,
         verbose_name="Site web"
@@ -40,6 +40,7 @@ class Pattern(models.Model):
         app_label = 'tn2app'
         verbose_name = "Patron"
         ordering = ['name']
+        unique_together = [('creator', 'name')]
 
     TARGET_WOMAN = 1
     TARGET_MAN = 2
