@@ -6,8 +6,9 @@ VENV_ARGS ?=
 REQUIREMENTS_PATH ?= requirements.txt
 MANAGE_PATH ?= ./manage.sh
 SRCDIR_PATH = $(abspath src)
+MAIN_CSS_PATH = $(SRCDIR_PATH)/tn2app/static/css/main.min.css
 
-.PHONY: reqs migrate collectstatic
+.PHONY: reqs migrate collectstatic watch
 
 all: $(ENV_PATH) | migrate collectstatic
 
@@ -28,8 +29,14 @@ reqs :
 migrate: $(MANAGE_PATH)
 	$(MANAGE_PATH) migrate
 
-collectstatic: $(MANAGE_PATH)
+$(MAIN_CSS_PATH): $(SRCDIR_PATH)/tn2app/sass/main.scss $(wildcard $(SRCDIR_PATH)/tn2app/sass/_*.scss) $(ENV_PATH)
+	$(ENV_PATH)/bin/sassc -t compressed $< $@
+
+collectstatic: $(MANAGE_PATH) $(MAIN_CSS_PATH)
 	$(MANAGE_PATH) collectstatic --no-input
+
+watch:
+	find $(SRCDIR_PATH)/tn2app/sass/*.scss | entr make collectstatic
 
 $(MANAGE_PATH): $(CONF_PATH)
 	sed -e "s#%CONF_PATH%#$(CONF_PATH)#g" \

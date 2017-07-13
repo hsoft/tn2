@@ -6,16 +6,14 @@ django-appconf==1.0.2
 django-ckeditor==5.3.0
 django-hashers-passlib==0.3
 django-js-asset==0.1.1
-django-pipeline==1.6.13
 django-post-office==3.0.0
 django-simple-captcha==0.5.5
 django-user-accounts==2.0.3
 easy-thumbnails==2.4.1
-futures==3.1.1
 html5lib==0.999999999
 jsonfield==2.0.2
 libsass==0.13.2
-num2words==0.5.4
+num2words==0.5.5
 olefile==0.44
 passlib==1.7.1
 pytz==2017.2

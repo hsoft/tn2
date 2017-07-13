@@ -36,6 +36,7 @@ Premièrement, il faut s'assurer qu'on a toutes les dépendances:
 1. Un environnement GNU avec `make`, `gcc`, etc.
 1. Python 3.4+ avec support `venv`.
 1. PostgreSQL 9.5+ avec une base de donnée pré-créee pour le projet.
+1. [entr][entr] si on veut rouler `make watch`.
 
 Ensuite, il faut créer un fichier de configuration. Commencez par copier `install/conf.json.example`
 à la racine sous `conf.json` puis modifiez à souhait. Pour avoir une idée des possibilités de
@@ -64,8 +65,14 @@ Pour se créer un utilisateur admin, faire:
 Vous pourrez alors accéder à l'interface d'admin de Django en tant que super-utilisateur et faire
 plein de manipulations pratiques.
 
+### make watch
+
+Si on travaille sur le style SCSS, ça peut être pratique d'avoir celui-ci qui se compile à chaque
+changement qu'on fait. Pour ce faire, on peut utiliser la commande `make watch`.
+
 [tn]: http://www.threadandneedles.fr/
 [django]: https://www.djangoproject.com/
 [lxdock]: https://github.com/lxdock/lxdock
 [vagrant]: https://www.vagrantup.com/
 [lxd]: https://linuxcontainers.org/lxd/
+[entr]: http://entrproject.org/

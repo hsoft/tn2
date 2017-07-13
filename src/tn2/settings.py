@@ -59,7 +59,6 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'easy_thumbnails',
-    'pipeline',
     'captcha',
 
     'tn2app.apps.Tn2AppConfig',
@@ -143,12 +142,9 @@ SERVER_EMAIL = DEFAULT_FROM_EMAIL
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
-STATICFILES_STORAGE = 'pipeline.storage.PipelineStorage'
-
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'pipeline.finders.PipelineFinder',
 )
 
 STATIC_ROOT = str(PROJECT_ROOT.joinpath('static'))
@@ -203,25 +199,6 @@ THUMBNAIL_ALIASES = {
         'project-list': {'size': (180, 180), 'crop': True},
         'project-alternate-view': {'size': (50, 50), 'crop': True},
     }
-}
-
-PIPELINE = {
-    'CSS_COMPRESSOR': 'pipeline.compressors.NoopCompressor',
-    'JS_COMPRESSOR': 'pipeline.compressors.NoopCompressor',
-    'COMPILERS': [
-        'pipeline.compilers.sass.SASSCompiler',
-    ],
-    'SASS_BINARY': '/usr/bin/env {}'.format(str(PROJECT_ENVPATH.joinpath('bin', 'sassc'))),
-    'STYLESHEETS': {
-        'main': {
-            'source_filenames': [
-                'sass/main.scss',
-            ],
-            'output_filename': 'css/main.css',
-        },
-    },
-    'JAVASCRIPT': {
-    },
 }
 
 # Others

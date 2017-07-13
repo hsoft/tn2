@@ -1,6 +1,8 @@
 ---
 common_extra_packages:
   - python3-psycopg2
+  # for "make watch"
+  - entr
   # for pillow + django-simple-captcha
   - libz-dev
   - libjpeg-dev
