@@ -7,6 +7,7 @@ from django.core.exceptions import PermissionDenied
 from django.db.models import Max, Count, Q
 from django.http import Http404, HttpResponseRedirect, JsonResponse
 from django.urls import reverse
+from django.utils.safestring import mark_safe
 from django.views.generic import ListView, TemplateView, DetailView, RedirectView, FormView, View
 from django.views.generic.base import ContextMixin
 from django.views.generic.edit import CreateView, UpdateView
@@ -563,19 +564,20 @@ class ProjectDetails(ViewWithCommentsMixin, DetailView):
         current = self.get_object()
         return current.author.projects.exclude(id=current.id)
 
-    def category_link(self):
+    def category_links(self):
+
+        def l(argname, arg, name):
+            return href(
+                '{}?{}={}'.format(reverse('project_list'), argname, arg), name
+            )
+
         project = self.get_object()
+        links = []
         if project.category:
-            argname, arg, name = 'category', project.category.id, project.category.name
-        elif project.target > 1:
-            argname, arg, name = 'target', project.target, project.get_target_display()
-        elif project.domain > 1:
-            argname, arg, name = 'domain', project.domain, project.get_domain_display()
-        else:
-            return ''
-        return href(
-            '{}?{}={}'.format(reverse('project_list'), argname, arg), name
-        )
+            links.append(l('category', project.category.id, project.category.name))
+        links.append(l('target', project.target, project.get_target_display()))
+        links.append(l('domain', project.domain, project.get_domain_display()))
+        return mark_safe(', '.join(links))
 
     def pattern_link(self):
         project = self.get_object()

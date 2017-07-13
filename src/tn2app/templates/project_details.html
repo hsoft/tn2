@@ -82,7 +82,7 @@
         <img class="img-avatar-big" src="{{ project.author|avatar_big_url }}"/>
         Par {{ project.author|user_link }} <span>({{ project.creation_time|date:'d/m/Y' }})</span>
         <br>
-        <span>dans {{ view.category_link }}</span>
+        <span>dans {{ view.category_links }}</span>
     </div>
     {% if project.get_images|length > 1 %}
     <div class="overline clear">
