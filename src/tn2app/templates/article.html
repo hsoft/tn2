@@ -36,10 +36,14 @@
 <div class="overline">
     <h4 class="red">Ajouter un commentaire</h4>
 </div>
-{% if user.is_authenticated %}
+{% if user.is_authenticated and not READONLY %}
     {% include 'include/add_comment_form.html' with target=article notitle=True %}
 {% else %}
+    {% if READONLY %}
+    <p>Le site est temporairement en mode "lecture seule".</p>
+    {% else %}
     <p>Vous devez être <a href="{% url 'account_login' %}">connecté</a> pour publier un commentaire.</p>
+    {% endif %}
     <p>&nbsp;</p>
 {% endif %}
 

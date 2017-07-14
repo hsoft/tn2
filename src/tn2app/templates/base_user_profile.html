@@ -5,8 +5,10 @@
 
 {% block breadcrumb %}
     {{ block.super }}
+    {% if not READONLY %}
     {% if shown_user == user or view.user_can_admin %}
         <a class="button" href="{% url 'user_profile_edit' username=shown_user.username %}">Modifier</a>
+    {% endif %}
     {% endif %}
 {% endblock %}
 
@@ -20,7 +22,7 @@
     <li><a class="{% block class_for_profile_link %}{% endblock %}" href="{% url 'user_profile' username=shown_user.username %}">Projets</a></li>
     <li><a class="{% block class_for_favorite_link %}{% endblock %}" href="{% url 'user_favorites' username=shown_user.username %}">Favoris</a></li>
     <li><a class="{% block class_for_message_link %}{% endblock %}" href="{% url 'user_sendmessage' username=shown_user.username %}">Contacter</a></li>
-    {% if shown_user == user %}
+    {% if shown_user == user and not READONLY %}
         <li><a class="{% block class_for_password_link %}{% endblock %}" href="{% url 'account_password' %}">Mot de passe</a></li>
         <li><a class="{% block class_for_notification_link %}{% endblock %}" href="{% url 'user_notifications' %}">Notifications</a></li>
     {% endif %}

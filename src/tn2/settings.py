@@ -24,6 +24,7 @@ DATABASES = {
 DATABASES['default'].update(json_conf['database'])
 SECRET_KEY = json_conf['secret_key']
 DEBUG = json_conf.get('debug', False)
+READONLY = json_conf.get('readonly', False)
 ALLOWED_HOSTS = json_conf.get('allowed_hosts', [])
 
 if DEBUG:
@@ -90,6 +91,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'account.context_processors.account',
+                'tn2app.context_processors.inject_settings',
             ],
         },
     },

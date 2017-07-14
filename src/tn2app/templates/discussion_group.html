@@ -5,7 +5,7 @@
 
 {% block breadcrumb %}
     {{ block.super }}
-    {% if view.user_can_admin %}
+    {% if view.user_can_admin and not READONLY%}
     <a class="button" href="{% url 'admin:tn2app_discussiongroup_change' group.id %}">Administrer</a>
     {% endif %}
 {% endblock %}
@@ -36,7 +36,7 @@
 </tbody>
 </table>
 {% include "include/pagination.html" with rightalign=True %}
-{% if user.is_authenticated %}
+{% if user.is_authenticated and not READONLY %}
 <p>
 <a class="button" href="{% url 'discussion_add' group_slug=group.slug %}">Créer une nouvelle discussion</a>
 </p>

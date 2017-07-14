@@ -5,7 +5,7 @@
 
 {% block breadcrumb %}
     {{ block.super }}
-    {% if view.user_can_admin %}
+    {% if view.user_can_admin and not READONLY %}
     <a class="button" href="{% url 'admin:tn2app_discussion_change' discussion.id %}">Administrer</a>
     {% endif %}
 {% endblock %}
@@ -37,7 +37,7 @@
 
 {% include 'include/pagination.html' with rightalign=True %}
 
-{% if user.is_authenticated and not page_obj.has_next %}
+{% if user.is_authenticated and not page_obj.has_next and not READONLY %}
     {% include 'include/add_comment_form.html' with target=discussion %}
 {% endif %}
 {% endblock %}
