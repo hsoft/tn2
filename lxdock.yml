@@ -1,7 +1,5 @@
 name: tn2
-image: debian/jessie
-# privileged containers are necessary with debian/jessie images
-privileged: true
+image: debian/stretch
 hostnames:
   - tn2.local
 
@@ -15,6 +13,7 @@ shell:
 shares:
   - source: .
     dest: /nomadshare
+    set_host_acl: false
 
 provisioning:
   - type: ansible

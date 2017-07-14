@@ -10,6 +10,11 @@
     django_debug: yes
     django_secret_key: whatever
 
+  pre_tasks:
+    # ensure that our container can write into folders it's supposed to write into
+    - local_action: file path=../src/tn2app/static mode=o+rwX recurse=yes
+    - local_action: file path=../src/tn2app/migrations mode=o+rwX recurse=yes
+
   roles:
     - common
     - postgres-install

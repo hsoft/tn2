@@ -30,7 +30,7 @@ migrate: $(MANAGE_PATH)
 	$(MANAGE_PATH) migrate
 
 $(MAIN_CSS_PATH): $(SRCDIR_PATH)/tn2app/sass/main.scss $(wildcard $(SRCDIR_PATH)/tn2app/sass/_*.scss) $(ENV_PATH)
-	$(ENV_PATH)/bin/sassc -t compressed $< $@
+	sassc -t compressed $< $@
 
 collectstatic: $(MANAGE_PATH) $(MAIN_CSS_PATH)
 	$(MANAGE_PATH) collectstatic --no-input

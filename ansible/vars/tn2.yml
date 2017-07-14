@@ -1,12 +1,10 @@
 ---
 common_extra_packages:
   - python3-psycopg2
+  - python3-pil
+  - sassc
   # for "make watch"
   - entr
-  # for pillow + django-simple-captcha
-  - libz-dev
-  - libjpeg-dev
-  - libfreetype6-dev
 
 django_name: tn2
 
