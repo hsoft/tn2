@@ -1,7 +1,6 @@
-Django==1.11.3
-Pillow==4.2.1
 beautifulsoup4==4.6.0
 bleach==2.0.0
+Django==1.11.3
 django-appconf==1.0.2
 django-ckeditor==5.3.0
 django-hashers-passlib==0.3
@@ -12,10 +11,7 @@ django-user-accounts==2.0.3
 easy-thumbnails==2.4.1
 html5lib==0.999999999
 jsonfield==2.0.2
-libsass==0.13.2
 num2words==0.5.5
-olefile==0.44
 passlib==1.7.1
 pytz==2017.2
-six==1.10.0
 webencodings==0.5.1
