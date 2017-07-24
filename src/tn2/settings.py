@@ -59,7 +59,6 @@ INSTALLED_APPS = [
     'account',
     'ckeditor',
     'ckeditor_uploader',
-    'easy_thumbnails',
     'captcha',
 
     'tn2app.apps.Tn2AppConfig',

@@ -1,0 +1,10 @@
+server {
+    listen {{ nginx_thumbnailer_bind }};
+
+    location ~ ^/thumb/(\d+)/(\d+)/(.+)$ {
+        alias {{ nginx_thumbnailer_media_path }}/$3;
+        image_filter_buffer {{ nginx_thumbnailer_buffer_size }};
+        image_filter resize $1 $2;
+        image_filter crop $1 $2;
+    }
+}

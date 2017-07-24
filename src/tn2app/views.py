@@ -1,4 +1,5 @@
 import datetime
+import io
 
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
@@ -12,7 +13,9 @@ from django.views.generic import ListView, TemplateView, DetailView, RedirectVie
 from django.views.generic.base import ContextMixin
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.detail import SingleObjectMixin
+from django.views.static import serve
 
+from PIL import Image
 from post_office import mail
 import account.views
 import account.forms
@@ -865,3 +868,23 @@ class PatternListJSON(View):
         return JsonResponse({
             'objects': list(qs.values_list('id', 'name', 'target', 'domain', 'category_id')),
         })
+
+# Debug views
+
+# This doesn't give good thumbnails at all! but we don't care. It's just for debugging. We really
+# don't want to copy thumbnail+crop algo, which is more complex. nginx is the one taking care of
+# doing the real thumbnailing. All we care here is gettingimages of the right size to use as
+# placeholders.
+def serve_thumbnail(request, width, height, path):
+    if not settings.DEBUG:
+        raise PermissionDenied()
+    response = serve(request, path, document_root=settings.MEDIA_ROOT)
+    if hasattr(response, 'file_to_stream'):
+        img = Image.open(response.file_to_stream)
+        img.thumbnail((int(width), int(height)))
+        fp = io.BytesIO()
+        img.save(fp, format=img.format)
+        fp.seek(0)
+        response.streaming_content = fp
+    return response
+

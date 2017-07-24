@@ -20,6 +20,7 @@
     - common
     - postgres-install
     - nginx
+    - nginx-thumbnailer
     - django
     - tn2
 

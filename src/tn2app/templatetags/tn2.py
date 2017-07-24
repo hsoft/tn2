@@ -1,10 +1,9 @@
 from django import template
+from django.conf import settings
 from django.templatetags.static import static
 from django.urls import reverse
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
-
-from easy_thumbnails.files import get_thumbnailer
 
 from ..models import PageContents
 from ..util import gravatar_url
@@ -15,39 +14,39 @@ register = template.Library()
 def avatar_url(user):
     if user.profile:
         if user.profile.avatar:
-            return get_thumbnailer(user.profile.avatar)['avatar'].url
+            return thumbnail_url(user.profile.avatar, 'avatar')
     return gravatar_url(user.email, size=34, default_image='mm')
 
 @register.filter(is_safe=True)
 def avatar_big_url(user):
     if user.profile:
         if user.profile.avatar:
-            return get_thumbnailer(user.profile.avatar)['avatar-big'].url
+            return thumbnail_url(user.profile.avatar, 'avatar-big')
     return gravatar_url(user.email, size=60, default_image='mm')
 
 @register.filter(is_safe=True)
 def avatar_bigger_url(user):
     if user.profile:
         if user.profile.avatar:
-            return get_thumbnailer(user.profile.avatar)['avatar-bigger'].url
+            return thumbnail_url(user.profile.avatar, 'avatar-bigger')
     return gravatar_url(user.email, size=80, default_image='mm')
 
 @register.filter(is_safe=True)
 def group_avatar_url(group):
     if group.avatar:
-        return get_thumbnailer(group.avatar)['group-avatar'].url
+        return thumbnail_url(group.avatar, 'group-avatar')
     return gravatar_url(group.slug, size=80, default_image='identicon')
 
 @register.filter(is_safe=True)
 def group_avatar_big_url(group):
     if group.avatar:
-        return get_thumbnailer(group.avatar)['group-avatar-big'].url
+        return thumbnail_url(group.avatar, 'group-avatar-big')
     return gravatar_url(group.slug, size=150, default_image='identicon')
 
 @register.filter(is_safe=True)
 def article_thumbnail(article):
     if article.main_image:
-        return get_thumbnailer(article.main_image)['preview'].url
+        return thumbnail_url(article.main_image, 'preview')
     else:
         return static('images/image-placeholder.png')
 
@@ -67,6 +66,12 @@ def fixurl(url):
     if not url.startswith('http'):
         url = 'http://{}'.format(url)
     return url
+
+@register.filter
+def thumbnail_url(source, thumb_type):
+    thumbconf = settings.THUMBNAIL_ALIASES[''][thumb_type]
+    size = thumbconf['size']
+    return reverse('thumbnail', kwargs={'width': size[0], 'height': size[1], 'path': source.name})
 
 @register.simple_tag()
 def page_contents(keyname, user):

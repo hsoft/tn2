@@ -6,7 +6,10 @@ common_extra_packages:
   # for "make watch"
   - entr
 
+nginx_cache_enable: yes
+
 django_name: tn2
+django_path: /opt/tn2
 
 django_env_variables:
   TN2_CONF_PATH: "{{ django_jsonsettings_path }}"
@@ -21,3 +24,12 @@ django_jsonsettings_properties:
     PASSWORD: "{{ django_dbpass }}"
   allowed_hosts: "['{{ django_domain_name }}', ] + {{ django_extra_domain_names|default([]) }}"
   email: "{% if tn2_smtp is defined %}{{ tn2_smtp }}{% endif %}"
+
+django_nginx_locations: |
+  location /thumb/ {
+    proxy_pass http://{{ nginx_thumbnailer_bind }};
+    proxy_cache {{ nginx_cache_name }};
+    proxy_cache_valid 200 60m;
+  }
+
+nginx_thumbnailer_media_path: "{{ django_path }}/media"
