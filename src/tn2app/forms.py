@@ -8,11 +8,10 @@ from django.utils.text import slugify
 from PIL import Image, ImageFile
 from ckeditor.widgets import CKEditorWidget
 from captcha.fields import CaptchaField
-from easy_thumbnails.utils import exif_orientation
 import account.forms
 
 from .models import UserProfile, Discussion, Project, Pattern
-from .util import dedupe_slug, sanitize_comment
+from .util import dedupe_slug, sanitize_comment, exif_orientation
 from .widgets import PatternSelect
 
 # http://stackoverflow.com/a/23575424

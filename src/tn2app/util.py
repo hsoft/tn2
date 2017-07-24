@@ -12,6 +12,7 @@ from django.conf import settings
 from django.core.validators import URLValidator
 from django.db.models.fields import URLField
 from django.utils.html import format_html
+from PIL import Image
 
 def dedupe_slug(slug, queryset, slug_field_name='slug'):
     model = queryset.model
@@ -130,6 +131,31 @@ def extract_media_paths(html_content):
         src = img['src']
         if src.startswith(settings.MEDIA_URL):
             yield src[len(settings.MEDIA_URL):]
+
+# https://github.com/SmileyChris/easy-thumbnails/blob/master/easy_thumbnails/utils.py#L111
+def exif_orientation(im):
+    try:
+        exif = im._getexif()
+    except Exception:
+        # There are many ways that _getexif fails, we're just going to blanket
+        # cover them all.
+        return im
+    orientation = exif.get(0x0112)
+    if orientation == 2:
+        im = im.transpose(Image.FLIP_LEFT_RIGHT)
+    elif orientation == 3:
+        im = im.transpose(Image.ROTATE_180)
+    elif orientation == 4:
+        im = im.transpose(Image.FLIP_TOP_BOTTOM)
+    elif orientation == 5:
+        im = im.transpose(Image.ROTATE_270).transpose(Image.FLIP_LEFT_RIGHT)
+    elif orientation == 6:
+        im = im.transpose(Image.ROTATE_270)
+    elif orientation == 7:
+        im = im.transpose(Image.ROTATE_90).transpose(Image.FLIP_LEFT_RIGHT)
+    elif orientation == 8:
+        im = im.transpose(Image.ROTATE_90)
+    return im
 
 # Low-tech approach to work around the too strict URLValidator.
 # Context: https://code.djangoproject.com/ticket/20264
