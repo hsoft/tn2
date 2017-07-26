@@ -140,6 +140,8 @@ def exif_orientation(im):
         # There are many ways that _getexif fails, we're just going to blanket
         # cover them all.
         return im
+    if exif is None:
+        return im
     orientation = exif.get(0x0112)
     if orientation == 2:
         im = im.transpose(Image.FLIP_LEFT_RIGHT)
