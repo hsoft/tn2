@@ -4,7 +4,7 @@
 {% block extra_head %}
 <meta property="og:title" content="{{ article.title }}" />
 <meta property="og:description" content="{{ article.get_excerpt }}" />
-<meta property="og:image" content="{{ article.main_image.url }}" />
+<meta property="og:image" content="{{ article.main_image.url|absolute_uri:request }}" />
 {% endblock %}
 
 {% block bodyclasses %}article{% endblock %}

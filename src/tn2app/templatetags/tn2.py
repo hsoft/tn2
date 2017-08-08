@@ -73,6 +73,10 @@ def thumbnail_url(source, thumb_type):
     size = thumbconf['size']
     return reverse('thumbnail', kwargs={'width': size[0], 'height': size[1], 'path': source.name})
 
+@register.filter
+def absolute_uri(path, request):
+    return request.build_absolute_uri(path)
+
 @register.simple_tag()
 def page_contents(keyname, user):
     try:
