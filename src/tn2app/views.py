@@ -6,6 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.syndication.views import Feed
 from django.core.exceptions import PermissionDenied
 from django.db.models import Max, Count, Q
+from django.forms.widgets import Select
 from django.http import Http404, HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.utils.safestring import mark_safe
@@ -22,7 +23,8 @@ import account.forms
 
 from .models import (
     User, UserProfile, Article, ArticleCategory, DiscussionGroup, Discussion, Project, ProjectVote,
-    ArticleComment, DiscussionComment, ProjectComment, Notification, Pattern, PatternCategory
+    ArticleComment, DiscussionComment, ProjectComment, Notification, Pattern, PatternCategory,
+    PatternCreator,
 )
 from .forms import (
     UserProfileForm, NewDiscussionForm, EditDiscussionForm, CommentForm, ProjectForm,
@@ -499,6 +501,51 @@ class ProjectList(ListView):
             'category',
         ).render()
 
+    def pattern_selectors(self):
+        item_all = [(0, "Tous")]
+        creator_qs = PatternCreator.objects\
+            .annotate(pattern_count=Count('patterns'))\
+            .filter(pattern_count__gt=0)
+        params = self.request.GET.copy()
+        params['page'] = '1'
+
+        def pop(key):
+            val = params.pop(key, None)
+            if isinstance(val, list):
+                val = val[0] if val else None
+            return val
+
+        pattern_id = pop('pattern')
+        pattern_creator_id = pop('pattern_creator')
+        if pattern_id and Pattern.objects.filter(id=pattern_id).exists():
+            # More reliable than the request argument.
+            pattern_creator_id = Pattern.objects.get(id=pattern_id).creator.id
+
+        get_url = '?{}&pattern_creator='.format(params.urlencode())
+        widget = Select(
+            attrs={'data-get-url': get_url},
+            choices=item_all + list(creator_qs.values_list('id', 'name')),
+        )
+        result = [widget.render(
+            name='pattern_creator',
+            value=pattern_creator_id,
+        )]
+        if pattern_creator_id and PatternCreator.objects.filter(id=pattern_creator_id).exists():
+            pattern_creator = PatternCreator.objects.get(id=pattern_creator_id)
+            pattern_qs = pattern_creator.patterns
+            params['pattern_creator'] = pattern_creator_id
+            get_url = '?{}&pattern='.format(params.urlencode())
+            widget = Select(
+                attrs={'data-get-url': get_url},
+                choices=item_all + list(pattern_qs.values_list('id', 'name')),
+            )
+            result.append(widget.render(
+                name='pattern',
+                value=pattern_id,
+            ))
+
+        return result
+
     def popular_this_week(self):
         return Project.objects.popular_this_week()
 
@@ -524,15 +571,16 @@ class ProjectList(ListView):
                 return None
 
         queryset = super().get_queryset()
-        catid = get('category')
-        if catid:
-            queryset = queryset.filter(category_id=catid)
-        domainid = get('domain')
-        if domainid:
-            queryset = queryset.filter(domain=domainid)
-        targetid = get('target')
-        if targetid:
-            queryset = queryset.filter(target=targetid)
+        ARGSMAP = {
+            'category': 'category_id',
+            'domain': 'domain',
+            'target': 'target',
+            'pattern_creator': 'pattern__creator',
+            'pattern': 'pattern_id',
+        }
+        filters = {v: get(k) for k, v in ARGSMAP.items() if get(k)}
+        if filters:
+            queryset = queryset.filter(**filters)
         order = self.active_order()
         if order == 'popular':
             queryset = queryset.annotate(num_likes=Count('likes'))

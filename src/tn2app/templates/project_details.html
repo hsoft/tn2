@@ -118,6 +118,9 @@
         <strong>Créateur:</strong>
         {{ view.creator_link }}
         <br>
+        <a href="{% url 'project_list' %}?pattern={{ project.pattern.id }}">
+            Voir tous les projets utilisant ce patron
+        </a>
         {% endif %}
         {% if project.blog_post_url %}
         <a class="blog-url" href="{{ project.blog_post_url|fixurl }}" target="_blank">Retrouvez ce projet sur mon blog</a>

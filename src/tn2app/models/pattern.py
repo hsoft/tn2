@@ -67,6 +67,7 @@ class Pattern(models.Model):
     creator = models.ForeignKey(
         PatternCreator,
         on_delete=models.PROTECT,
+        related_name='patterns',
         verbose_name="Créateur",
     )
     name = models.CharField(max_length=100, db_index=True, verbose_name="Nom")

@@ -136,7 +136,22 @@ body.project-list {
         float: right;
     }
 
-    div.sidebar ul.selector {
-        margin-bottom: 25px;
+    div.sidebar {
+        ul.selector {
+            margin-bottom: 25px;
+        }
+
+        ul.pattern_selector {
+            list-style: none;
+            padding: 0;
+
+            li {
+                margin-bottom: 20px;
+            }
+
+            select {
+                width: 100%;
+            }
+        }
     }
 }

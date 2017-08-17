@@ -16,7 +16,7 @@ class PatternSelect(Select):
             creator_id = 0
             self.choices = nr
         creator_qs = PatternCreator.objects\
-            .annotate(pattern_count=Count('pattern'))\
+            .annotate(pattern_count=Count('patterns'))\
             .filter(pattern_count__gt=0)
         preselect = Select(choices=nr + list(creator_qs.values_list('id', 'name')))
         prefix_id = 'id_pattern_creator'

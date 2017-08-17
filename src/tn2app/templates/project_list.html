@@ -1,7 +1,11 @@
 {% extends 'base.html' %}
-{% load tn2 add_get_parameter %}
+{% load tn2 add_get_parameter staticfiles %}
 
 {% block bodyclasses %}project-list{% endblock %}
+
+{% block extra_head %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+{% endblock %}
 
 {% block main_contents %}
 <div class="inner-content">
@@ -63,7 +67,19 @@
     {% include 'include/title.html' with text="Trier par catégorie" %}
 
     {{ view.category_selector }}
+
+    {% include 'include/title.html' with text="Trier par patron" %}
+
+    <ul class="pattern_selector">
+    {% for selector in view.pattern_selectors %}
+        <li>{{ selector }}</li>
+    {% endfor %}
+    </ul>
 </div>
 {% endblock %}
 
-
+{% block bottom_js %}
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+<script type="text/javascript" src="{% static "js/project_list.js" %}"></script>
+{% endblock %}
