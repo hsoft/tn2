@@ -24,7 +24,7 @@ import account.forms
 from .models import (
     User, UserProfile, Article, ArticleCategory, DiscussionGroup, Discussion, Project, ProjectVote,
     ArticleComment, DiscussionComment, ProjectComment, Notification, Pattern, PatternCategory,
-    PatternCreator,
+    PatternCreator, Sponsorship
 )
 from .forms import (
     UserProfileForm, NewDiscussionForm, EditDiscussionForm, CommentForm, ProjectForm,
@@ -105,6 +105,10 @@ class Homepage(TemplateView):
             'recent_discussions': recent_discussions,
         })
         return result
+
+    def get_sponsor(self):
+        return Sponsorship.objects.get_random_main_page_element()
+
 
 class DiscussionGroupListView(ListView):
     model = DiscussionGroup
@@ -293,6 +297,9 @@ class ArticleList(ArticleMixin, ListView):
     queryset = Article.published
     ordering = '-publish_time'
     paginate_by = 5
+
+    def get_sponsor(self):
+        return Sponsorship.objects.get_random_blog_element()
 
 
 class ArticlesByCategoryList(ArticleList):

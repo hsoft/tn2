@@ -32,9 +32,11 @@
 
     <div class="col_right">
         <div class="overline">&nbsp;</div>
-        <a href="https://www.namensbaender.de/fr/" target="_blank">
-            <img class="sponsor" src="{% static 'images/sponsor-etikette-tisse-270px.jpg' %}">
+        {% with sponsor=view.get_sponsor %}
+        <a href="{{ sponsor.1 }}" target="_blank">
+            <img class="sponsor" src="{{ sponsor.0 }}" width="270" height="220">
         </a>
+        {% endwith %}
         <a class="sponsors-about" href="{% url 'page_sponsors' %}">À propos des sponsors</a>
     </div>
 

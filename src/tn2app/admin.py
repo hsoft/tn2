@@ -8,7 +8,7 @@ from django.utils.text import slugify
 
 from .models import (
     Article, ArticleCategory, DiscussionGroup, Discussion, UserProfile, Project, PageContents,
-    PatternCreator, PatternCategory, Pattern
+    PatternCreator, PatternCategory, Pattern, Sponsorship
 )
 from .util import dedupe_slug
 
@@ -102,6 +102,8 @@ class PatternAdmin(BaseModelAdmin):
     save_as = True
 
 admin.site.register(Pattern, PatternAdmin)
+
+admin.site.register(Sponsorship, BaseModelAdmin)
 
 class UserProfileInline(admin.StackedInline):
     model = UserProfile
