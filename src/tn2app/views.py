@@ -290,6 +290,9 @@ class ArticleDetailView(ArticleMixin, ViewWithCommentsMixin, DetailView):
     def user_can_admin(self):
         return self.request.user.has_perm('tn2app.change_article')
 
+    def get_sponsor(self):
+        return Sponsorship.objects.get_random_blog_element()
+
 
 class ArticleList(ArticleMixin, ListView):
     template_name = 'article_list.html'
