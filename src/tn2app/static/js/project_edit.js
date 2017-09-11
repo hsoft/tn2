@@ -65,7 +65,6 @@ var tn2_project_edit = {
          * We don't want to mess with an existing project's categories, which were already set
          * before.
          */
-        console.log(document.querySelector('form.newproject'));
         if (!document.querySelector('form.newproject')) {
             return;
         }
@@ -89,7 +88,9 @@ var tn2_project_edit = {
             var $opt = $(e.params.data.element);
             tn2_project_edit.update_category_selector($opt);
         });
-        tn2_project_edit.update_pattern_select(0);
+        if (!$(pattern_selector).val()) {
+            tn2_project_edit.update_pattern_select(0);
+        }
     }
 }
 
