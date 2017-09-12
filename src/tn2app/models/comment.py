@@ -25,10 +25,10 @@ class AbstractComment(models.Model):
         return reverse('comment_delete', kwargs={'model': model_name, 'comment_pk': self.id})
 
     def get_prev(self):
-        return self.__class__.objects.filter(submit_date__lt=self.submit_date).last()
+        return self.__class__.objects.filter(target=self.target, submit_date__lt=self.submit_date).last()
 
     def get_next(self):
-        return self.__class__.objects.filter(submit_date__gt=self.submit_date).first()
+        return self.__class__.objects.filter(target=self.target, submit_date__gt=self.submit_date).first()
 
 
 class CommentableMixin:
