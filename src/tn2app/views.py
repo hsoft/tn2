@@ -793,6 +793,10 @@ class CommentViewMixin:
             'project': ProjectComment,
         }[modelname]
 
+    def get_object(self):
+        model = self.get_model()
+        return model.objects.get(id=self.kwargs['comment_pk'])
+
 
 class CommentAdd(LoginRequiredMixin, CommentViewMixin, View):
     TARGET_MODEL_VIEW = None
@@ -827,29 +831,37 @@ class CommentEdit(BelongsToUserMixin, CommentViewMixin, FormView):
     template_name = 'comment_edit.html'
     form_class = CommentForm
 
-    def get_object(self):
-        model = self.get_model()
-        return model.objects.get(id=self.kwargs['comment_pk'])
-
     def get_initial(self):
         return {'comment': self.get_object().comment}
 
     def post(self, request, *args, **kwargs):
         comment = self.get_object()
-        if 'delete' in request.POST:
-            parent_obj = comment.target
-            success_url = parent_obj.get_absolute_url()
-            comment.delete()
-            if hasattr(parent_obj, 'update_last_activity'):
-                parent_obj.update_last_activity()
-            return HttpResponseRedirect(success_url)
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = self.get_object()
+            comment.comment = form.cleaned_data['comment']
+            comment.save()
+        return HttpResponseRedirect(comment.get_absolute_url())
+
+
+class CommentDelete(BelongsToUserMixin, CommentViewMixin, View):
+    USER_ATTR = 'user'
+    SUPERUSER_PERM = 'tn2app.change_articlecomment'
+
+    def get(self, request, *args, **kwargs):
+        comment = self.get_object()
+        parent_obj = comment.target
+        following_comment = comment.get_next()
+        if not following_comment:
+            following_comment = comment.get_prev()
+        if following_comment:
+            success_url = following_comment.get_absolute_url()
         else:
-            form = CommentForm(request.POST)
-            if form.is_valid():
-                comment = self.get_object()
-                comment.comment = form.cleaned_data['comment']
-                comment.save()
-            return HttpResponseRedirect(comment.get_absolute_url())
+            success_url = parent_obj.get_absolute_url()
+        comment.delete()
+        if hasattr(parent_obj, 'update_last_activity'):
+            parent_obj.update_last_activity()
+        return HttpResponseRedirect(success_url)
 
 
 # Full-Text search is a bit intensive, resource-wise. To minimize the risk of the server being

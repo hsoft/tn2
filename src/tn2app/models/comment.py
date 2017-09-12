@@ -20,6 +20,16 @@ class AbstractComment(models.Model):
         model_name = self.target._meta.model_name
         return reverse('comment_edit', kwargs={'model': model_name, 'comment_pk': self.id})
 
+    def get_delete_url(self):
+        model_name = self.target._meta.model_name
+        return reverse('comment_delete', kwargs={'model': model_name, 'comment_pk': self.id})
+
+    def get_prev(self):
+        return self.__class__.objects.filter(submit_date__lt=self.submit_date).last()
+
+    def get_next(self):
+        return self.__class__.objects.filter(submit_date__gt=self.submit_date).first()
+
 
 class CommentableMixin:
     def get_submit_comment_url(self):

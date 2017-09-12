@@ -12,6 +12,11 @@
           {{ comment.user|user_link }} ({{ comment.submit_date|naturaltime }})
           {% if comment.user == user or user.is_staff %}
           <a class="fa fa-edit" href="{{ comment.get_edit_url }}"></a>
+          <a
+              class="fa fa-trash"
+              href="{{ comment.get_delete_url }}"
+              onclick="return confirm('Supprimer le commentaire?');"
+          ></a>
           {% endif %}
       </div>
     </dt>

@@ -6,14 +6,11 @@
     {% csrf_token %}
     {{ form.as_p }}
     <input class="button" type="submit" value="Enregistrer" />
-    <a href="{{ view.get_object.target.get_absolute_url }}">Retour</a>
-    <input class="button delete-button" type="submit" name="delete" value="Supprimer" />
+    <a href="{{ view.get_object.get_absolute_url }}">Retour</a>
 </form>
 {% endblock %}
 
 {% block bottom_js %}
 {% include 'include/ckjs.html' %}
 {% endblock %}
-
-
 
