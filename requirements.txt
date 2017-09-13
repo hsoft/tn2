@@ -1,17 +1,2 @@
-django>=1.11,<1.11.9999
-django-ckeditor>=5.2
-bleach>=2.0
-django-user-accounts>=2.0
-django-post_office>=2.0
-beautifulsoup4>=4.5
-
-# to support WP password hashes
-django-hashers-passlib>=0.3
-
-# for captchas
-django-simple-captcha>=0.5
-num2words>=0.5.4
-
-# supposed to be met by the OS
-Pillow>=4.0
-psycopg2>=2.5
+-r requirements-system.txt
+-r requirements-non-system.txt

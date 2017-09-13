@@ -1,0 +1,8 @@
+# These requirements are supposed to be met by the system. They're still
+# included in requirements.txt to facilitate development on non-debian
+# platforms
+
+bleach>=2.0
+beautifulsoup4>=4.5
+Pillow>=4.0
+psycopg2>=2.5

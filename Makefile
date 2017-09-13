@@ -68,8 +68,9 @@ install: install_pre all
 DEBVERSION ?= $(shell date +%Y%m%d)
 DEBTIMESTAMP ?= $(shell date -R)
 DEBWORKDIR ?= /tmp/tn2-$(DEBVERSION)
+DEBDEST = /tmp/tn2_$(DEBVERSION)_amd64.deb
 
-.PHONY: deb
+.PHONY: deb lxdock_deb
 
 $(DEBWORKDIR):	
 	mkdir -p $@
@@ -80,5 +81,17 @@ $(DEBWORKDIR)/debian/changelog: install/debian_changelog_template $(DEBWORKDIR)
 		-e "s#%TIMESTAMP%#$(DEBTIMESTAMP)#g" \
 		$< > $@ || (rm $@; exit 1)
 
-deb: $(DEBWORKDIR)/debian/changelog
+$(DEBDEST): $(DEBWORKDIR)/debian/changelog
 	cd $(DEBWORKDIR) && dpkg-buildpackage -us -uc
+
+deb: $(DEBDEST)
+	cp $< /tmp/tn2.deb
+	chmod +rw /tmp/tn2.deb
+
+# Commands that run from lxdock
+
+build/tn2.deb:
+	lxdock up debbuild
+	lxdock shell debbuild -c /lxdockshare/scripts/lxdock_debbuild.sh
+
+lxdock_deb: build/tn2.deb

@@ -1,20 +1,21 @@
 name: tn2
 image: debian/stretch
-hostnames:
-  - tn2.local
 
-users:
-  - name: tn2
+containers:
+  - name: debbuild
+    provisioning:
+      - type: ansible
+        playbook: ansible/debbuild.yml
 
-shell:
-  user: tn2
-  home: /opt/tn2
+  - name: website
+    hostnames:
+      - tn2.local
+    provisioning:
+      - type: ansible
+        playbook: ansible/site.yml
 
 shares:
   - source: .
-    dest: /nomadshare
+    dest: /lxdockshare
     set_host_acl: false
 
-provisioning:
-  - type: ansible
-    playbook: ansible/site.yml

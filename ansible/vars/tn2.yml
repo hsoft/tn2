@@ -1,22 +1,17 @@
 ---
-common_extra_packages:
-  - python3-psycopg2
-  - python3-pil
-  - sassc
-  # for "make watch"
-  - entr
-
 nginx_cache_enable: yes
 
 django_name: tn2
 django_path: /opt/tn2
+django_project_path: "{{ django_path }}/src"
+django_src_path: "{{ django_project_path }}"
 
 django_env_variables:
   TN2_CONF_PATH: "{{ django_jsonsettings_path }}"
 
 django_jsonsettings_properties:
   project_root: "{{ django_path }}"
-  debug: "{{ django_debug }}"
+  debug: "{{ django_debug|d(False) }}"
   secret_key: "{{ django_secret_key }}"
   database:
     NAME: "{{ django_dbname }}"
@@ -33,3 +28,10 @@ django_nginx_locations: |
   }
 
 nginx_thumbnailer_media_path: "{{ django_path }}/media"
+
+tn2_packages:
+  - python3
+  - python3-psycopg2
+  - python3-pil
+  - python3-bs4
+  - python3-bleach

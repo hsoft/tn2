@@ -1,5 +1,9 @@
 ---
-- include: symlink.yml
-- include: make.yml
+- apt:
+    deb: /lxdockshare/build/tn2.deb
+    state: present
+
+#- include: symlink.yml
+#- include: make.yml
 - include: tools.yml
 - include: cron.yml

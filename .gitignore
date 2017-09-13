@@ -4,4 +4,6 @@ __pycache__
 /media
 /conf.json
 /manage.sh
+/build
 *.min.css
+*.retry

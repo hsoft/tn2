@@ -3,18 +3,8 @@
     - vars/tn2.yml
 
   vars:
-    django_project_symlink_dest: "/nomadshare"
-    # Because django_path is a symlink and it doesn't work.
-    django_touch_reload_path: "{{ django_src_path }}"
     django_domain_name: tn2.local
-    django_debug: yes
     django_secret_key: whatever
-
-  pre_tasks:
-    # ensure that our container can write into folders it's supposed to write into
-    - local_action: file path=../src/tn2app/static mode=o+rwX recurse=yes
-    - local_action: file path=../src/tn2app/migrations mode=o+rwX recurse=yes
-    - local_action: file path=../requirements.freeze mode=o+rw 
 
   roles:
     - common

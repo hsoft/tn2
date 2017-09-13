@@ -9,4 +9,4 @@ override_dh_shlibdeps:
 	echo "Skipping dh_shshlibdeps"
 
 override_dh_auto_install:
-	VENV_ARGS="--system-site-packages" PREFIX=/opt/tn2 dh_auto_install
+	VENV_ARGS="--system-site-packages" REQUIREMENTS_PATH=requirements-non-system.txt PREFIX=/opt/tn2 dh_auto_install
