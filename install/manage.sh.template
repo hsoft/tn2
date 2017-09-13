@@ -1,5 +1,11 @@
 #!/bin/bash
 
 export TN2_CONF_PATH="%CONF_PATH%"
+
+if [ ! -f "${TN2_CONF_PATH}" ]; then
+    echo "${TN2_CONF_PATH} config file doesn't exist! You can copy it from install/conf.json.example"
+    exit 1
+fi
+
 cd "%SRCDIR_PATH%"
 %ENV_PATH%/bin/python manage.py $@

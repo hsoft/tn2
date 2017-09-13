@@ -1,0 +1,9 @@
+#!/usr/bin/make -f
+%:
+	dh $@
+
+override_dh_auto_build:
+	echo "skipping dh_auto_build"
+
+override_dh_auto_install:
+	VENV_ARGS="--system-site-packages" PREFIX=/opt/tn2 dh_auto_install
