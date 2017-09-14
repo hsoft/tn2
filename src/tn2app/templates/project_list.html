@@ -70,6 +70,8 @@
 
     {% include 'include/title.html' with text="Trier par patron" %}
 
+    {{ view.pattern_checkboxes.render }}
+
     <ul class="pattern_selector">
     {% for selector in view.pattern_selectors %}
         <li>{{ selector }}</li>
