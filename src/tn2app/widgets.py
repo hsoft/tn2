@@ -7,7 +7,7 @@ from .models import PatternCreator, Pattern
 
 class PatternSelect(Select):
     def render(self, name, value, attrs=None, renderer=None):
-        nr = [(0, "Patron non répertorié")]
+        nr = [(None, "Patron non répertorié")]
         if value:
             pattern = Pattern.objects.get(id=value)
             creator_id = pattern.creator_id
