@@ -5,7 +5,7 @@ from django.core.files.uploadedfile import UploadedFile, SimpleUploadedFile
 
 from PIL import Image, ImageFile
 
-from ..models import Project, Pattern
+from ..models import Project, Pattern, Contest
 from ..util import exif_orientation
 from ..widgets import PatternSelect
 from .base import BaseModelForm
@@ -42,9 +42,24 @@ class ProjectForm(BaseModelForm):
             "modifier ces champs si nécessaire.",
     )
 
+    participate_to_contest = forms.BooleanField(
+        required=False,
+        label="Participation au concours",
+        help_text="Si cette case est cochée, ce projet constituera votre participation au " \
+            "concours. Une seule participation par concours est permise."
+    )
+
     def __init__(self, **kwargs):
         self.author = kwargs.pop('author', None)
         super().__init__(**kwargs)
+        active_contest = Contest.objects.active_contest()
+        if active_contest:
+            contest_field = self.fields['participate_to_contest']
+            contest_field.label = "Participation au concours \"{}\"".format(active_contest.name)
+            if self.instance and self.instance.contest == active_contest:
+                contest_field.initial = True
+        else:
+            del self.fields['participate_to_contest']
 
     def validate_and_resize_image(self, image_uploaded_file):
         def cant_read():
@@ -102,10 +117,36 @@ class ProjectForm(BaseModelForm):
             result = None
         return result
 
+    def clean_participate_to_contest(self):
+        result = self.cleaned_data['participate_to_contest']
+        if result:
+            active_contest = Contest.objects.active_contest()
+            if not active_contest:
+                raise forms.ValidationError("Il n'y a pas de concours actif.")
+            author = self.author
+            if not self.author:
+                author = self.instance.author
+            if author.projects.filter(contest=active_contest).exists():
+                raise forms.ValidationError("Vous avez déjà participé au concours.")
+        return result
+
+    def clean(self):
+        cleaned_data = super().clean()
+        if cleaned_data.get('participate_to_contest'):
+            cleaned_data['contest'] = Contest.objects.active_contest()
+        return cleaned_data
+
     def save(self, commit=True):
         instance = super().save(commit=False)
         if self.author:
             instance.author = self.author
+        contest = self.cleaned_data.get('contest')
+        if contest:
+            # rare case: we're trying to participate to a contest with a project that already
+            # participated in *another* contest. We silently ignore because we probably don't want
+            # to lose our participation to a legacy contest.
+            if not instance.contest:
+                instance.contest = contest
 
         if commit:
             instance.save()
