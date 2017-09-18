@@ -16,7 +16,26 @@ from .comment import CommentableMixin, AbstractComment
 from .pattern import Pattern, PatternCategory
 
 
-__all__ = ['Project', 'ProjectComment', 'ProjectVote', 'get_project_image_path']
+__all__ = ['Contest', 'Project', 'ProjectComment', 'ProjectVote', 'get_project_image_path']
+
+class ContestManager(models.Manager):
+    def active_contest(self):
+        return self.filter(active=True).last()
+
+
+class Contest(models.Model):
+    class Meta:
+        verbose_name = "Concours"
+        verbose_name_plural = "Concours"
+
+    name = models.TextField(verbose_name="Nom")
+    active = models.BooleanField(default=False, db_index=True, verbose_name="Actif")
+
+    objects = ContestManager()
+
+    def __str__(self):
+        return self.name
+
 
 def get_project_image_path(instance, filename, slot):
     root, ext = os.path.splitext(filename)
@@ -139,6 +158,13 @@ class Project(CommentableMixin, models.Model):
         settings.AUTH_USER_MODEL,
         related_name='liked_projects',
         through='ProjectVote'
+    )
+
+    contest = models.ForeignKey(
+        Contest,
+        related_name='projects',
+        null=True,
+        blank=True,
     )
 
     # The old system had a lot of spam users and we chose to aggressively weed them out during the

@@ -1,108 +1,19 @@
 import io
 
 from django import forms
-from django.conf import settings
 from django.core.files.uploadedfile import UploadedFile, SimpleUploadedFile
-from django.utils.text import slugify
 
 from PIL import Image, ImageFile
-from ckeditor.widgets import CKEditorWidget
-from captcha.fields import CaptchaField
-import account.forms
 
-from .models import UserProfile, Discussion, Project, Pattern
-from .util import dedupe_slug, sanitize_comment, exif_orientation
-from .widgets import PatternSelect
+from ..models import Project, Pattern, Contest
+from ..util import exif_orientation
+from ..widgets import PatternSelect
+from .base import BaseModelForm
+
+__all__ = ['ProjectForm']
 
 # http://stackoverflow.com/a/23575424
 ImageFile.LOAD_TRUNCATED_IMAGES = True
-
-class SignupForm(account.forms.SignupForm):
-    field_order = ['username', 'email', 'password', 'password_confirm']
-
-    captcha = CaptchaField(
-        help_text="Pour confirmer que vous n'êtes pas un robot, entrez le <b>chiffre</b> (ex: 123) que vous voyez dans l'image",
-    )
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['username'].label = "Votre pseudo"
-        self.fields['email'].label = "Votre adresse e-mail"
-        self.fields['password'].label = "Votre mot de passe"
-        self.fields['password_confirm'].label = "Confirmez le mot de passe"
-
-
-class BaseModelForm(forms.ModelForm):
-    required_css_class = 'required'
-
-    def __init__(self, *args, **kwargs):
-        kwargs.setdefault('label_suffix', '')
-        super().__init__(*args, **kwargs)
-
-
-class UserProfileForm(BaseModelForm):
-    class Meta:
-        model = UserProfile
-        fields = [
-            'display_name', 'description', 'city', 'website', 'skill_level', 'sewing_machine',
-            'avatar',
-        ]
-        widgets = {
-            'city': forms.TextInput(),
-            'sewing_machine': forms.TextInput(),
-        }
-
-    def clean_display_name(self):
-        display_name = self.cleaned_data['display_name']
-        if display_name.lower() != self.instance.display_name.lower():
-            if UserProfile.objects.filter(display_name__iexact=display_name).exists():
-                raise forms.ValidationError("Un autre utilisateur utilise déjà ce pseudo.")
-        return display_name
-
-    def clean_description(self):
-        return sanitize_comment(self.cleaned_data['description'])
-
-
-class NewDiscussionForm(BaseModelForm):
-    class Meta:
-        model = Discussion
-        fields = ['title', 'content']
-
-    def __init__(self, group, author, **kwargs):
-        super().__init__(**kwargs)
-        self.group = group
-        self.author = author
-
-    def save(self, commit=True):
-        instance = super().save(commit=False)
-        instance.group = self.group
-        instance.author = self.author
-
-        q = Discussion.objects.filter(group=self.group)
-        instance.slug = dedupe_slug(slugify(instance.title), q)
-
-        if commit:
-            instance.save()
-
-        return instance
-
-
-class EditDiscussionForm(BaseModelForm):
-    class Meta:
-        model = Discussion
-        fields = ['title', 'content']
-
-
-class CommentForm(forms.Form):
-    comment = forms.CharField(
-        label="Commentaire",
-        widget=CKEditorWidget(config_name='restricted'),
-        max_length=settings.COMMENT_MAX_LENGTH
-    )
-
-    def clean_comment(self):
-        return sanitize_comment(self.cleaned_data['comment'])
-
 
 class ProjectForm(BaseModelForm):
     class Meta:
@@ -131,9 +42,24 @@ class ProjectForm(BaseModelForm):
             "modifier ces champs si nécessaire.",
     )
 
+    participate_to_contest = forms.BooleanField(
+        required=False,
+        label="Participation au concours",
+        help_text="Si cette case est cochée, ce projet constituera votre participation au " \
+            "concours. Une seule participation par concours est permise."
+    )
+
     def __init__(self, **kwargs):
         self.author = kwargs.pop('author', None)
         super().__init__(**kwargs)
+        active_contest = Contest.objects.active_contest()
+        if active_contest:
+            contest_field = self.fields['participate_to_contest']
+            contest_field.label = "Participation au concours \"{}\"".format(active_contest.name)
+            if self.instance and self.instance.contest == active_contest:
+                contest_field.initial = True
+        else:
+            del self.fields['participate_to_contest']
 
     def validate_and_resize_image(self, image_uploaded_file):
         def cant_read():
@@ -191,28 +117,39 @@ class ProjectForm(BaseModelForm):
             result = None
         return result
 
+    def clean_participate_to_contest(self):
+        result = self.cleaned_data['participate_to_contest']
+        if result:
+            active_contest = Contest.objects.active_contest()
+            if not active_contest:
+                raise forms.ValidationError("Il n'y a pas de concours actif.")
+            author = self.author
+            if not self.author:
+                author = self.instance.author
+            if author.projects.filter(contest=active_contest).exists():
+                raise forms.ValidationError("Vous avez déjà participé au concours.")
+        return result
+
+    def clean(self):
+        cleaned_data = super().clean()
+        if cleaned_data.get('participate_to_contest'):
+            cleaned_data['contest'] = Contest.objects.active_contest()
+        return cleaned_data
+
     def save(self, commit=True):
         instance = super().save(commit=False)
         if self.author:
             instance.author = self.author
+        contest = self.cleaned_data.get('contest')
+        if contest:
+            # rare case: we're trying to participate to a contest with a project that already
+            # participated in *another* contest. We silently ignore because we probably don't want
+            # to lose our participation to a legacy contest.
+            if not instance.contest:
+                instance.contest = contest
 
         if commit:
             instance.save()
 
         return instance
-
-
-class ContactForm(forms.Form):
-    required_css_class = 'required'
-
-    name = forms.CharField(label="Votre nom", max_length=100)
-    email = forms.EmailField(label="Votre email")
-    subject = forms.CharField(label="Sujet de votre message", max_length=200)
-    message = forms.CharField(label="Votre message", widget=forms.Textarea)
-
-
-class UserSendMessageForm(forms.Form):
-    required_css_class = 'required'
-
-    message = forms.CharField(label="Votre message", widget=forms.Textarea)
 

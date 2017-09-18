@@ -1,0 +1,11 @@
+<ul class="selector with-lines">
+    {% for label, active, href in widget.get_options %}
+    <li>
+        <a href="{{ href }}">
+            <i class="fa fa-fw {% if active %}fa-check{% endif %}"></i>
+            {{ label }}
+        </a>
+    </li>
+    {% endfor %}
+</ul>
+

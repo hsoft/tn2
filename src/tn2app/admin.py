@@ -4,11 +4,12 @@ from django import forms
 from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin
+from django.db import models
 from django.utils.text import slugify
 
 from .models import (
     Article, ArticleCategory, DiscussionGroup, Discussion, UserProfile, Project, PageContents,
-    PatternCreator, PatternCategory, Pattern, Sponsorship
+    PatternCreator, PatternCategory, Pattern, Sponsorship, Contest
 )
 from .util import dedupe_slug
 
@@ -102,6 +103,15 @@ class PatternAdmin(BaseModelAdmin):
     save_as = True
 
 admin.site.register(Pattern, PatternAdmin)
+
+class ContestAdmin(BaseModelAdmin):
+    formfield_overrides = {
+        models.TextField: {'widget': forms.TextInput},
+    }
+    list_display = ('name', 'active')
+    list_filter = ('active', )
+
+admin.site.register(Contest, ContestAdmin)
 
 admin.site.register(Sponsorship, BaseModelAdmin)
 

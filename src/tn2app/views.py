@@ -5,7 +5,7 @@ from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.syndication.views import Feed
 from django.core.exceptions import PermissionDenied
-from django.db.models import Max, Count, Q
+from django.db.models import Max, Count, Q, OuterRef, Subquery, IntegerField
 from django.forms.widgets import Select
 from django.http import Http404, HttpResponseRedirect, JsonResponse
 from django.urls import reverse
@@ -31,7 +31,7 @@ from .forms import (
     SignupForm, ContactForm, UserSendMessageForm
 )
 from .util import href
-from .widgets import UnrolledTwoColsSelect
+from .widgets import UnrolledTwoColsSelect, CheckboxList
 
 class SignupView(account.views.SignupView):
     form_class = SignupForm
@@ -492,32 +492,52 @@ class ProjectList(ListView):
 
     def target_selector(self):
         return UnrolledTwoColsSelect(
-            self.request,
+            self.request.GET.copy(),
             Pattern.TARGET_CHOICES,
             'target',
         ).render()
 
     def domain_selector(self):
         return UnrolledTwoColsSelect(
-            self.request,
+            self.request.GET.copy(),
             Pattern.DOMAIN_CHOICES,
             'domain',
         ).render()
 
     def category_selector(self):
         return UnrolledTwoColsSelect(
-            self.request,
+            self.request.GET.copy(),
             PatternCategory.objects.values_list('id', 'name'),
             'category',
         ).render()
 
+    def pattern_checkboxes(self):
+        reqparams = self.request.GET.copy()
+        # as a special case, we always remove the 'pattern_id' param when selecting a
+        # box from pattern_checkboxes to avoid weird empty listing.
+        reqparams.pop('pattern_id', None)
+        if 'pattern_id' in reqparams:
+            del reqparams['pattern_id']
+
+        return CheckboxList(
+            reqparams,
+            [('pattern_is_free', "Gratuit"), ('pattern_is_jersey', "Tissu Maille")]
+        )
+
     def pattern_selectors(self):
+        # This method became complicated, hence this comment. What are we trying to achieve here?
+        #
+        # Of course, we want a list of pattern creators. But also, if we have selected a creator,
+        # we want its list of patterns. So there's that. Simple, right?
+        #
+        # But it's not over! We also want to avoid having our creator list polluted by patternless
+        # creators (there are a couple of them in the DB), so our creator_qs has to be beefed up.
+        #
+        # But wait! now we have is_free and is_jersey flags. We want these to affect the list of
+        # patterns and creators available for selection. *this* particularly complicates this
+        # and make creator_qs much more complex.
+
         item_all = [(0, "Tous")]
-        creator_qs = PatternCreator.objects\
-            .annotate(pattern_count=Count('patterns'))\
-            .filter(pattern_count__gt=0)
-        params = self.request.GET.copy()
-        params['page'] = '1'
 
         def pop(key):
             val = params.pop(key, None)
@@ -525,11 +545,38 @@ class ProjectList(ListView):
                 val = val[0] if val else None
             return val
 
+        params = self.request.GET.copy()
+        params['page'] = '1'
+
         pattern_id = pop('pattern')
         pattern_creator_id = pop('pattern_creator')
         if pattern_id and Pattern.objects.filter(id=pattern_id).exists():
             # More reliable than the request argument.
             pattern_creator_id = Pattern.objects.get(id=pattern_id).creator.id
+
+        pattern_filters = {
+            v.replace('pattern_', ''): True
+            for v in self.pattern_checkboxes().get_selected_options()
+        }
+        pattern_qs = Pattern.objects.filter(**pattern_filters)
+
+        # Woah, complicated...
+        # https://stackoverflow.com/a/30753074
+        pattern_sub = Subquery(
+            pattern_qs.filter(creator_id=OuterRef('pk'))
+                .annotate(cnt=Count('pk'))
+                .values('cnt')[:1],
+            output_field=IntegerField()
+        )
+        creator_filter = Q(pattern_count__gt=0)
+
+        # We always want a selected creator to show up, even if it has no pattern
+        if pattern_creator_id:
+            creator_filter |= Q(id=pattern_creator_id)
+
+        creator_qs = PatternCreator.objects\
+            .annotate(pattern_count=pattern_sub)\
+            .filter(creator_filter)
 
         get_url = '?{}&pattern_creator='.format(params.urlencode())
         widget = Select(
@@ -540,9 +587,10 @@ class ProjectList(ListView):
             name='pattern_creator',
             value=pattern_creator_id,
         )]
-        if pattern_creator_id and PatternCreator.objects.filter(id=pattern_creator_id).exists():
+
+        if pattern_creator_id and creator_qs.filter(id=pattern_creator_id).exists():
             pattern_creator = PatternCreator.objects.get(id=pattern_creator_id)
-            pattern_qs = pattern_creator.patterns
+            pattern_qs = pattern_qs.filter(creator=pattern_creator)
             params['pattern_creator'] = pattern_creator_id
             get_url = '?{}&pattern='.format(params.urlencode())
             widget = Select(
@@ -589,8 +637,15 @@ class ProjectList(ListView):
             'pattern': 'pattern_id',
         }
         filters = {v: get(k) for k, v in ARGSMAP.items() if get(k)}
+
+        BOOLARGSMAP = {
+            'pattern_is_free': 'pattern__is_free',
+            'pattern_is_jersey': 'pattern__is_jersey',
+        }
+        filters.update({v: get(k) == 1 for k, v in BOOLARGSMAP.items() if get(k)})
         if filters:
             queryset = queryset.filter(**filters)
+
         order = self.active_order()
         if order == 'popular':
             queryset = queryset.annotate(num_likes=Count('likes'))

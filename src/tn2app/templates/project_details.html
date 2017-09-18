@@ -121,12 +121,16 @@
         <a href="{% url 'project_list' %}?pattern={{ project.pattern.id }}">
             Voir tous les projets utilisant ce patron
         </a>
+        <br>
         {% endif %}
         {% if project.blog_post_url %}
         <a class="blog-url" href="{{ project.blog_post_url|fixurl }}" target="_blank">Retrouvez ce projet sur mon blog</a>
         <br>
         {% endif %}
-        © Tous droits réservés
+        {% if project.contest %}
+        <strong>Participation au concours "{{ project.contest.name }}"</strong>
+        <br>
+        {% endif %}
     </div>
 
     <div class="overline">
