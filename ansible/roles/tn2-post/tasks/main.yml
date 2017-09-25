@@ -1,0 +1,3 @@
+---
+- include: manage.yml
+- include: cron.yml

@@ -1,0 +1,10 @@
+---
+- name: Run manage commands
+  command: "{{ django_path }}/manage.sh {{ item }}"
+  with_items:
+    - collectstatic --noinput
+    - migrate
+    - load_initial_data
+  become: yes
+  become_user: "{{ django_user }}"
+

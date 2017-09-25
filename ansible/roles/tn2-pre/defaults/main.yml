@@ -1,0 +1,12 @@
+# User to use for db connection.
+tn2_dbuser: "tn2"
+
+# DB name to use.
+tn2_dbname: "tn2"
+
+# password to use for db connection.
+tn2_dbpass: whatever
+
+# Value of the ENGINE param in Django settings' DATABASES dictionary.
+django_dbengine_name: "django.db.backends.postgres"
+
