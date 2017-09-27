@@ -1,7 +1,6 @@
 from django.conf.urls import url, include
 from django.conf import settings
 from django.contrib import admin
-import django.views.static
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import user_passes_test
 
@@ -32,7 +31,5 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns += [
-        url(r'^media/(?P<path>.*)$', django.views.static.serve, {
-            'document_root': settings.MEDIA_ROOT,
-        }),
+        url(r'^media/(?P<path>.*)$', tn2_views.serve_media),
     ]

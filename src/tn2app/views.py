@@ -1003,7 +1003,10 @@ class PatternListJSON(View):
 def serve_thumbnail(request, width, height, path):
     if not settings.DEBUG:
         raise PermissionDenied()
-    response = serve(request, path, document_root=settings.MEDIA_ROOT)
+    try:
+        response = serve(request, path, document_root=settings.MEDIA_ROOT)
+    except Exception:
+        return HttpResponseRedirect(settings.MEDIA_DEBUG_REDIRECT_TO + request.get_full_path())
     if hasattr(response, 'file_to_stream'):
         img = Image.open(response.file_to_stream)
         img.thumbnail((int(width), int(height)))
@@ -1012,4 +1015,12 @@ def serve_thumbnail(request, width, height, path):
         fp.seek(0)
         response.streaming_content = fp
     return response
+
+def serve_media(request, path):
+    if not settings.DEBUG:
+        raise PermissionDenied()
+    try:
+        return serve(request, path, document_root=settings.MEDIA_ROOT)
+    except Exception:
+        return HttpResponseRedirect(settings.MEDIA_DEBUG_REDIRECT_TO + request.get_full_path())
 

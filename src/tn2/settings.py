@@ -154,6 +154,9 @@ STATIC_URL = '/static/'
 MEDIA_ROOT = str(PROJECT_ROOT.joinpath('media'))
 MEDIA_URL = '/media/'
 
+# Host to redirect to when we hit missing media in DEBUG mode (see serve_* debug views)
+MEDIA_DEBUG_REDIRECT_TO = 'https://www.threadandneedles.fr'
+
 CKEDITOR_JQUERY_URL = 'https://code.jquery.com/jquery-2.2.4.min.js'
 CKEDITOR_UPLOAD_PATH = 'uploads/'
 CKEDITOR_IMAGE_BACKEND = 'pillow'
