@@ -3,8 +3,17 @@ server {
 
     location ~ ^/thumb/(\d+)/(\d+)/(.+)$ {
         alias {{ nginx_thumbnailer_media_path }}/$3;
+        {% if nginx_thumbnailer_redirect_to %}
+        try_files $uri @redirect;
+        {% endif %}
         image_filter_buffer {{ nginx_thumbnailer_buffer_size }};
         image_filter resize $1 $2;
         image_filter crop $1 $2;
     }
+
+    {% if nginx_thumbnailer_redirect_to %}
+    location @redirect {
+        return 302 {{ nginx_thumbnailer_redirect_to }}$request_uri;
+    }
+    {% endif %}
 }

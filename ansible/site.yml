@@ -5,7 +5,8 @@
   vars:
     django_domain_name: tn2.local
     django_secret_key: whatever
-    django_media_redirect_to: https://www.threadandneedles.fr/media
+    django_media_redirect_to: https://www.threadandneedles.fr
+    nginx_thumbnailer_redirect_to: "{{ django_media_redirect_to }}"
     tn2_deb_path: /lxdockshare/build/tn2.deb
 
   roles:
