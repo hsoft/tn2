@@ -10,3 +10,6 @@
 [submodule "ansible/roles/nginx"]
 	path = ansible/roles/nginx
 	url = https://github.com/savoirfairelinux/ansible-nginx.git
+[submodule "ansible/roles/persistent-data"]
+	path = ansible/roles/persistent-data
+	url = https://github.com/hsoft/ansible-persistent-data.git

@@ -1,7 +1,7 @@
 ---
 - block:
     - name: Ensure that we have a DB
-      postgresql_db: "name={{ tn2_dbname }}"
+      postgresql_db: "name={{ tn2_dbname }} owner={{ tn2_dbuser }}"
 
     - name: Ensure that we have a DB user
       postgresql_user: "name={{ tn2_dbuser }} db={{ tn2_dbname }} password={{ tn2_dbpass }} priv=ALL role_attr_flags=CREATEDB"

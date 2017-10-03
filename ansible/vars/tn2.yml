@@ -29,6 +29,14 @@ django_nginx_locations: |
 
 nginx_thumbnailer_media_path: "{{ django_path }}/media"
 
+persistent_data_user: "{{ django_user }}"
+persistent_data_path: "{{ django_path }}"
+persistent_data_databases:
+  - name: tn2.pgdump
+    type: postgres
+    dbname: "{{ django_dbname }}"
+    dbuser: "{{ django_dbuser }}"
+
 tn2_packages:
   - python3
   - python3-psycopg2

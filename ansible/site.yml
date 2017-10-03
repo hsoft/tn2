@@ -17,4 +17,5 @@
     - tn2-pre
     - django
     - tn2-post
+    - persistent-data
 
