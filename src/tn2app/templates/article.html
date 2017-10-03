@@ -1,5 +1,5 @@
 {% extends 'base_article.html' %}
-{% load tn2 %}
+{% load tn2 staticfiles %}
 
 {% block extra_head %}
 <meta property="og:title" content="{{ article.title }}" />
@@ -25,6 +25,16 @@
 <p class="metaline">
     {% include 'include/article_meta_line.html' %}
 </p>
+
+{% if not article.is_published %}
+<p>
+    <strong>Cet article n'est pas encore publié, et voici, ci-dessus, l'image de vignette:</strong>
+</p>
+<p>
+    <img src="{% if article.main_image %}{{ article.main_image.url }}{% else %}{% static 'images/image-placeholder.png' %}{% endif %}">
+</p>
+{% endif %}
+
 {{ article.get_content|safe }}
 
 <div class="author-bio">

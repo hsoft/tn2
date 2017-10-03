@@ -60,7 +60,6 @@ class Article(CommentableMixin, models.Model):
     title = models.CharField(max_length=255)
     subtitle = models.TextField(blank=True)
     content = RichTextUploadingField()
-    # TODO: Set blank to True when the import is over
     main_image = models.ImageField(upload_to='articles', blank=True)
     categories = models.ManyToManyField('ArticleCategory')
     creation_time = models.DateTimeField(auto_now_add=True, db_index=True)
@@ -72,6 +71,9 @@ class Article(CommentableMixin, models.Model):
 
     def __str__(self):
         return "{} - {}".format(self.slug, self.title)
+
+    def is_published(self):
+        return self.status == self.STATUS_PUBLISHED and self.publish_time < datetime.datetime.now()
 
     def get_absolute_url(self):
         return reverse('article', args=[self.slug])

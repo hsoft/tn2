@@ -4,6 +4,7 @@ from django import forms
 from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.text import slugify
 
@@ -36,7 +37,14 @@ class ArticleAdminForm(forms.ModelForm):
         if 'initial' in kwargs:
             kwargs['initial']['author'] = self.initial_author
         super().__init__(*args, **kwargs)
-        self.fields['main_image'].required = True
+
+    def clean(self):
+        result = super().clean()
+        status = self.cleaned_data.get('status')
+        main_image = self.cleaned_data.get('main_image')
+        if status == Article.STATUS_PUBLISHED and not main_image:
+            raise ValidationError("Une image principale est nécessaire pour publier")
+        return result
 
     def save(self, commit=True):
         instance = super().save(commit=False)
