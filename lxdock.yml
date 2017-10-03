@@ -6,6 +6,7 @@ containers:
     provisioning:
       - type: ansible
         playbook: ansible/debbuild.yml
+        lxd_transport: true
 
   - name: website
     hostnames:
@@ -13,6 +14,7 @@ containers:
     provisioning:
       - type: ansible
         playbook: ansible/site.yml
+        lxd_transport: true
 
 shares:
   - source: .
