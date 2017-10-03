@@ -91,6 +91,8 @@ deb: $(DEBDEST)
 # Commands that run from lxdock
 
 build/tn2.deb:
+	mkdir -p build
+	chmod o+w build requirements.freeze
 	lxdock up debbuild
 	lxdock shell debbuild -c /lxdockshare/scripts/lxdock_debbuild.sh
 
