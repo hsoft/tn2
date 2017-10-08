@@ -39,8 +39,9 @@ class AdHocWidget:
         return mark_safe(result)
 
 
-class UnrolledTwoColsSelect(AdHocWidget):
-    template_name = 'widgets/unrolled_two_cols_select.html'
+class UnrolledSelect(AdHocWidget):
+    template_name = 'widgets/unrolled_select.html'
+    is_two_cols = False
 
     def __init__(self, reqparams, choices, argname):
         self.choices = list(choices)
@@ -52,12 +53,19 @@ class UnrolledTwoColsSelect(AdHocWidget):
         self.reqparams[argname] = ''
         self.reqparams['page'] = '1'
 
+    def get_neutral_href(self):
+        return '?' + self.reqparams.urlencode()
+
     def get_options(self):
         reqparams = self.reqparams.copy()
         for value, label in self.choices:
             reqparams[self.argname] = value
             isactive = str(value) == self.selected_value
             yield label, isactive, '?' + reqparams.urlencode()
+
+
+class UnrolledTwoColsSelect(UnrolledSelect):
+    is_two_cols = True
 
 
 class CheckboxList(AdHocWidget):

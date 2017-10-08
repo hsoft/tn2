@@ -1,5 +1,5 @@
 {% load add_get_parameter %}
-<ul class="selector with-lines two-columns">
+<ul class="selector with-lines {% if widget.is_two_cols %}two-columns{% endif %}">
     <li>
         <a
             {% if not widget.selected_value %}class="active"{% endif %}
@@ -7,7 +7,9 @@
             Tous
         </a>
     </li>
+    {% if widget.is_two_cols %}
     <li>&nbsp;</li>
+    {% endif %}
     {% for label, active, href in widget.get_options %}
     <li>
         <a {% if active %}class="active"{% endif %} href="{{ href }}">

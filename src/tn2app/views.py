@@ -24,14 +24,14 @@ import account.forms
 from .models import (
     User, UserProfile, Article, ArticleCategory, DiscussionGroup, Discussion, Project, ProjectVote,
     ArticleComment, DiscussionComment, ProjectComment, Notification, Pattern, PatternCategory,
-    PatternCreator, Sponsorship
+    PatternCreator, Sponsorship, Contest
 )
 from .forms import (
     UserProfileForm, NewDiscussionForm, EditDiscussionForm, CommentForm, ProjectForm,
     SignupForm, ContactForm, UserSendMessageForm
 )
 from .util import href
-from .widgets import UnrolledTwoColsSelect, CheckboxList
+from .widgets import UnrolledSelect, UnrolledTwoColsSelect, CheckboxList
 
 class SignupView(account.views.SignupView):
     form_class = SignupForm
@@ -604,6 +604,13 @@ class ProjectList(ListView):
 
         return result
 
+    def contest_selector(self):
+        return UnrolledSelect(
+            self.request.GET.copy(),
+            Contest.objects.values_list('id', 'name'),
+            'contest',
+        )
+
     def popular_this_week(self):
         return Project.objects.popular_this_week()
 
@@ -635,6 +642,7 @@ class ProjectList(ListView):
             'target': 'target',
             'pattern_creator': 'pattern__creator',
             'pattern': 'pattern_id',
+            'contest': 'contest_id',
         }
         filters = {v: get(k) for k, v in ARGSMAP.items() if get(k)}
 

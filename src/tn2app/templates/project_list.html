@@ -77,6 +77,11 @@
         <li>{{ selector }}</li>
     {% endfor %}
     </ul>
+
+    {% include 'include/title.html' with text="Trier par concours" %}
+
+    {{ view.contest_selector.render }}
+
 </div>
 {% endblock %}
 
