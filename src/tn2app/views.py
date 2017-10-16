@@ -738,6 +738,9 @@ class ProjectDetails(ViewWithCommentsMixin, DetailView):
 class ProjectEdit(BelongsToUserMixin, UpdateView):
     USER_ATTR = 'author'
     SUPERUSER_PERM = 'tn2app.change_project'
+    TITLE = "Modifier un projet"
+    ACTION_NAME = "Modifier"
+    FORM_CLASS = 'editproject'
 
     template_name = 'project_edit.html'
     form_class = ProjectForm
@@ -750,6 +753,10 @@ class ProjectEdit(BelongsToUserMixin, UpdateView):
             (None, "Modifier"),
         ]
 
+    def post_url(self):
+        project = self.get_object()
+        return reverse('project_edit', kwargs={'pk': project.pk, 'slug': project.get_slug()})
+
     def post(self, request, *args, **kwargs):
         if 'delete' in request.POST:
             project = self.get_object()
@@ -761,11 +768,18 @@ class ProjectEdit(BelongsToUserMixin, UpdateView):
 
 
 class ProjectCreate(LoginRequiredMixin, UserViewMixin, CreateView):
-    template_name = 'project_create.html'
+    template_name = 'project_edit.html'
     form_class = ProjectForm
+    TITLE = "Publier un projet"
+    ACTION_NAME = "Publier"
+    FORM_CLASS = 'newproject'
 
     def breadcrumb(self):
         return super().breadcrumb() + [(None, "Publier un projet")]
+
+    def post_url(self):
+        user = self.request.user
+        return reverse('project_create', kwargs={'username': user.username})
 
     def get_form_kwargs(self):
         result = super().get_form_kwargs()
