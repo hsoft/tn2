@@ -6,13 +6,29 @@
 {% endblock %}
 
 {% block main_contents %}
-<h1>Modifier un projet</h1>
-<form class="editproject" action="{% url 'project_edit' pk=project.pk slug=project.slug %}" method="POST" enctype="multipart/form-data">
+<h1>{{ view.TITLE }}</h1>
+{% if form.errors %}
+<h2 class="errors">Le formulaire contient des erreurs</h2>
+<p>
+    Les modifications que vous avez faites n'ont pas été prises en compte. Veuillez corriger les
+    erreurs et soumettre de nouveau. Les champs comportant des erreurs sont marqués en rouge
+    ci-dessous.
+</p>
+{% if form.non_field_errors %}
+<p>
+    De plus, des erreurs générales ont été relevées:
+</p>
+{{ form.non_field_errors }}
+{% endif %}
+{% endif %}
+<form class="{{ view.FORM_CLASS }}" action="{{ view.post_url }}" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
-    <input class="button" type="submit" value="Modifier" />
+    <input class="button" type="submit" value="{{ view.ACTION_NAME }}" />
+    {% if project %}
     <a href="{{ project.get_absolute_url }}">Retour</a>
     <input class="button delete-button" type="submit" name="delete" value="Supprimer" />
+    {% endif %}
 </form>
 {% endblock %}
 

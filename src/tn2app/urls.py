@@ -2,6 +2,7 @@ from django.conf.urls import url
 from django.views.generic.base import RedirectView
 
 from . import views
+from .views import project as project_views
 
 urlpatterns = [
     url(r'^$', views.Homepage.as_view(), name='homepage'),
@@ -18,30 +19,30 @@ urlpatterns = [
         name='blog_by_author'
     ),
     url(r'^feed/', views.ArticleFeed(), name='blog_feed'),
-    url(r'^projets-couture/$', views.ProjectList.as_view(), name='project_list'),
+    url(r'^projets-couture/$', project_views.ProjectList.as_view(), name='project_list'),
     url(
         r'^projets-couture/(?P<pk>\d+)-(?P<slug>[-\w]*)/$',
-        views.ProjectDetails.as_view(),
+        project_views.ProjectDetails.as_view(),
         name='project_details'
     ),
     url(
         r'^projets-couture/(?P<pk>\d+)-(?P<slug>[-\w]*)/edit/$',
-        views.ProjectEdit.as_view(),
+        project_views.ProjectEdit.as_view(),
         name='project_edit'
     ),
     url(
         r'^projets-couture/(?P<pk>\d+)-(?P<slug>[-\w]*)/jaime/$',
-        views.ProjectLike.as_view(),
+        project_views.ProjectLike.as_view(),
         name='project_like'
     ),
     url(
         r'^projets-couture/(?P<pk>\d+)-(?P<slug>[-\w]*)/favoris/$',
-        views.ProjectFavorite.as_view(),
+        project_views.ProjectFavorite.as_view(),
         name='project_favorite'
     ),
     url(
         r'^projets-couture/(?P<pk>\d+)-(?P<slug>[-\w]*)/a-la-une/$',
-        views.ProjectFeature.as_view(),
+        project_views.ProjectFeature.as_view(),
         name='project_feature'
     ),
     url(r'^groupes/$', views.DiscussionGroupListView.as_view(), name='discussion_groups'),
@@ -82,7 +83,7 @@ urlpatterns = [
     ),
     url(
         r'^membres/(?P<username>[-\w]+)/projets-couture/nouveau-projet/$',
-        views.ProjectCreate.as_view(),
+        project_views.ProjectCreate.as_view(),
         name='project_create'
     ),
     url(

@@ -78,4 +78,25 @@ form.signupform {
     }
 }
 
+/* Errors */
+
+h2.errors {
+    color: white;
+    background-color: $red_errors;
+}
+
+form ul.errorlist {
+    color: white;
+    background-color: $red_errors;
+    padding: 8px;
+    font-weight: bold;
+
+    li {
+        list-style: none;
+    }
+}
+
+form ul.errorlist + p label {
+    color: $red_errors;
+}
 
