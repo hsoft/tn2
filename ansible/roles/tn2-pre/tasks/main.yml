@@ -1,3 +1,10 @@
 ---
 - include: postgres.yml
 - include: apt.yml
+
+- file:
+    path: "{{ tn2_log_path|dirname }}"
+    state: directory
+    mode: "0770"
+    group: "www-data"
+

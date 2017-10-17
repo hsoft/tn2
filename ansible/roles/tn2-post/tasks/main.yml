@@ -1,8 +1,3 @@
 ---
-- file:
-    path: "{{ tn2_log_path|dirname }}"
-    state: directory
-    owner: "{{ django_user }}"
-
 - include: manage.yml
 - include: cron.yml
