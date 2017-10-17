@@ -19,6 +19,7 @@ django_jsonsettings_properties:
     PASSWORD: "{{ django_dbpass }}"
   allowed_hosts: "['{{ django_domain_name }}', ] + {{ django_extra_domain_names|default([]) }}"
   email: "{% if tn2_smtp is defined %}{{ tn2_smtp }}{% endif %}"
+  log_to: "{{ tn2_log_path }}"
 
 django_nginx_locations: |
   location /thumb/ {

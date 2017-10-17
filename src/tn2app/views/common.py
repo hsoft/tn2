@@ -1,3 +1,5 @@
+import logging
+
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.http import Http404
 from django.urls import reverse
@@ -5,6 +7,8 @@ from django.views.generic.base import ContextMixin
 
 from ..forms import CommentForm
 from ..models import User
+
+logger = logging.getLogger(__name__)
 
 class ViewWithCommentsMixin:
     def get_comment_form(self):
@@ -37,4 +41,13 @@ class BelongsToUserMixin(UserPassesTestMixin):
         u = self.request.user
         return u == getattr(self.get_object(), self.USER_ATTR) or u.has_perm(self.SUPERUSER_PERM)
 
+
+class LogFormErrorMixin:
+    def form_invalid(self, form):
+        logger.warning(
+            "Form error from user %s: %r",
+            self.request.user.username,
+            form.errors.as_data(),
+        )
+        return super().form_invalid(form)
 

@@ -157,6 +157,36 @@ MEDIA_URL = '/media/'
 # Host to redirect to when we hit missing media in DEBUG mode (see serve_* debug views)
 MEDIA_DEBUG_REDIRECT_TO = 'https://www.threadandneedles.fr'
 
+# Logging
+
+if json_conf.get('log_to'):
+    LOGGING = {
+        'version': 1,
+        'disable_existing_loggers': False,
+        'formatters': {
+            'simple': {
+                'format': '%(levelname)s %(asctime)s %(message)s'
+            },
+        },
+        'handlers': {
+            'file': {
+                'level': 'WARNING',
+                'class': 'logging.FileHandler',
+                'filename': json_conf.get('log_to'),
+                'formatter': 'simple',
+            }
+        },
+        'loggers': {
+            'tn2app': {
+                'handlers': ['file'],
+                'level': 'WARNING',
+                'propagate': True,
+            }
+        },
+    }
+
+# Others
+
 CKEDITOR_JQUERY_URL = 'https://code.jquery.com/jquery-2.2.4.min.js'
 CKEDITOR_UPLOAD_PATH = 'uploads/'
 CKEDITOR_IMAGE_BACKEND = 'pillow'
@@ -204,8 +234,6 @@ THUMBNAIL_ALIASES = {
         'project-alternate-view': {'size': (50, 50), 'crop': True},
     }
 }
-
-# Others
 
 DISCUSSION_PAGINATE_BY = 15
 

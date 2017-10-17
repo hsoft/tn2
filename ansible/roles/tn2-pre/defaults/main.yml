@@ -10,3 +10,4 @@ tn2_dbpass: whatever
 # Value of the ENGINE param in Django settings' DATABASES dictionary.
 django_dbengine_name: "django.db.backends.postgres"
 
+tn2_log_path: /var/log/tn2/django.log

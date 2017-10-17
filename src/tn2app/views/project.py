@@ -15,7 +15,7 @@ from ..models import (
 )
 from ..util import href
 from ..widgets import UnrolledSelect, UnrolledTwoColsSelect, CheckboxList
-from .common import ViewWithCommentsMixin, UserViewMixin, BelongsToUserMixin
+from .common import ViewWithCommentsMixin, UserViewMixin, BelongsToUserMixin, LogFormErrorMixin
 
 class ProjectList(ListView):
     template_name = 'project_list.html'
@@ -280,7 +280,7 @@ class ProjectDetails(ViewWithCommentsMixin, DetailView):
             return list(q1.all()[:2]) + [current]
 
 
-class ProjectEdit(BelongsToUserMixin, UpdateView):
+class ProjectEdit(BelongsToUserMixin, LogFormErrorMixin, UpdateView):
     USER_ATTR = 'author'
     SUPERUSER_PERM = 'tn2app.change_project'
     TITLE = "Modifier un projet"
@@ -312,7 +312,7 @@ class ProjectEdit(BelongsToUserMixin, UpdateView):
             return super().post(request, *args, **kwargs)
 
 
-class ProjectCreate(LoginRequiredMixin, UserViewMixin, CreateView):
+class ProjectCreate(LoginRequiredMixin, UserViewMixin, LogFormErrorMixin, CreateView):
     template_name = 'project_edit.html'
     form_class = ProjectForm
     TITLE = "Publier un projet"
