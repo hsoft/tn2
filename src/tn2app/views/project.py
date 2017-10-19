@@ -180,6 +180,7 @@ class ProjectList(ListView):
             'target': 'target',
             'pattern_creator': 'pattern__creator',
             'pattern': 'pattern_id',
+            'contest': 'contest_id',
         }
         filters = {v: get(k) for k, v in ARGSMAP.items() if get(k)}
 
