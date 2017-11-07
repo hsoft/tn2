@@ -91,3 +91,13 @@ class CheckboxList(AdHocWidget):
     def get_neutral_href(self):
         return '?' + self.reqparams.urlencode()
 
+
+class Menu(AdHocWidget):
+    template_name = 'widgets/menu.html'
+
+    def __init__(self, items, selected_index):
+        self.items = []
+        for i, (title, url) in enumerate(items):
+            selected = i == selected_index
+            self.items.append((title, url, selected))
+

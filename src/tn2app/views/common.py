@@ -7,6 +7,7 @@ from django.views.generic.base import ContextMixin
 
 from ..forms import CommentForm
 from ..models import User
+from ..widgets import Menu
 
 logger = logging.getLogger(__name__)
 
@@ -16,7 +17,12 @@ class ViewWithCommentsMixin:
 
 
 class UserViewMixin(ContextMixin):
+    MENU_SELECTED_INDEX = -1
+    SELF_ONLY = False
+
     def _get_shown_user(self):
+        if self.SELF_ONLY:
+            return self.request.user
         try:
             return User.objects.get(username=self.kwargs['username'])
         except User.DoesNotExist:
@@ -25,6 +31,23 @@ class UserViewMixin(ContextMixin):
     def breadcrumb(self):
         u = self._get_shown_user()
         return [(reverse('user_profile', args=(u.username, )), u.profile.display_name)]
+
+    def get_menu(self):
+        u = self._get_shown_user()
+        uname = u.username
+        ITEMS = [
+            ("Projets", reverse('user_profile', args=(uname,))),
+            ("Favoris", reverse('user_favorites', args=(uname,))),
+        ]
+        if u == self.request.user:
+            ITEMS += [
+                ("Messages", reverse('user_messages')),
+                ("Mot de passe", reverse('account_password')),
+                ("Notifications", reverse('user_notifications')),
+            ]
+        else:
+            ITEMS.append(("Contacter", reverse('user_sendmessage', args=(uname, ))))
+        return Menu(ITEMS, self.MENU_SELECTED_INDEX)
 
     def get_context_data(self, **kwargs):
         result = super().get_context_data(**kwargs)

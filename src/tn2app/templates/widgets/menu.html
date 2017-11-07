@@ -1,0 +1,6 @@
+<ul class="profile-sub-menu selector blue-links">
+    {% for title, url, selected in widget.items %}
+    <li><a class="{% if selected %}active{% endif %}" href="{{ url }}">{{ title }}</a></li>
+    {% endfor %}
+</ul>
+

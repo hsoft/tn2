@@ -1,8 +1,6 @@
 {% extends 'base_user_profile.html' %}
 {% load tn2 %}
 
-{% block class_for_message_link %}active{% endblock %}
-
 {% block inner_content %}
 <div class="overline">
     <h2>Envoyer un message</h2>
@@ -11,7 +9,7 @@
 {% page_contents 'userprofile-sendmessage' user %}
 
 {% if message_sent %}
-<p>Votre message a été envoyé!</p>
+<p><b>Votre message a été envoyé! <a href="{% url 'user_messages' %}">Voir mes messages</a></b></p>
 {% else %}
 <form action="{% url 'user_sendmessage' username=shown_user.username %}" method="POST">
     {% csrf_token %}

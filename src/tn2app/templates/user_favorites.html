@@ -1,8 +1,6 @@
 {% extends 'base_user_profile.html' %}
 {% load tn2 %}
 
-{% block class_for_favorite_link %}active{% endblock %}
-
 {% block inner_content %}
 <div class="overline">
     <h2>Favoris ({{ page_obj.paginator.count }})</h2>

@@ -7,16 +7,17 @@ from django.contrib.auth.decorators import user_passes_test
 from account import views as account_views
 from ckeditor_uploader import views as ckeditor_views
 from tn2app import views as tn2_views
+from tn2app.views import user as tn2_user_views
 
 ckperms = user_passes_test(lambda user: user.has_perm('tn2app.add_article'))
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^account/signup/$', tn2_views.SignupView.as_view(), name='account_signup'),
+    url(r'^account/signup/$', tn2_user_views.SignupView.as_view(), name='account_signup'),
     url(r'^account/confirm_email/(?P<key>\w+)/$', account_views.ConfirmEmailView.as_view(), name='account_confirm_email'),
-    url(r'^account/login/$', tn2_views.LoginView.as_view(), name='account_login'),
+    url(r'^account/login/$', tn2_user_views.LoginView.as_view(), name='account_login'),
     url(r'^account/logout/$', auth_views.logout, name='account_logout'),
-    url(r'^account/password/$', tn2_views.ChangePasswordView.as_view(), name='account_password'),
+    url(r'^account/password/$', tn2_user_views.ChangePasswordView.as_view(), name='account_password'),
     url(r'^account/password/reset/$', account_views.PasswordResetView.as_view(), name='account_password_reset'),
     url(
         r'^password/reset/(?P<uidb36>[0-9A-Za-z]+)-(?P<token>.+)/$',

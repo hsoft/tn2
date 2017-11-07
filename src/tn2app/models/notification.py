@@ -3,6 +3,7 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.humanize.templatetags.humanize import naturaltime
 from django.db import models
+from django.urls import reverse
 from django.utils.safestring import mark_safe
 
 from ..util import href
@@ -40,6 +41,15 @@ class NotificationManager(models.Manager):
         )
         self.set_notification_flag([vote.project.author.id])
 
+    def notify_of_message(self, message):
+        Notification.objects.create(
+            user=message.to_user,
+            other=message.from_user,
+            type=Notification.TYPE_MESSAGE,
+            target=message,
+        )
+        self.set_notification_flag([message.to_user])
+
 
 class Notification(models.Model):
     class Meta:
@@ -48,10 +58,12 @@ class Notification(models.Model):
 
     TYPE_REPLY = 1
     TYPE_PROJECT_VOTE = 2
+    TYPE_MESSAGE = 3
 
     TYPE_CHOICES = (
         (TYPE_REPLY, "Réponse dans une discussion"),
         (TYPE_PROJECT_VOTE, "Vote pour un projet"),
+        (TYPE_MESSAGE, "Message privé"),
     )
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='notifications')
@@ -65,7 +77,9 @@ class Notification(models.Model):
     objects = NotificationManager()
 
     def get_message(self):
-        if self.target:
+        if self.type == self.TYPE_MESSAGE:
+            target = href(reverse('user_messages'), "message privé")
+        elif self.target:
             if self.type == self.TYPE_PROJECT_VOTE:
                 target_name = "\"{}\"".format(self.target.title)
             else:
@@ -77,7 +91,9 @@ class Notification(models.Model):
             else:
                 target = "une discussion qui a été supprimée"
 
-        if self.type == self.TYPE_PROJECT_VOTE:
+        if self.type == self.TYPE_MESSAGE:
+            msg = "{user} vous a envoyé un {target} {time}."
+        elif self.type == self.TYPE_PROJECT_VOTE:
             msg = "{user} a aimé le projet {target} {time}."
         else:
             msg = "{user} a répondu à {target} {time}."

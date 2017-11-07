@@ -1,12 +1,12 @@
 {% extends 'base_user_profile.html' %}
 {% load tn2 %}
 
-{% block class_for_notification_link %}active{% endblock %}
-
 {% block inner_content %}
 <div class="overline">
     <h2>Notifications</h2>
 </div>
+
+<p>Les notifications sont effacées après 5 jours.</p>
 
 <ul class="notification-list">
     {% for notification in notification_list %}

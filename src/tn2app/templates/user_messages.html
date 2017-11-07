@@ -1,0 +1,39 @@
+{% extends 'base_user_profile.html' %}
+{% load tn2 humanize %}
+
+{% block inner_content %}
+<div class="overline">
+    <h2>Messages</h2>
+</div>
+
+<p>Les messages privés sont effacés après 30 jours.</p>
+
+<dl class="comments">
+  {% for message in message_list %}
+    <dt>
+      <a name="m{{ message.id }}"></a>
+      {% if forloop.last %}
+      <a name="last-comment"></a>
+      {% endif %}
+      {% if message.from_user == shown_user %}
+      <img class="avatar" src="{{ message.to_user|avatar_big_url }}" />
+      {% else %}
+      <img class="avatar" src="{{ message.from_user|avatar_big_url }}" />
+      {% endif %}
+      <div class="title">
+          {% if message.from_user == shown_user %}
+          <i class="fa fa-arrow-right"></i>
+          Envoyé à {{ message.to_user|user_link }}
+          {% else %}
+          <i class="fa fa-arrow-left"></i>
+          Reçu de {{ message.from_user|user_link }}
+          {% endif %}
+          ({{ message.creation_time|naturaltime }})
+      </div>
+    </dt>
+    <dd>
+      <div class="content">{{ message.content|safe }}</div>
+    </dd>
+  {% endfor %}
+{% endblock %}
+

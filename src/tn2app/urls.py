@@ -2,7 +2,7 @@ from django.conf.urls import url
 from django.views.generic.base import RedirectView
 
 from . import views
-from .views import project as project_views
+from .views import project as project_views, user as user_views
 
 urlpatterns = [
     url(r'^$', views.Homepage.as_view(), name='homepage'),
@@ -68,7 +68,7 @@ urlpatterns = [
     url(r'^comments/(?P<model>\w+)/(?P<comment_pk>\d+)/delete/$', views.CommentDelete.as_view(), name='comment_delete'),
     url(
         r'^membres/(?P<username>[-\w]+)/profil/$',
-        views.UserProfileView.as_view(),
+        user_views.UserProfileView.as_view(),
         name='user_profile'
     ),
     url(
@@ -78,7 +78,7 @@ urlpatterns = [
     ),
     url(
         r'^membres/(?P<username>[-\w]+)/profil/edit/$',
-        views.UserProfileEdit.as_view(),
+        user_views.UserProfileEdit.as_view(),
         name='user_profile_edit'
     ),
     url(
@@ -88,18 +88,23 @@ urlpatterns = [
     ),
     url(
         r'^membres/(?P<username>[-\w]+)/favoris/$',
-        views.UserFavoritesView.as_view(),
+        user_views.UserFavoritesView.as_view(),
         name='user_favorites'
     ),
     url(
         r'^membres/(?P<username>[-\w]+)/contacter/$',
-        views.UserSendMessageView.as_view(),
+        user_views.UserSendMessageView.as_view(),
         name='user_sendmessage'
     ),
     url(
         r'^notifications/$',
-        views.UserNotificationsView.as_view(),
+        user_views.UserNotificationsView.as_view(),
         name='user_notifications',
+    ),
+    url(
+        r'^messages/$',
+        user_views.UserMessagesView.as_view(),
+        name='user_messages',
     ),
     url(
         r'^search/$',
