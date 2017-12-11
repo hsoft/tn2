@@ -7,7 +7,7 @@
     django_secret_key: whatever
     django_media_redirect_to: https://www.threadandneedles.fr
     nginx_thumbnailer_redirect_to: "{{ django_media_redirect_to }}"
-    tn2_deb_path: /lxdockshare/build/tn2.deb
+    tn2_deb_path: /vagrant/build/tn2.deb
 
   roles:
     - common

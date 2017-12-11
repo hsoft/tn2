@@ -70,7 +70,7 @@ DEBTIMESTAMP ?= $(shell date -R)
 DEBWORKDIR ?= /tmp/tn2-$(DEBVERSION)
 DEBDEST = /tmp/tn2_$(DEBVERSION)_amd64.deb
 
-.PHONY: deb lxdock_deb
+.PHONY: deb vagrant_deb
 
 $(DEBWORKDIR):	
 	mkdir -p $@
@@ -88,12 +88,12 @@ deb: $(DEBDEST)
 	cp $< /tmp/tn2.deb
 	chmod +rw /tmp/tn2.deb
 
-# Commands that run from lxdock
+# Commands that run from vagrant
 
 build/tn2.deb:
 	mkdir -p build
 	chmod o+w build requirements.freeze
-	lxdock up debbuild
-	lxdock shell debbuild -c /lxdockshare/scripts/lxdock_debbuild.sh
+	vagrant up debbuild
+	vagrant ssh debbuild -c /vagrant/scripts/lxdock_debbuild.sh
 
-lxdock_deb: build/tn2.deb
+vagrant_deb: build/tn2.deb
