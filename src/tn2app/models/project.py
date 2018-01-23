@@ -167,14 +167,6 @@ class Project(CommentableMixin, models.Model):
         blank=True,
     )
 
-    # The old system had a lot of spam users and we chose to aggressively weed them out during the
-    # migration. Any user having likes and favorites for its only interactions with the system
-    # would not be migrated. To ensure that "like count" would stay the same project-wise, we add
-    # this field which corresponds to the number of like the project had from users who haven't
-    # been migrated.
-    # This field's value never changes and stays to zero for all post-migration projects.
-    legacy_like_count = models.PositiveSmallIntegerField(default=0)
-
     objects = ProjectManager()
 
     def __str__(self):
@@ -201,7 +193,7 @@ class Project(CommentableMixin, models.Model):
         return [i for i in result if i]
 
     def get_like_count(self):
-        return self.likes.count() + self.legacy_like_count
+        return self.likes.count()
 
 
 class ProjectComment(AbstractComment):

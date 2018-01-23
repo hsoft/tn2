@@ -95,7 +95,7 @@ admin.site.register(Discussion, DiscussionAdmin)
 
 class ProjectAdmin(BaseModelAdmin):
     readonly_fields = ('author', )
-    exclude = ('featured_time', 'creation_time', 'legacy_like_count')
+    exclude = ('featured_time', 'creation_time')
 
 
 admin.site.register(Project, ProjectAdmin)
