@@ -92,6 +92,54 @@ body.project {
         }
     }
 
+    div.project_actions {
+        height: 25px;
+        margin: 7px 0 35px 0;
+
+        div {
+            float: left;
+            margin-right: 10px;
+            padding-left: 6px;
+
+            a {
+                display: block;
+                padding-left: 20px;
+            }
+        }
+
+        .action {
+            display: block;
+            background: linear-gradient(white, #eee);
+            border-radius: 3px;
+            border: 1px solid $button_border_color;
+            cursor: pointer;
+            font-size: 12px;
+            line-height: 16px;
+            padding: 3px 8px;
+            vertical-align: bottom;
+
+            a {
+                color: $button_text_color;
+            }
+        }
+
+        .vote a {
+            background: url("#{$images_path}/favourite.png") 0 0 no-repeat;
+        }
+
+        .vote a.active {
+            background: url("#{$images_path}/favourite_on.png") 0 0 no-repeat;
+        }
+
+        .favorite a {
+            background: url("#{$images_path}/star.png") 0 0 no-repeat;
+        }
+
+        .favorite a.active {
+            background: url("#{$images_path}/star_on.png") 0 0 no-repeat;
+        }
+    }
+
     div.myprojects,div.allprojects {
         img {
             width: 76px;

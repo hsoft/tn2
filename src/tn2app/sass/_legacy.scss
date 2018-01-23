@@ -6,22 +6,6 @@ better styling.
 
 /* --- Global --- */
 
-.bouton {
-    display: block;
-    border-radius: 3px;
-    background: url("#{$images_path}/white-grad.png") repeat-x scroll left top transparent;
-    border: 1px solid $button_border_color;
-    cursor: pointer;
-    font-size: 12px;
-    line-height: 16px;
-    padding: 3px 8px;
-    vertical-align: bottom;
-
-    a {
-        color: $button_text_color;
-    }
-}
-
 .overline {
     background: url("#{$images_path}/bg-stripes-light.gif") 0 70% repeat-x;
     padding: 0px;
@@ -81,38 +65,6 @@ ul.acces_rapide {
 }
 
 /* --- Specific --- */
-
-.project_actions {
-    height: 25px;
-    margin: 7px 0 35px 0;
-
-    div {
-        float: left;
-        margin-right: 10px;
-        padding-left: 6px;
-
-        a {
-            display: block;
-            padding-left: 20px;
-        }
-    }
-
-    .vote a {
-        background: url("#{$images_path}/favourite.png") 0 0 no-repeat;
-    }
-
-    .vote a.active {
-        background: url("#{$images_path}/favourite_on.png") 0 0 no-repeat;
-    }
-
-    .favorite a {
-        background: url("#{$images_path}/star.png") 0 0 no-repeat;
-    }
-
-    .favorite a.active {
-        background: url("#{$images_path}/star_on.png") 0 0 no-repeat;
-    }
-}
 
 .project_overtitle {
     margin-bottom: 30px;

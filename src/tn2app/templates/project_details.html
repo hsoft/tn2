@@ -70,14 +70,14 @@
 <div class="sidebar">
     {% if not READONLY %}
     <div class="project_actions">
-        <div class="bouton vote">
+        <div class="action vote">
             <a
                {% if view.is_liked %}class="active"{% endif %}
                 href="{% url 'project_like' pk=project.pk slug=project.get_slug %}">
                 J'aime
             </a>
         </div>
-        <div class="bouton favorite">
+        <div class="action favorite">
             <a
                {% if view.is_favorite %}class="active"{% endif %}
                 href="{% url 'project_favorite' pk=project.pk slug=project.get_slug %}">
