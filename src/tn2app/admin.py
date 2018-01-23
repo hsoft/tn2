@@ -128,6 +128,7 @@ class UserProfileInline(admin.StackedInline):
 
 class UserAdminOverride(UserAdmin):
     inlines = UserAdmin.inlines + [UserProfileInline]
+    list_display = ('username', 'email', 'is_staff', 'last_login', 'date_joined')
 
 admin.site.unregister(get_user_model())
 admin.site.register(get_user_model(), UserAdminOverride)
