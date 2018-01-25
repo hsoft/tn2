@@ -6,6 +6,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.db.models import Count
 from django.utils.text import slugify
 
 from .models import (
@@ -128,7 +129,26 @@ class UserProfileInline(admin.StackedInline):
 
 class UserAdminOverride(UserAdmin):
     inlines = UserAdmin.inlines + [UserProfileInline]
-    list_display = ('username', 'email', 'is_staff', 'last_login', 'date_joined')
+    list_display = (
+        'username', 'email', 'is_staff', 'last_login', 'date_joined', 'project_count',
+        'like_count')
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        return qs.annotate(project_count=Count('projects')) \
+            .annotate(like_count=Count('projects__likes'))
+
+    def project_count(self, obj):
+        return obj.project_count
+
+    project_count.short_description = "Projets"
+    project_count.admin_order_field = 'project_count'
+
+    def like_count(self, obj):
+        return obj.like_count
+
+    like_count.short_description = "Likes"
+    like_count.admin_order_field = 'like_count'
 
 admin.site.unregister(get_user_model())
 admin.site.register(get_user_model(), UserAdminOverride)
