@@ -74,6 +74,7 @@
             <a
                {% if view.is_liked %}class="active"{% endif %}
                 href="{% url 'project_like' pk=project.pk slug=project.get_slug %}">
+                <i class="fa fa-heart"></i>
                 J'aime
             </a>
         </div>
@@ -81,6 +82,7 @@
             <a
                {% if view.is_favorite %}class="active"{% endif %}
                 href="{% url 'project_favorite' pk=project.pk slug=project.get_slug %}">
+                <i class="fa fa-star"></i>
                 Favori
             </a>
         </div>

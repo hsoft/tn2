@@ -103,7 +103,14 @@ body.project {
 
             a {
                 display: block;
-                padding-left: 20px;
+
+                .fa {
+                    color: $bg_dark;
+                }
+
+                &.active .fa {
+                    color: $red_highlight;
+                }
             }
         }
 
@@ -121,22 +128,6 @@ body.project {
             a {
                 color: $button_text_color;
             }
-        }
-
-        .vote a {
-            background: url("#{$images_path}/favourite.png") 0 0 no-repeat;
-        }
-
-        .vote a.active {
-            background: url("#{$images_path}/favourite_on.png") 0 0 no-repeat;
-        }
-
-        .favorite a {
-            background: url("#{$images_path}/star.png") 0 0 no-repeat;
-        }
-
-        .favorite a.active {
-            background: url("#{$images_path}/star_on.png") 0 0 no-repeat;
         }
     }
 
