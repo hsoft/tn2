@@ -135,8 +135,8 @@ class UserAdminOverride(UserAdmin):
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
-        return qs.annotate(project_count=Count('projects')) \
-            .annotate(like_count=Count('projects__likes'))
+        return qs.annotate(project_count=Count('projects', distinct=True)) \
+            .annotate(like_count=Count('projects__likes', distinct=True))
 
     def project_count(self, obj):
         return obj.project_count
