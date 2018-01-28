@@ -15,10 +15,11 @@ MAIN_CSS_PATH = $(SRCDIR_PATH)/tn2app/static/css/main.min.css
 all: $(DESTDIR)$(ENV_PATH) $(DESTDIR)$(MAIN_CSS_PATH) $(DESTDIR)$(MANAGE_PATH)
 	@echo "Done! Don't forget to run ./manage.sh migrate!"
 
-$(DESTDIR)$(ENV_PATH): | reqs
+$(DESTDIR)$(ENV_PATH): $(REQUIREMENTS_PATH) | reqs
 	@echo "Creating our virtualenv"
 	${PYTHON} -m venv $(DESTDIR)$(ENV_PATH) $(VENV_ARGS)
 	$(DESTDIR)$(ENV_PATH)/bin/python -m pip install -r $(REQUIREMENTS_PATH)
+	touch $@
 
 reqs:
 	@ret=`${PYTHON} -c "import sys; print(int(sys.version_info[:2] >= (3, ${REQ_PYTHON_MINOR_VERSION})))"`; \
@@ -62,38 +63,3 @@ install_pre:
 	cp -r src $(DESTDIR)$(SRCDIR_PATH)
 
 install: install_pre all
-
-# Debian-related stuff
-
-DEBVERSION ?= $(shell date +%Y%m%d)
-DEBTIMESTAMP ?= $(shell date -R)
-DEBWORKDIR ?= /tmp/tn2-$(DEBVERSION)
-DEBDEST = /tmp/tn2_$(DEBVERSION)_amd64.deb
-
-.PHONY: deb vagrant_deb
-
-$(DEBWORKDIR):	
-	mkdir -p $@
-	git archive HEAD | tar x -C $@
-
-$(DEBWORKDIR)/debian/changelog: install/debian_changelog_template $(DEBWORKDIR) 
-	sed -e "s#%VERSION%#$(DEBVERSION)#g" \
-		-e "s#%TIMESTAMP%#$(DEBTIMESTAMP)#g" \
-		$< > $@ || (rm $@; exit 1)
-
-$(DEBDEST): $(DEBWORKDIR)/debian/changelog
-	cd $(DEBWORKDIR) && dpkg-buildpackage -us -uc
-
-deb: $(DEBDEST)
-	cp $< /tmp/tn2.deb
-	chmod +rw /tmp/tn2.deb
-
-# Commands that run from vagrant
-
-build/tn2.deb:
-	mkdir -p build
-	chmod o+w build requirements.freeze
-	vagrant up debbuild
-	vagrant ssh debbuild -c /vagrant/scripts/lxdock_debbuild.sh
-
-vagrant_deb: build/tn2.deb

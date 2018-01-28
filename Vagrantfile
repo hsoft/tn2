@@ -9,16 +9,8 @@ Vagrant.configure("2") do |config|
     web.vm.hostname = "tn2"
     web.hostmanager.aliases = %w(tn2.local)
 
-    web.vm.provision "ansible_local" do |ansible|
+    web.vm.provision "ansible" do |ansible|
       ansible.playbook = "ansible/site.yml"
-      ansible.become = true
-    end
-  end
-
-  config.vm.define "debbuild", autostart: false do |build|
-    build.hostmanager.enabled = false
-    build.vm.provision "ansible_local" do |ansible|
-      ansible.playbook = "ansible/debbuild.yml"
       ansible.become = true
     end
   end

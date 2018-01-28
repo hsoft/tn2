@@ -1,14 +1,7 @@
 - hosts: all
   vars_files:
     - vars/tn2.yml
-
-  vars:
-    django_domain_name: tn2.local
-    django_secret_key: whatever
-    django_media_redirect_to: https://www.threadandneedles.fr
-    nginx_thumbnailer_redirect_to: "{{ django_media_redirect_to }}"
-    tn2_deb_path: /vagrant/build/tn2.deb
-
+    - vars/vagrant.yml
   roles:
     - common
     - postgres-install
@@ -17,5 +10,4 @@
     - tn2-pre
     - django
     - tn2-post
-    - persistent-data
 
