@@ -42,7 +42,7 @@
     {% if READONLY %}
     <p>Le site est temporairement en mode "lecture seule".</p>
     {% else %}
-    <p>Vous devez être <a href="{% url 'account_login' %}">connecté</a> pour publier un commentaire.</p>
+    <p>Vous devez être <a href="{% url 'auth_login' %}">connecté</a> pour publier un commentaire.</p>
     {% endif %}
     <p>&nbsp;</p>
 {% endif %}
