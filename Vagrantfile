@@ -5,6 +5,11 @@ Vagrant.configure("2") do |config|
 
   config.vm.box = "debian/stretch64"
 
+  config.vm.provider :lxc do |provider|
+    provider.tmpfs_mount_size = false
+    provider.privileged = false
+  end
+
   config.vm.define "web", primary: true do |web|
     web.vm.hostname = "tn2"
     web.hostmanager.aliases = %w(tn2.local)

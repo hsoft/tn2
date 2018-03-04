@@ -1,4 +1,4 @@
-Django==1.11.9
+Django==1.11.10
 django-appconf==1.0.2
 django-ckeditor==5.4.0
 django-hashers-passlib==0.4
@@ -10,4 +10,3 @@ django-user-accounts==2.0.3
 jsonfield==2.0.2
 num2words==0.5.6
 passlib==1.7.1
-pytz==2017.3

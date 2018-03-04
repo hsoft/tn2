@@ -15,6 +15,9 @@ django_path: /opt/tn2
 django_project_path: "{{ django_path }}/src"
 django_src_path: "{{ django_project_path }}"
 
+django_dbname: "{{ django_name }}"
+django_dbuser: "{{ django_name }}"
+
 django_env_variables:
   TN2_CONF_PATH: "{{ django_jsonsettings_path }}"
 
@@ -23,6 +26,7 @@ django_jsonsettings_properties:
   debug: "{{ django_debug|d(False) }}"
   secret_key: "{{ django_secret_key }}"
   database:
+    HOST: localhost
     NAME: "{{ django_dbname }}"
     USER: "{{ django_dbuser }}"
     PASSWORD: "{{ django_dbpass }}"
