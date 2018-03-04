@@ -46,6 +46,7 @@ ADMINS = [("Virgil Dupras", 'hsoft@hardcoded.net')]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
+    'registration',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -56,7 +57,6 @@ INSTALLED_APPS = [
     'django.contrib.postgres',
 
     'post_office',
-    'account',
     'ckeditor',
     'ckeditor_uploader',
     'captcha',
@@ -81,7 +81,7 @@ ROOT_URLCONF = 'tn2.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [SRC_ROOT.joinpath('templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -89,7 +89,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'account.context_processors.account',
                 'tn2app.context_processors.inject_settings',
             ],
         },
@@ -132,11 +131,11 @@ USE_TZ = False
 
 SITE_ID = 1
 
-LOGIN_URL = 'account_login'
+LOGIN_REDIRECT_URL = 'homepage'
 LOGOUT_REDIRECT_URL = 'homepage'
-ACCOUNT_EMAIL_CONFIRMATION_REQUIRED = True
-ACCOUNT_HOOKSET = 'tn2app.account_hookset.AccountHookset'
-AUTHENTICATION_BACKENDS = ['account.auth_backends.EmailAuthenticationBackend']
+AUTHENTICATION_BACKENDS = ['tn2app.auth_backends.EmailAuthenticationBackend']
+ACCOUNT_ACTIVATION_DAYS = 7
+REGISTRATION_FORM = 'tn2app.forms.user.SignupForm'
 DEFAULT_FROM_EMAIL = 'info@threadandneedles.fr'
 SERVER_EMAIL = DEFAULT_FROM_EMAIL
 
@@ -155,7 +154,7 @@ MEDIA_ROOT = str(PROJECT_ROOT.joinpath('media'))
 MEDIA_URL = '/media/'
 
 # Host to redirect to when we hit missing media in DEBUG mode (see serve_* debug views)
-MEDIA_DEBUG_REDIRECT_TO = 'https://www.threadandneedles.fr'
+MEDIA_DEBUG_REDIRECT_TO = 'https://www.threadandneedles.org'
 
 # Logging
 

@@ -42,7 +42,7 @@ class UserViewMixin(ContextMixin):
         if u == self.request.user:
             ITEMS += [
                 ("Messages", reverse('user_messages')),
-                ("Mot de passe", reverse('account_password')),
+                ("Mot de passe", reverse('auth_password_change')),
                 ("Notifications", reverse('user_notifications')),
             ]
         else:

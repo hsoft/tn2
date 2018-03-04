@@ -7,7 +7,7 @@
 <div class="floatright">
     <h3>Pas encore inscrit ?</h3>
     <p>
-        <a href="{% url 'account_signup' %}">Rejoignez-nous</a>, ça prend 5 minutes ;)
+        <a href="{% url 'registration_register' %}">Rejoignez-nous</a>, ça prend 5 minutes ;)
     </p>
     <p>
         Découvrez <a href="{% url 'page_a-propos' %}">toutes les raisons</a> de devenir membre de Thread&amp;Needles
@@ -17,13 +17,14 @@
     {% page_contents 'login-newsite-message' user %}
 </div>
 <h2 class="red">Connexion</h2>
-<form method="POST" class="loginform" action="{% url "account_login" %}" autocapitalize="off">
+<form method="POST" class="loginform" action="" autocapitalize="off">
     {% csrf_token %}
     {{ form.as_p }}
     {% if redirect_field_value %}
         <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
     {% endif %}
     <button class="button" type="submit" class="btn btn-primary">Se connecter</button>
-    <a href="{% url "account_password_reset" %}" class="btn btn-link">Mot de passe oublié?</a>
+    <a href="{% url "auth_password_reset" %}" class="btn btn-link">Mot de passe oublié?</a>
 </form>
 {% endblock %}
+

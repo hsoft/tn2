@@ -1,16 +1,14 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth import views as auth_views
 from django.db.models import Q
 from django.views.generic import ListView, FormView
 from django.views.generic.edit import UpdateView
-
-import account.views
-import account.forms
 
 from ..models import (
     UserProfile, Project, ProjectVote, Notification, Message
 )
 from ..forms import (
-    UserProfileForm, UserSendMessageForm, SignupForm,
+    UserProfileForm, UserSendMessageForm, LoginForm
 )
 from .common import UserViewMixin, BelongsToUserMixin
 
@@ -116,25 +114,18 @@ class UserNotificationsView(UserViewMixin, LoginRequiredMixin, ListView):
         return self._get_shown_user().notifications.all()
 
 
-class SignupView(account.views.SignupView):
-    form_class = SignupForm
-
-    @staticmethod
-    def breadcrumb():
-        return [(None, "Inscription")]
-
-
-class LoginView(account.views.LoginView):
-    form_class = account.forms.LoginEmailForm
+class LoginView(auth_views.LoginView):
+    form_class = LoginForm
 
     @staticmethod
     def breadcrumb():
         return [(None, "Connexion")]
 
 
-class ChangePasswordView(UserViewMixin, account.views.ChangePasswordView):
+class ChangePasswordView(UserViewMixin, auth_views.PasswordChangeView):
     SELF_ONLY = True
     MENU_SELECTED_INDEX = 3
+    done = False
 
     @staticmethod
     def breadcrumb():

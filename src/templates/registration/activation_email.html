@@ -1,0 +1,28 @@
+{% load i18n %}
+<!doctype html>
+<html lang="fr">
+
+<head>
+    <title>Activation sur {{ site.name }}</title>
+</head>
+
+<body>
+<p>
+    On a récemment créé un compte sur {{ site.name }} en spécifiant
+    votre adresse courriel.
+</p>
+<p>
+    Si c'est vous, veuillez le confirmer en ouvrant ce lien:
+</p>
+
+<p>
+    <a href="http://{{site.domain}}{% url 'registration_activate' activation_key %}">
+        {{site.domain}}{% url 'registration_activate' activation_key %}
+    </a>
+</p>
+<p>
+    Sinon, veuillez ignorer ce courriel.
+</p>
+</body>
+
+</html>

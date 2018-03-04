@@ -33,7 +33,7 @@
                             {% if user.is_staff and not READONLY %}
                             <a href="{% url 'admin:index' %}">Administration</a>
                             {% endif %}
-                            <a href="{% url 'account_logout' %}">Déconnexion</a>
+                            <a href="{% url 'auth_logout' %}">Déconnexion</a>
                         </div>
                     </li>
                     {% if user.profile.has_notifications and not READONLY %}
@@ -46,8 +46,8 @@
                     </li>
                     {% endif %}
                     {% else %}
-                    <li class="right"><a href="{% url 'account_signup' %}">Inscription</a></li>
-                    <li class="right"><a href="{% url 'account_login' %}">Connexion</a></li>
+                    <li class="right"><a href="{% url 'registration_register' %}">Inscription</a></li>
+                    <li class="right"><a href="{% url 'auth_login' %}">Connexion</a></li>
                     {% endif %}
                 </ul>
             </div>

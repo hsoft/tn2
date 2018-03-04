@@ -60,6 +60,7 @@ watch:
 install_pre:
 	$(PYTHON) -m compileall src
 	mkdir -p $(DESTDIR)$(PREFIX)
+	rm -rf $(DESTDIR)$(SRCDIR_PATH)
 	cp -r src $(DESTDIR)$(SRCDIR_PATH)
 
 install: install_pre all

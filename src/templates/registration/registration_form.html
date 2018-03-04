@@ -8,10 +8,10 @@
     <h3>Pourquoi s'inscrire sur t&n ?</h3>
     <img src="{% static 'images/lovecommunity2.jpg' %}">
     {% page_contents 'signup-message' user %}
-    <h5><a href="{% url 'account_login' %}">Déjà inscrit ? Connectez-vous !</a></h5>
+    <h5><a href="{% url 'auth_login' %}">Déjà inscrit ? Connectez-vous !</a></h5>
 </div>
 <h2 class="red">Créer un compte</h2>
-<form method="POST" class="signupform" action="{% url "account_signup" %}" autocapitalize="off">
+<form method="POST" class="signupform" action="" autocapitalize="off">
     {% csrf_token %}
     {{ form.as_p }}
     {% if redirect_field_value %}

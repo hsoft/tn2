@@ -1,16 +1,26 @@
 from django import forms
+from django.contrib.auth import get_user_model
+from django.contrib.auth.forms import AuthenticationForm
 
 from captcha.fields import CaptchaField
-import account.forms
+import registration.forms
 
 from ..models import UserProfile
 from ..util import sanitize_comment
 from .base import BaseModelForm
 
-__all__ = ['SignupForm', 'UserProfileForm', 'ContactForm', 'UserSendMessageForm']
+__all__ = [
+    'LoginForm', 'SignupForm', 'UserProfileForm', 'ContactForm',
+    'UserSendMessageForm']
 
 
-class SignupForm(account.forms.SignupForm):
+class LoginForm(AuthenticationForm):
+    username = forms.EmailField(label="Adresse e-mail")
+    error_messages = dict(AuthenticationForm.error_messages,
+        invalid_login="Mauvaise adresse e-mail et/ou mot de passe")
+
+
+class SignupForm(registration.forms.RegistrationForm):
     field_order = ['username', 'email', 'password', 'password_confirm']
 
     captcha = CaptchaField(
@@ -21,9 +31,16 @@ class SignupForm(account.forms.SignupForm):
         super().__init__(*args, **kwargs)
         self.fields['username'].label = "Votre pseudo"
         self.fields['email'].label = "Votre adresse e-mail"
-        self.fields['password'].label = "Votre mot de passe"
-        self.fields['password_confirm'].label = "Confirmez le mot de passe"
+        self.fields['password1'].label = "Votre mot de passe"
+        self.fields['password2'].label = "Confirmez le mot de passe"
 
+    def clean_email(self):
+        User = get_user_model()
+        email = self.cleaned_data['email']
+        if User.objects.filter(email__iexact=email).exists():
+            raise forms.ValidationError(
+                "Il existe déjà un compte associé à ce courriel.")
+        return email
 
 class UserProfileForm(BaseModelForm):
     class Meta:
