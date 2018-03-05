@@ -8,7 +8,7 @@ class EmailAuthenticationBackend(ModelBackend):
     def authenticate(self, request, username=None, password=None, **kwargs):
         User = get_user_model()
         try:
-            user = User.objects.get(email=username)
+            user = User.objects.get(email__iexact=username)
         except User.DoesNotExist:
             # Run the default password hasher once to reduce the timing
             # difference between an existing and a nonexistent user (#20760).
