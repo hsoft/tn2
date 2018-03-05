@@ -49,6 +49,9 @@ class DiscussionGroup(models.Model):
         verbose_name="Avatar"
     )
     display_order = models.SmallIntegerField(default=0, db_index=True)
+    # flag for the group "Brocante", a group where topics are ephemeral and
+    # where we want to relax rules about topic deletion.
+    ephemeral_topics = models.BooleanField(default=False)
 
     def __str__(self):
         return "{} - {}".format(self.slug, self.title)
@@ -117,7 +120,7 @@ class Discussion(CommentableMixin, models.Model):
         return reverse('discussion', args=[self.group.slug, self.slug])
 
     def can_delete(self):
-        return not self.comments.exists()
+        return self.group.ephemeral_topics or not self.comments.exists()
 
     def update_last_activity(self):
         if self.comments.exists():
