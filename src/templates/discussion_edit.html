@@ -7,7 +7,9 @@
     {{ form.as_p }}
     <input class="button" type="submit" value="Modifier la discussion" />
     <a href="{{ discussion.get_absolute_url }}">Retour</a>
+    {% if view.object.can_delete %}
     <input class="button delete-button" type="submit" name="delete" value="Supprimer" />
+    {% endif %}
 </form>
 {% endblock %}
 

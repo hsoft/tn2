@@ -116,6 +116,9 @@ class Discussion(CommentableMixin, models.Model):
     def get_absolute_url(self):
         return reverse('discussion', args=[self.group.slug, self.slug])
 
+    def can_delete(self):
+        return not self.comments.exists()
+
     def update_last_activity(self):
         if self.comments.exists():
             last_comment = self.comments.last()

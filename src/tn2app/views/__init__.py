@@ -222,6 +222,8 @@ class DiscussionEdit(LoginRequiredMixin, UpdateView):
     def post(self, request, *args, **kwargs):
         if 'delete' in request.POST:
             discussion = self.get_object()
+            if not discussion.can_delete():
+                raise PermissionDenied()
             group = discussion.group
             discussion.delete()
             return HttpResponseRedirect(group.get_absolute_url())
