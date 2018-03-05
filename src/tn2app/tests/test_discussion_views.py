@@ -4,10 +4,12 @@ from django.urls import reverse
 
 from ..models import Discussion
 from ..views import DiscussionEdit
-from .factories import DiscussionFactory, DiscussionCommentFactory
+from .factories import DiscussionFactory, DiscussionCommentFactory, UserFactory
 
 class DiscussionEditTestCase(TestCase):
-    def hit(self, discussion, post=None):
+    def hit(self, discussion, post=None, user=None):
+        if user is None:
+            user = discussion.author
         kwargs={
             'group_slug': discussion.group.slug,
             'discussion_slug': discussion.slug
@@ -17,7 +19,7 @@ class DiscussionEditTestCase(TestCase):
             request = RequestFactory().get(url)
         else:
             request = RequestFactory().post(url, post)
-        request.user = discussion.author
+        request.user = user
         return DiscussionEdit.as_view()(request, **kwargs)
 
     def test_can_delete_empty(self):
@@ -31,3 +33,10 @@ class DiscussionEditTestCase(TestCase):
         with self.assertRaises(PermissionDenied):
             self.hit(d, post={'delete': 'yes'})
         self.assertTrue(Discussion.objects.exists())
+
+    def test_moderators_can_delete_discussion_with_comments(self):
+        mod = UserFactory.create(moderator=True)
+        d = DiscussionFactory.create()
+        DiscussionCommentFactory.create(target=d)
+        self.hit(d, post={'delete': 'yes'}, user=mod)
+        self.assertFalse(Discussion.objects.exists())

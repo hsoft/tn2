@@ -219,11 +219,18 @@ class DiscussionEdit(LoginRequiredMixin, UpdateView):
             raise PermissionDenied()
         return result
 
+    def can_delete(self):
+        # We can delete a discussion if it has no comment or if we're a
+        # moderator.
+        ismod = self.request.user.has_perm('tn2app.change_discussion')
+        return self.object.can_delete() or ismod
+
     def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
         if 'delete' in request.POST:
-            discussion = self.get_object()
-            if not discussion.can_delete():
+            if not self.can_delete():
                 raise PermissionDenied()
+            discussion = self.object
             group = discussion.group
             discussion.delete()
             return HttpResponseRedirect(group.get_absolute_url())
