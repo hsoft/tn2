@@ -42,7 +42,7 @@ $(DESTDIR)$(MANAGE_PATH): install/manage.sh.template
 
 # Dev-related commands
 
-.PHONY: watch migrate collectstatic
+.PHONY: watch migrate collectstatic test
 
 collectstatic: $(DESTDIR)$(MANAGE_PATH) $(MAIN_CSS_PATH)
 	$(DESTDIR)$(MANAGE_PATH) collectstatic --no-input
@@ -52,6 +52,9 @@ migrate: $(DESTDIR)$(MANAGE_PATH)
 
 watch:
 	find src/tn2app/sass/*.scss | entr make collectstatic
+
+test: $(DESTDIR)$(MANAGE_PATH)
+	$(DESTDIR)$(MANAGE_PATH) test
 
 # Install-related stuff
 

@@ -33,6 +33,13 @@
     </dt>
     <dd>
       <div class="content">{{ message.content|safe }}</div>
+      {% if message.to_user == shown_user %}
+      <p>
+        <a href="{% url 'user_sendmessage' message.from_user.username %}">
+          <i class="fa fa-envelope">&nbsp;</i>Répondre à {{ message.from_user }}
+        </a>
+      </p>
+      {% endif %}
     </dd>
   {% endfor %}
 {% endblock %}
