@@ -77,7 +77,11 @@ class Project(CommentableMixin, models.Model):
         ordering = ['-creation_time']
         app_label = 'tn2app'
 
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='projects')
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name='projects',
+        on_delete=models.CASCADE,
+    )
     title = models.CharField(
         max_length=100,
         verbose_name="Titre du projet",
@@ -106,6 +110,7 @@ class Project(CommentableMixin, models.Model):
         null=True,
         blank=True,
         verbose_name="Patron",
+        on_delete=models.PROTECT,
     )
     pattern_name = models.CharField(
         max_length=250,
@@ -165,6 +170,7 @@ class Project(CommentableMixin, models.Model):
         related_name='projects',
         null=True,
         blank=True,
+        on_delete=models.PROTECT,
     )
 
     objects = ProjectManager()
@@ -197,7 +203,11 @@ class Project(CommentableMixin, models.Model):
 
 
 class ProjectComment(AbstractComment):
-    target = models.ForeignKey(Project, related_name='comments')
+    target = models.ForeignKey(
+        Project,
+        related_name='comments',
+        on_delete=models.CASCADE,
+    )
 
 
 class ProjectVote(models.Model):
@@ -205,7 +215,13 @@ class ProjectVote(models.Model):
         unique_together = ('user', 'project')
         app_label = 'tn2app'
 
-    user = models.ForeignKey(settings.AUTH_USER_MODEL)
-    project = models.ForeignKey(Project)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+    )
+    project = models.ForeignKey(
+        Project,
+        on_delete=models.CASCADE,
+    )
     date_liked = models.DateTimeField(auto_now_add=True, db_index=True)
     favorite = models.BooleanField(default=False, db_index=True)

@@ -1,4 +1,4 @@
-Django==1.11.10
+Django==2.0.3
 django-ckeditor==5.4.0
 django-hashers-passlib==0.4
 django-js-asset==1.0.0

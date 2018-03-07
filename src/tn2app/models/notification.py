@@ -66,11 +66,23 @@ class Notification(models.Model):
         (TYPE_MESSAGE, "Message privé"),
     )
 
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='notifications')
-    other = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='+')
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name='notifications',
+        on_delete=models.CASCADE,
+    )
+    other = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name='+',
+        on_delete=models.CASCADE,
+    )
     time = models.DateTimeField(auto_now_add=True, db_index=True)
     type = models.PositiveSmallIntegerField(choices=TYPE_CHOICES, db_index=True)
-    target_content_type = models.ForeignKey(ContentType, null=True)
+    target_content_type = models.ForeignKey(
+        ContentType,
+        null=True,
+        on_delete=models.CASCADE,
+    )
     target_object_id = models.PositiveIntegerField(null=True)
     target = GenericForeignKey('target_content_type', 'target_object_id')
 

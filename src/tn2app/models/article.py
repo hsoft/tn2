@@ -54,6 +54,7 @@ class Article(CommentableMixin, models.Model):
         settings.AUTH_USER_MODEL,
         null=True,
         limit_choices_to=Q(groups__name='Rédacteurs'),
+        on_delete=models.PROTECT,
     )
     slug = models.SlugField(max_length=255, unique=True)
     status = models.SmallIntegerField(choices=STATUS_CHOICES, default=STATUS_DRAFT, db_index=True)
@@ -92,7 +93,11 @@ class Article(CommentableMixin, models.Model):
 
 
 class ArticleComment(AbstractComment):
-    target = models.ForeignKey(Article, related_name='comments')
+    target = models.ForeignKey(
+        Article,
+        related_name='comments',
+        on_delete=models.CASCADE,
+    )
 
 
 class ArticleCategory(models.Model):

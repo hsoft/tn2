@@ -10,8 +10,16 @@ class Message(models.Model):
         app_label = 'tn2app'
         ordering = ['-creation_time']
 
-    from_user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='+')
-    to_user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='+')
+    from_user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name='+',
+        on_delete=models.CASCADE,
+    )
+    to_user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name='+',
+        on_delete=models.CASCADE,
+    )
     content = RichTextField(config_name='restricted', verbose_name="Message")
     creation_time = models.DateTimeField(auto_now_add=True, db_index=True)
 

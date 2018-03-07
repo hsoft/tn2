@@ -364,7 +364,7 @@ class CommentAdd(LoginRequiredMixin, CommentViewMixin, View):
     http_method_names = ['post']
 
     def post(self, request, *args, **kwargs):
-        model = self.get_model().target.field.rel.to
+        model = self.get_model().target.field.remote_field.model
         target = model.objects.get(id=self.kwargs['model_pk'])
         form = CommentForm(request.POST)
         if form.is_valid():

@@ -42,7 +42,12 @@ class DiscussionGroup(models.Model):
     description_short = models.TextField(blank=True)
     group_type = models.SmallIntegerField(choices=TYPE_CHOICES, default=TYPE_NORMAL, db_index=True)
     private = models.BooleanField(default=False, db_index=True)
-    restrict_access_to = models.ForeignKey('auth.Group', null=True, blank=True)
+    restrict_access_to = models.ForeignKey(
+        'auth.Group',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+    )
     avatar = models.ImageField(
         upload_to=get_group_avatar_path,
         blank=True,
@@ -92,14 +97,28 @@ class Discussion(CommentableMixin, models.Model):
         unique_together = ('group', 'slug')
         app_label = 'tn2app'
 
-    group = models.ForeignKey(DiscussionGroup, related_name='discussions')
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, related_name='+')
+    group = models.ForeignKey(
+        DiscussionGroup,
+        related_name='discussions',
+        on_delete=models.CASCADE,
+    )
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        related_name='+',
+        on_delete=models.CASCADE,
+    )
     slug = models.SlugField(max_length=255, db_index=True)
     title = models.CharField(max_length=255, verbose_name="Titre")
     content = RichTextField(config_name='restricted', verbose_name="Message")
     creation_time = models.DateTimeField(auto_now_add=True, db_index=True)
     last_activity = models.DateTimeField(auto_now_add=True, db_index=True)
-    last_poster = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, related_name='+')
+    last_poster = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        related_name='+',
+        on_delete=models.SET_NULL,
+    )
     is_locked = models.BooleanField(default=False, db_index=True)
     is_sticky = models.BooleanField(default=False, db_index=True)
 
@@ -131,7 +150,11 @@ class Discussion(CommentableMixin, models.Model):
 
 
 class DiscussionComment(AbstractComment):
-    target = models.ForeignKey(Discussion, related_name='comments')
+    target = models.ForeignKey(
+        Discussion,
+        related_name='comments',
+        on_delete=models.CASCADE,
+    )
 
     def get_absolute_url(self):
         prior_comments_count = self.target.comments.filter(id__lt=self.id).count()

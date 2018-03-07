@@ -9,7 +9,10 @@ class AbstractComment(models.Model):
         ordering = ('submit_date', )
         app_label = 'tn2app'
 
-    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+    )
     submit_date = models.DateTimeField(auto_now_add=True, db_index=True)
     comment = models.TextField(max_length=settings.COMMENT_MAX_LENGTH)
 
