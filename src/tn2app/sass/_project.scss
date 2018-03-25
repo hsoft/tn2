@@ -29,7 +29,7 @@ ul.project-list {
                 oveflow: hidden;
 
                 span.subtext {
-                    font-size: 12px;
+                    font-size: 1rem;
                     color: $text-color;
                     display: block;
                     margin-top: 10px;
@@ -70,7 +70,7 @@ div.project-author {
     }
 
     span {
-        font-size: 11px;
+        font-size: 0.8rem;
     }
 }
 
@@ -120,7 +120,6 @@ body.project {
             border-radius: 3px;
             border: 1px solid $button_border_color;
             cursor: pointer;
-            font-size: 12px;
             line-height: 16px;
             padding: 3px 8px;
             vertical-align: bottom;
@@ -145,7 +144,6 @@ body.project {
     }
 
     div.voir_tout {
-        font-size: 11px;
         text-align: right;
     }
 

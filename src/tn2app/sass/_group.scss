@@ -35,7 +35,7 @@ ul.group-list {
 
     .activity {
         display: block;
-        font-size: 11px;
+        font-size: 0.9rem;
         margin-top: 4px;
     }
 }
@@ -62,7 +62,7 @@ body.discussion-groups {
         li {
             margin-bottom: 0;
             padding: 10px 0;
-            font-size: 11px;
+            font-size: 0.9rem;
             border-bottom: 1px solid $thin_sep_line_color;
 
             a {
@@ -88,12 +88,12 @@ body.discussion-groups {
 
 body.discussion-groups {
     div.bloc-groupe {
-        font-size: 11px;
+        font-size: 0.9rem;
 
         div.group-titre {
             margin: 15px 0 5px 0;
             font-weight: bold;
-            font-size: 12px;
+            font-size: 1rem;
         }
     }
 
@@ -181,7 +181,7 @@ body.group-detail {
 
         td.last-activity {
             text-align: right;
-            font-size: 11px;
+            font-size: 0.9rem;
         }
     }
 }
@@ -190,7 +190,7 @@ body.group-detail {
 body.discussion-detail {
     p.retour-aux-forums {
         margin: 0;
-        font-size: 11px;
+        font-size: 0.9rem;
     }
 
     div.message {

@@ -1,6 +1,6 @@
-body {
+html {
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 12px;
+    font-size: 13px;
     background-color: white;
     color: $text-color;
     line-height: 17px;
@@ -56,7 +56,6 @@ h5 {
 
 .button {
     background: $red_highlight;
-    font-size: 12px;
     font-weight: bold;
     text-transform: uppercase;
     padding: 5px 10px;
@@ -104,7 +103,6 @@ h5 {
 }
 
 p.breadcrumb {
-    font-size: 11px;
     margin-bottom: 30px;
 
     a {
@@ -197,7 +195,6 @@ img.img-avatar-big {
 div.bio {
     padding: 1px 10px;
     background-color: #eeeeee;
-    font-size: 11px;
 }
 
 a.page-edit-link {
