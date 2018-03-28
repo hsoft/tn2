@@ -82,6 +82,16 @@ body.discussion-groups {
         }
     }
 
+    div.groups-top-directory {
+        width: 740px;
+
+        div.bloc-groupe {
+            float: left;
+            width: 150px;
+            padding-right: 90px;
+            margin-bottom: 30px;
+        }
+    }
 }
 
 // Group list page style

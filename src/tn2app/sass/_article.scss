@@ -31,6 +31,28 @@ body.article-list,body.article {
             text-decoration: underline;
         }
     }
+
+    ul.acces_rapide {
+        margin: 0;
+        padding-left: 0;
+        list-style: none outside none;
+
+        a {
+            display: block;
+            font-size: 0.9rem;
+            padding: 14px 0 14px 45px;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            font-weight: bold;
+            border-radius: 4px;
+            color: white;
+            background: url("#{$images_path}/polas.png") 14px 51% no-repeat #cccccc;
+
+            &:hover {
+                background-color: $red_highlight;
+            }
+        }
+    }
 }
 
 body.article-list {

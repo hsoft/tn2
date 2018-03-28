@@ -156,6 +156,26 @@ body.project {
     dl.comments {
         margin-bottom: 80px;
     }
+
+    .project_overtitle {
+        margin-bottom: 30px;
+
+        span {
+            display: block;
+            padding: 13px 0 2px 5px;
+            float: right;
+            background-color: white;
+            color: #cccccc;
+            font-size: 28px;
+        }
+
+        h1 {
+            display: inline;
+            padding-right: 5px;
+            background-color: white;
+        }
+    }
+
 }
 
 body.project-list {

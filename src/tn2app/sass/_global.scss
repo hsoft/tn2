@@ -219,3 +219,33 @@ a.sponsors-about {
     display: block;
     text-align: center;
 }
+
+.overline {
+    background: url("#{$images_path}/bg-stripes-light.gif") 0 70% repeat-x;
+    padding: 0px;
+    text-align: left;
+    margin-top: 0px;
+    margin-bottom: 25px;
+    margin-right: 0px;
+    margin-left: 0px;
+    width: 100%;
+    clear: both;
+
+    h1, h2, h3, h4, h5, h6 {
+        display: inline;
+        background-color: white;
+        padding-right: 5px;
+
+        a {
+            color: $heading_color;
+        }
+    }
+
+    a.rightmost {
+        float: right;
+        color: #999999;
+        padding: 6px 0 2px 5px;
+        background-color: white;
+    }
+}
+

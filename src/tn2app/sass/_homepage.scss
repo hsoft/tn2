@@ -89,5 +89,13 @@ body.homepage {
     ul.group-list {
         border-top: 1px solid $thin_sep_line_color;
     }
+
+    hr {
+        background: url("#{$images_path}/bg-stripes-light.gif") 0 0 repeat-x;
+        clear: both;
+        height: 10px;
+        border: none;
+    }
+
 }
 
