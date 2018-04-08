@@ -67,32 +67,32 @@ urlpatterns = [
     url(r'^comments/(?P<model>\w+)/(?P<comment_pk>\d+)/edit/$', views.CommentEdit.as_view(), name='comment_edit'),
     url(r'^comments/(?P<model>\w+)/(?P<comment_pk>\d+)/delete/$', views.CommentDelete.as_view(), name='comment_delete'),
     url(
-        r'^membres/(?P<username>[-\w]+)/profil/$',
+        r'^membres/(?P<username>[-\w.]+)/profil/$',
         user_views.UserProfileView.as_view(),
         name='user_profile'
     ),
     url(
-        r'^membres/(?P<username>[-\w]+)/$',
+        r'^membres/(?P<username>[-\w.]+)/$',
         RedirectView.as_view(pattern_name='user_profile'),
         name='user_profile_redirect'
     ),
     url(
-        r'^membres/(?P<username>[-\w]+)/profil/edit/$',
+        r'^membres/(?P<username>[-\w.]+)/profil/edit/$',
         user_views.UserProfileEdit.as_view(),
         name='user_profile_edit'
     ),
     url(
-        r'^membres/(?P<username>[-\w]+)/projets-couture/nouveau-projet/$',
+        r'^membres/(?P<username>[-\w.]+)/projets-couture/nouveau-projet/$',
         project_views.ProjectCreate.as_view(),
         name='project_create'
     ),
     url(
-        r'^membres/(?P<username>[-\w]+)/favoris/$',
+        r'^membres/(?P<username>[-\w.]+)/favoris/$',
         user_views.UserFavoritesView.as_view(),
         name='user_favorites'
     ),
     url(
-        r'^membres/(?P<username>[-\w]+)/contacter/$',
+        r'^membres/(?P<username>[-\w.]+)/contacter/$',
         user_views.UserSendMessageView.as_view(),
         name='user_sendmessage'
     ),
