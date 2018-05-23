@@ -156,6 +156,13 @@ MEDIA_URL = '/media/'
 # Host to redirect to when we hit missing media in DEBUG mode (see serve_* debug views)
 MEDIA_DEBUG_REDIRECT_TO = 'https://www.threadandneedles.org'
 
+# Prepended to thumbnail URLs. Used to redirect to separate server.
+THUMBNAIL_URL_PREFIX = 'https://images.threadandneedles.org'
+
+# Prepended to projects' full images URLs. Used to redirect to separate server.
+PROJECT_FULLIMAGE_URL_PREFIX = 'https://images.threadandneedles.org'
+
+
 # Logging
 
 if json_conf.get('log_to'):
@@ -223,14 +230,14 @@ CKEDITOR_CONFIGS = {
 
 THUMBNAIL_ALIASES = {
     '': {
-        'preview': {'size': (300, 200), 'crop': True},
-        'avatar': {'size': (34, 34), 'crop': True},
-        'avatar-big': {'size': (60, 60), 'crop': True},
-        'avatar-bigger': {'size': (80, 80), 'crop': True},
-        'group-avatar': {'size': (80, 80), 'crop': True},
-        'group-avatar-big': {'size': (150, 150), 'crop': True},
-        'project-list': {'size': (180, 180), 'crop': True},
-        'project-alternate-view': {'size': (50, 50), 'crop': True},
+        'preview': {'size': (300, 200)},
+        'avatar': {'size': (34, 34)},
+        'avatar-big': {'size': (60, 60)},
+        'avatar-bigger': {'size': (80, 80)},
+        'group-avatar': {'size': (80, 80)},
+        'group-avatar-big': {'size': (150, 150)},
+        'project-list': {'size': (180, 180), 'external': True},
+        'project-alternate-view': {'size': (50, 50), 'external': True},
     }
 }
 

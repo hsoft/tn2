@@ -25,7 +25,7 @@
 <p>
 </p>
 <div>
-    <img id="full-size-image" src="{{ project.image1.url }}"/>
+    <img id="full-size-image" src="{{ project.image1|project_full_image_url }}"/>
 </div>
 {{ project.description|safe }}
 
@@ -103,7 +103,7 @@
         <img
             class="project-image-preview"
             src="{{ image|thumbnail_url:'project-alternate-view' }}"
-            data-full-url="{{ image.url }}"
+            data-full-url="{{ image|project_full_image_url }}"
         />
     {% endfor %}
     </div>
