@@ -151,17 +151,11 @@ STATIC_ROOT = str(PROJECT_ROOT.joinpath('static'))
 STATIC_URL = '/static/'
 
 MEDIA_ROOT = str(PROJECT_ROOT.joinpath('media'))
-MEDIA_URL = '/media/'
+MEDIA_URL = json_conf.get('media_url', '/media/')
+THUMBNAIL_URL = json_conf.get('thumbnail_url', '/thumb/')
 
 # Host to redirect to when we hit missing media in DEBUG mode (see serve_* debug views)
-MEDIA_DEBUG_REDIRECT_TO = 'https://www.threadandneedles.org'
-
-# Prepended to thumbnail URLs. Used to redirect to separate server.
-THUMBNAIL_URL_PREFIX = 'https://images.threadandneedles.org'
-
-# Prepended to projects' full images URLs. Used to redirect to separate server.
-PROJECT_FULLIMAGE_URL_PREFIX = 'https://images.threadandneedles.org'
-
+MEDIA_DEBUG_REDIRECT_TO = 'https://images.threadandneedles.org'
 
 # Logging
 

@@ -71,16 +71,9 @@ def fixurl(url):
 def thumbnail_url(source, thumb_type):
     thumbconf = settings.THUMBNAIL_ALIASES[''][thumb_type]
     size = thumbconf['size']
-    url = reverse(
-        'thumbnail',
-        kwargs={'width': size[0], 'height': size[1], 'path': source.name})
-    if thumbconf.get('external'):
-        url = settings.THUMBNAIL_URL_PREFIX + url
+    url = '{}{}/{}/{}'.format(
+        settings.THUMBNAIL_URL, size[0], size[1], source.name)
     return url
-
-@register.filter
-def project_full_image_url(image):
-    return '{}/{}'.format(settings.PROJECT_FULLIMAGE_URL_PREFIX, image.name)
 
 @register.filter
 def absolute_uri(path, request):

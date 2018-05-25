@@ -25,6 +25,8 @@ django_jsonsettings_properties:
   project_root: "{{ django_path }}"
   debug: "{{ django_debug|d(False) }}"
   secret_key: "{{ django_secret_key }}"
+  media_url: https://images.threadandneedles.org/
+  thumbnail_url: https://images.threadandneedles.org/thumb/
   database:
     HOST: localhost
     NAME: "{{ django_dbname }}"

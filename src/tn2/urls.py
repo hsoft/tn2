@@ -38,4 +38,7 @@ urlpatterns = [
 if settings.DEBUG:
     urlpatterns += [
         url(r'^media/(?P<path>.*)$', tn2_views.serve_media),
+        url(
+            r'^thumb/(?P<width>\d+)/(?P<height>\d+)/(?P<path>.*)$',
+            tn2_views.serve_thumbnail),
     ]
