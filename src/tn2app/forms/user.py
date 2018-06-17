@@ -1,3 +1,5 @@
+import re
+
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import AuthenticationForm
@@ -30,9 +32,18 @@ class SignupForm(registration.forms.RegistrationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['username'].label = "Votre pseudo"
+        self.fields['username'].help_text = "Uniquement des lettres, nombres et les caractères « . », « _ »."
         self.fields['email'].label = "Votre adresse e-mail"
         self.fields['password1'].label = "Votre mot de passe"
         self.fields['password2'].label = "Confirmez le mot de passe"
+
+    def clean_username(self):
+        username = self.cleaned_data['username']
+        if not re.match(r'^[-\w.]+$', username):
+            raise forms.ValidationError(
+                "Uniquement des lettres, nombres et les caractères « . », "
+                "« - » sont permis.")
+        return username
 
     def clean_email(self):
         User = get_user_model()
