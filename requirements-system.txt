@@ -1,6 +1,5 @@
 # These requirements are supposed to be met by the system. They're still
-# included in requirements.txt to facilitate development on non-debian
-# platforms
+# included in requirements.txt to facilitate development.
 
 bleach>=2.0
 beautifulsoup4>=4.5
