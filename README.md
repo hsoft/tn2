@@ -5,36 +5,11 @@ Ceci est le code qui fait rouler [Thread & needles][tn]. Ce site est construit a
 
 ## Développement
 
-Pour développer le site sur son poste local, il y deux options.
-
-### Option 1: LXDock
-
-Le site est monté de façon à utiliser [LXDock][lxdock] (comme [Vagrant][vagrant], mais pour
-[LXD][lxd]) pour faire du développement local. LXDock est un peu compliqué à installer, mais
-une fois que c'est fait, c'est la seule dépendance. On peut ensuite déployer le site localement
-en faisant:
-
-    git submodule init
-    git submodule update
-    lxdock up
-
-Une fois le provisioning complété, on peut accéder au site local par <http://tn2.local>.
-Alternativement on peut rouler le serveur de développement de Django en faisant:
-
-    lxdock shell
-    ./manage.sh load_initial_data
-    ./develop.sh
-
-Le site devient alors disponible sous <http://tn2.local:8080>.
-
-
-### Option 2: Déploiement manuel
-
-On peut aussi déployer le site manuellement sur son poste, mais c'est un peut plus compliqué.
-Premièrement, il faut s'assurer qu'on a toutes les dépendances:
+On peut déployer le site manuellement sur son poste, mais c'est un peut plus
+compliqué.  Premièrement, il faut s'assurer qu'on a toutes les dépendances:
 
 1. Un environnement GNU avec `make`, `gcc`, etc.
-1. Python 3.4+ avec support `venv`.
+1. Python 3.5+ avec support `venv`.
 1. PostgreSQL 9.5+ avec une base de donnée pré-créee pour le projet.
 1. [entr][entr] si on veut rouler `make watch`.
 
@@ -59,7 +34,6 @@ facilement travailler sur le site.
 
 Pour se créer un utilisateur admin, faire:
 
-    lxdock shell
     ./manage.sh createsuperuser
 
 Vous pourrez alors accéder à l'interface d'admin de Django en tant que super-utilisateur et faire
@@ -72,7 +46,4 @@ changement qu'on fait. Pour ce faire, on peut utiliser la commande `make watch`.
 
 [tn]: http://www.threadandneedles.fr/
 [django]: https://www.djangoproject.com/
-[lxdock]: https://github.com/lxdock/lxdock
-[vagrant]: https://www.vagrantup.com/
-[lxd]: https://linuxcontainers.org/lxd/
 [entr]: http://entrproject.org/

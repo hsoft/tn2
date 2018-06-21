@@ -1,6 +1,6 @@
 #!/bin/bash
 
-HOST="tn2@next.threadandneedles.org"
+HOST="tn2@www.threadandneedles.org"
 DEST="/opt/tn2"
 
 rsync Makefile requirements.freeze "$HOST:$DEST"

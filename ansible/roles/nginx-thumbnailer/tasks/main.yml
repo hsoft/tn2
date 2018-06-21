@@ -1,7 +1,0 @@
----
-- apt: name=nginx-extras state=present
-
-- template:
-    src: thumbnailer.conf.j2
-    dest: /etc/nginx/sites-enabled/{{ nginx_thumbnailer_name }}.conf
-  notify: nginx restart

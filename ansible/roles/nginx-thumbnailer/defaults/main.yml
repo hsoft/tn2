@@ -1,8 +1,0 @@
----
-#nginx_thumbnailer_media_path: /opt/media
-
-nginx_thumbnailer_redirect_to: null
-
-nginx_thumbnailer_bind: 127.0.0.1:8888
-nginx_thumbnailer_name: thumbnailer
-nginx_thumbnailer_buffer_size: 12M

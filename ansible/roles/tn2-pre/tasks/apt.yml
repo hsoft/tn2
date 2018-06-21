@@ -1,4 +1,0 @@
----
-- apt:
-    deb: "{{ tn2_deb_path }}"
-    state: present
