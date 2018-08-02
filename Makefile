@@ -1,10 +1,16 @@
 PYTHON ?= python3
-REQ_PYTHON_MINOR_VERSION = 4
-VENV_ARGS ?=
+REQ_PYTHON_MINOR_VERSION = 5
 PREFIX ?= $(abspath .)
 CONF_PATH = $(PREFIX)/conf.json
-ENV_PATH = $(PREFIX)/env
+
+# to disable venv, set ENV_PATH to an empty value
+ENV_PATH ?= $(PREFIX)/env
+ifneq ($(strip $(ENV_PATH)),)
 ENV_UPDATE_TIMESTAMP = $(ENV_PATH)/update_timestamp
+else
+ENV_UPDATE_TIMESTAMP =
+endif
+
 REQUIREMENTS_PATH ?= requirements.txt
 MANAGE_PATH = $(PREFIX)/manage.sh
 SRCDIR_PATH = $(PREFIX)/src
@@ -22,14 +28,16 @@ reqs:
 			exit 1; \
 		fi
 
+ifneq ($(strip $(ENV_PATH)),)
 $(ENV_PATH): | reqs
 	@echo "Creating our virtualenv"
-	${PYTHON} -m venv $(ENV_PATH) $(VENV_ARGS) || \
+	${PYTHON} -m venv $(ENV_PATH) || \
 		echo "Creation of our virtualenv failed. You probably need python3-venv."
 
 $(ENV_UPDATE_TIMESTAMP): $(ENV_PATH) $(REQUIREMENTS_PATH)
 	$(ENV_PATH)/bin/python -m pip install -r $(REQUIREMENTS_PATH)
 	touch $@
+endif
 
 $(MAIN_CSS_PATH): src/tn2app/sass/main.scss $(wildcard src/tn2app/sass/_*.scss) $(ENV_PATH)
 	sassc -t compressed $< $@
