@@ -72,6 +72,16 @@
                 </div>
             </div>
         </div>
+        {% if FROMFR %}
+        <div class="warningbanner">
+            <div class="fullwidth">
+                <p>
+                    Vous arrivez par un lien "threadandneedles.fr", qui sera bientôt échu. il faut
+                    <a href="{% url 'page_transition-fr-org' %}">changer votre lien!</a>
+                </p>
+            </div>
+        </div>
+        {% endif %}
         <div class="main_contents fullwidth">
         <p class="breadcrumb">
         {% block breadcrumb %}

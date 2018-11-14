@@ -134,7 +134,7 @@ urlpatterns = [
 
 PAGES = [
     'a-propos', 'cgu', 'foire-aux-questions', 'presse', 'sponsors',
-    'envoyez-nous-vos-articles', 'soutenir',
+    'envoyez-nous-vos-articles', 'soutenir', 'transition-fr-org',
 ]
 
 urlpatterns += [

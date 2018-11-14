@@ -70,3 +70,15 @@ div.subheader {
         }
     }
 }
+
+div.warningbanner {
+    background-color: $red_errors;
+    color: $text_light;
+    font-weight: bold;
+    font-size: 16px;
+    padding: 4px 0 4px 0;
+
+    a:hover,a:link,a:visited {
+        color: black;
+    }
+}
