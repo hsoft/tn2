@@ -137,7 +137,7 @@ LOGOUT_REDIRECT_URL = 'homepage'
 AUTHENTICATION_BACKENDS = ['tn2app.auth_backends.EmailAuthenticationBackend']
 ACCOUNT_ACTIVATION_DAYS = 7
 REGISTRATION_FORM = 'tn2app.forms.user.SignupForm'
-DEFAULT_FROM_EMAIL = 'info@threadandneedles.fr'
+DEFAULT_FROM_EMAIL = 'info@threadandneedles.org'
 SERVER_EMAIL = DEFAULT_FROM_EMAIL
 
 # Static files (CSS, JavaScript, Images)
