@@ -119,9 +119,18 @@
                         <a href="http://www.hellocoton.fr/mapage/threadandneedles" rel="nofollow" title="Notre page Hellocoton"><img src="{% static 'images/hellocoton.png' %}" /></a>&nbsp;
                         <a href="https://twitter.com/#!/threadneedlesfr" rel="nofollow" title="Suivez-nous sur twitter"><img src="{% static 'images/twitter.png' %}" /></a>&nbsp;
                         <a href="https://www.facebook.com/pages/ThreadNeedles/121145491299220" rel="nofollow" title="Rejoignez-nous sur Facebook"><img src="{% static 'images/facebook.png' %}" /></a>&nbsp;
+                        <a href="https://www.instagram.com/thread.and.needles/"><img src="{% static 'images/instagram_logo.svg' %}" /></a>&nbsp;
                         <a href="{% url 'blog_feed' %}" target="_blank" title="Flux RSS du blog"><img src="{% static 'images/rss.png' %}" /></a>&nbsp;
                         <a href="https://github.com/hsoft/tn2" target="_blank"><img src="{% static 'images/github.png' %}" /></a>
                     </p>
+                    <div>
+                        <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                        <input type="hidden" name="cmd" value="_s-xclick" />
+                        <input type="hidden" name="hosted_button_id" value="A6SFZVP7UNLNL" />
+                        <input type="image" src="https://www.paypalobjects.com/fr_FR/FR/i/btn/btn_donate_LG.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />
+                        <img alt="" border="0" src="https://www.paypal.com/fr_FR/i/scr/pixel.gif" width="1" height="1" />
+                        </form>
+                    </div>
                 </div>
                 <div class="column rightalign">
                     <h4>Création</h4>
@@ -146,6 +155,7 @@
                         <li><a href="{% url 'page_cgu' %}">Règlement / CGU</a></li>
                         <li><a href="{% url 'page_foire-aux-questions' %}">Foire Aux Questions</a></li>
                         <li><a href="{% url 'page_sponsors' %}">Sponsors / Publicité</a></li>
+                        <li><a href="{% url 'page_contact' %}">Nous contacter</a></li>
                     </ul>
                 </div>
             </div>
